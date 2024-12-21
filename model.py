@@ -108,7 +108,7 @@ class Discriminator(nn.Module):
         return self.net(x)
 
 
-def reparameterize(mu, logvar):
+def reparameterize(mu, logvar):     # VAE reparameterize. mu: mean, logvar: log varianc -> generate random samples
     sigma = torch.exp(0.5*logvar)
     eps = torch.FloatTensor(sigma.size()[0], 1).normal_(
         0, 1).expand(sigma.size()).to(mu.device)

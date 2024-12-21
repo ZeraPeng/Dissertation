@@ -273,13 +273,13 @@ def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_dec
 
 
 def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device):
-    clf = MLP([semantic_latent_size, ss]).to(device)
+    clf = MLP([semantic_latent_size, ss]).to(device)  # MLP classifier. semantic_laten_size, ss (step size) are args.
     if load_classifier == True:
-        cls_checkpoint = f'{wdir}/{le}/{tm}/clasifier.pth.tar'
+        cls_checkpoint = f'{wdir}/{le}/{tm}/classifier.pth.tar'
         clf.load_state_dict(torch.load(cls_checkpoint)['state_dict'])
     else:
-        cls_optimizer = optim.Adam(clf.parameters(), lr=0.001)
-        with torch.no_grad():
+        cls_optimizer = optim.Adam(clf.parameters(), lr=0.001)  # train new classifier
+        with torch.no_grad():   # prepare trainign data
             n_t = unseen_text_emb.to(device).float()
             n_t = n_t.repeat([500, 1])
             y = torch.tensor(range(ss)).to(device)
@@ -288,10 +288,10 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_tmu, t_tlv = text_encoder(n_t)
             t_z = reparameterize(t_tmu, t_tlv)
 
-        criterion2 = nn.CrossEntropyLoss().to(device)
+        criterion2 = nn.CrossEntropyLoss().to(device) 
         best = 0
 
-        for c_e in range(300):
+        for c_e in range(300):  # training cycle
             clf.train()
             out = clf(t_z)
             c_loss = criterion2(out, y)
@@ -304,7 +304,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
 
     u_inds = torch.from_numpy(unseen_inds)
     final_embs = []
-    with torch.no_grad():
+    with torch.no_grad():       # evaluate on zsl test set
         sequence_encoder.eval()
         clf.eval()
         count = 0
@@ -330,7 +330,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
     t = np.array(t)
 
     val_out_embs = []
-    with torch.no_grad():
+    with torch.no_grad():       # evaluating on gzsl test set
         sequence_encoder.eval()
         clf.eval()
         gzsl_count = 0

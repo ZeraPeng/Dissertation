@@ -1,19 +1,4 @@
-# SA-DVAE: Improving Zero-Shot Skeleton-Based Action Recognition by Disentangled Variational Autoencoders (ECCV 2024)
-
-![comparison](figure/comparison.png)
-
-[Sheng-Wei Li](https://www.csie.ntu.edu.tw/~r11944004/), Zi-Xiang Wei, [Wei-Jie Chen](https://jackchen890311.github.io/), Yi-Hsin Yu, [Chih-Yuan Yang](https://yangchihyuan.github.io/people/Chih-Yuan_Yang)&#8224;, [Jane Yung-jen Hsu](https://iagentntu.github.io/professor/Jane)&#8224; (&#8224;corresponding authors)
-
-[![arXiv](https://img.shields.io/badge/arXiv-2407.13460-b31b1b.svg)](https://arxiv.org/abs/2407.13460)
-
-### What does "SA-DVAE" stand for?
-
-SA-DVAE stands for **S**emantic **A**lignment via **D**isentangled **V**ariational **A**uto**e**ncoders.
-
-## TL;DR
-SA-DVAE improves zero-shot skeleton-based action recognition by aligning modality-specific VAEs and disentangling skeleton features into semantic and non-semantic parts, achieving better performance on NTU RGB+D, NTU RGB+D 120, and PKU-MMD datasets.
-
-![system architecture](figure/system_architecture.png)
+# 
 
 ## Setting Up the Environment
 
@@ -77,6 +62,9 @@ We provide three training scripts in `./scripts`, each corresponding to the thre
    * This script runs experiments on three different seen/unseen class splits.
 
 where `dataset` should be one of `ntu60`, `ntu120`, and `pku51`.
+
+### Script details
+ss: step size (?)
 
 ### Training Steps
 
