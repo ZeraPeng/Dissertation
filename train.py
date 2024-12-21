@@ -111,13 +111,13 @@ def train_one_cycle(cycle_num,
         losses = AverageMeter()
         ce_loss_vals = []
 
-        # models
+        # models. set to training mode
         sequence_encoder.train()
         sequence_decoder.train()
         text_encoder.train()
         text_decoder.train()
 
-        # hyper params
+        # hyper params. (for losses for the VAEs) beta_x: skeleton; beta_y: text
         if args.beta_x is None and args.beta_y is None:
             kld_loss_factor = max(
                 (0.1 * (i - (len(train_loader) / 1700 * 1000)) / (len(train_loader) / 1700 * 3000)), 0)
