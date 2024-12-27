@@ -338,9 +338,9 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         gzsl_preds = []
         gzsl_tars = []
         loader = val_loader if phase == 'train' else zsl_loader
-        for (inp, target) in loader:
+        for (inp, target) in loader:        # inp: data of current patch. target: ground truth
             t_s = inp.to(device)
-            t_smu, t_slv = sequence_encoder(t_s)
+            t_smu, t_slv = sequence_encoder(t_s)    # encoded skeleton latent embeddings. In Encoder forward(): t_smu -> "mu", t_slv -> "logvar"
             t_out = clf(t_smu)
             val_out_embs.append(F.softmax(t_out, 1))
             pred = torch.argmax(t_out, -1).cpu()
