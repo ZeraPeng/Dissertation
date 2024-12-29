@@ -7,6 +7,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import traceback
+import sys
 
 from data_cnn60 import AverageMeter, NTUDataLoaders
 from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
@@ -302,6 +304,14 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
 
     clf.eval()
 
+    # import class "ModelMatch" from STAR to decompose global feature into part features.
+    # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
+    decompose_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
+
+    # load the semantic attributes
+    attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
+    action_descriptions = torch.load('/DATA3/cy/STAR/data/text_feature/ntu120_semantic_feature_dict_gpt35.tar')
+
     u_inds = torch.from_numpy(unseen_inds)
     final_embs = []
     with torch.no_grad():       # evaluate on zsl test set
@@ -311,11 +321,29 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         num = 0
         preds = []
         tars = []
-        for (inp, target) in zsl_loader:
+        for (inp, target) in zsl_loader:    # inp: data of current patch. target: ground truth
             t_s = inp.to(device)
-            nt_smu, t_slv = sequence_encoder(t_s)
+            nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
+            
+            # load part language description
+            part_language = []
+            for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+                part_language.append(action_descriptions[i+1].unsqueeze(1))
+            part_language1 = torch.cat(part_language, dim=1).cuda(device)
+            part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in target], dim=0)
+            # load part_language_seen 
+            unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
+            seen_classes = list(set(range(60))-set(unseen_classes))
+            part_language_seen = part_language1[seen_classes]
+            # global feature -> part features (skeleton & semantic)
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_embedding, \
+                part_mu_feature, part_logvar_feature, sim_score, memory_weights, class_prob,sample_label_language, \
+                    part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic \
+                        = decompose_model(inp, attribute_features_dict, part_language, \
+                               sample_label_language,0, part_language_seen)
+            
             final_embs.append(nt_smu)
-            t_out = clf(nt_smu)
+            t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
             pred = torch.argmax(t_out, -1).cpu()
             preds.append(u_inds[pred])
             tars.append(target)
@@ -338,10 +366,10 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         gzsl_preds = []
         gzsl_tars = []
         loader = val_loader if phase == 'train' else zsl_loader
-        for (inp, target) in loader:        # inp: data of current patch. target: ground truth
+        for (inp, target) in loader:        
             t_s = inp.to(device)
-            t_smu, t_slv = sequence_encoder(t_s)    # encoded skeleton latent embeddings. In Encoder forward(): t_smu -> "mu", t_slv -> "logvar"
-            t_out = clf(t_smu)                      # t_out: contains logits output by clf (MLP)
+            t_smu, t_slv = sequence_encoder(t_s)    
+            t_out = clf(t_smu)                      
             val_out_embs.append(F.softmax(t_out, 1))
             pred = torch.argmax(t_out, -1).cpu()
             gzsl_preds.append(u_inds[pred])
@@ -488,6 +516,15 @@ def main():
                     clf, sequence_encoder, val_loader, device, unseen_inds)
                 np.save(
                     f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_seen_zs.npy', seen_zs_embeddings)
+                
+
+def import_class(import_str):
+    mod_str, _sep, class_str = import_str.rpartition('.')
+    __import__(mod_str)
+    try:
+        return getattr(sys.modules[mod_str], class_str)
+    except AttributeError:
+        raise ImportError('Class %s cannot be found (%s)' % (class_str, traceback.format_exception(*sys.exc_info())))
 
 
 if __name__ == "__main__":
