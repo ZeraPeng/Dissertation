@@ -16,6 +16,31 @@ from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
 
 import ipdb
 
+unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
+# unseen_classes = [4,19,31,47,51]   # ablation study ntu60 split1
+# unseen_classes = [12,29,32,44,59]   # ablation study ntu60 split2
+# unseen_classes = [7,20,28,39,58]   # ablation study ntu60 split3
+# unseen_classes = [3,5,9,12,15,40,42,47,51,56,58,59]  # ntu60_48/12_split
+# unseen_classes = [4,13,37,43,49,65,88,95,99,106]  # ntu120_110/10_split
+# unseen_classes = [5,9,11,16,18,20,22,29,35,39,45,49,59,68,70,81,84,87,93,94,104,113,114,119]  # ntu120_96/24_split
+seen_classes = list(set(range(60))-set(unseen_classes))  # ntu60
+train_label_dict = {}
+for idx, l in enumerate(seen_classes):
+    tmp = [0] * len(seen_classes)
+    tmp[idx] = 1
+    train_label_dict[l] = tmp
+test_zsl_label_dict = {}
+for idx, l in enumerate(unseen_classes):
+    tmp = [0] * len(unseen_classes)
+    tmp[idx] = 1
+    test_zsl_label_dict[l] = tmp
+test_gzsl_label_dict = {}
+for idx, l in enumerate(range(60)):
+    tmp = [0] * 60
+    tmp[idx] = 1
+    test_gzsl_label_dict[l] = tmp
+
+
 def parse_arg():
     # Arg Parser
     parser = argparse.ArgumentParser(description='View adaptive')
@@ -280,7 +305,56 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         cls_checkpoint = f'{wdir}/{le}/{tm}/classifier.pth.tar'
         clf.load_state_dict(torch.load(cls_checkpoint)['state_dict'])
     else:
-        cls_optimizer = optim.Adam(clf.parameters(), lr=0.001)  # train new classifier
+        # import class "ModelMatch" from STAR to finegrain global feature into part features.
+        # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
+        finegrain_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
+
+        # load the semantic attributes
+        attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
+        action_descriptions = torch.load('/DATA3/cy/STAR/data/text_feature/ntu120_semantic_feature_dict_gpt35.tar')
+
+        # losses for dual-prompt cross-modality alignment
+        loss_value = []
+        loss_part_infonce_value = []
+        loss_global_ce_value = []
+        loss_calibration_unseen_value = []
+        loss_global_mse_value = []
+        loss_part_mse_value = []
+        loss_part_ce_value = []
+        loss_cali_ce_value = []
+        loss_cvae_reconstruction_value = []
+        loss_sim_score_value = []
+        loss_classification_value = []
+        loss_cvae_kld_value = []
+        loss_mse_align_value = []
+        loss_align_lpd_value = []
+        loss_align_spd_value = []
+        loss_prompt_value = []
+        loss_global_ce_semantic_value = []
+        loss_kl_divergence_value = []
+        loss_pd_label_value = []
+        loss_classification_unseen_value = []
+        loss_ske_ce_value = []
+        loss_mse_ske_lb_value = []
+        loss_mse_lb_pd_value = []
+        loss_factor_value = []
+        loss_gcn_classify_value = []
+
+        # load part language description
+        part_language = []
+        for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+            part_language.append(action_descriptions[i+1].unsqueeze(1))
+        part_language1 = torch.cat(part_language, dim=1).cuda(device)
+        part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in target], dim=0)
+        part_language_seen = part_language1[seen_classes]
+        part_language_seen_unseen = part_language[:60]
+        label_language_seen = action_descriptions[0].cuda(device)[seen_classes]
+        true_label_array = torch.tensor([train_label_dict[l.item()] for l in target]).cuda(device)
+        label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in target], dim=0).cuda(device)
+        all_label_language = action_descriptions[0].cuda(device)[:60]
+        all_true_label_array = torch.tensor([test_gzsl_label_dict[l.item()] for l in target]).cuda(device)
+
+        cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
         with torch.no_grad():   # prepare trainign data
             n_t = unseen_text_emb.to(device).float()
             n_t = n_t.repeat([500, 1])
@@ -290,12 +364,60 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_tmu, t_tlv = text_encoder(n_t)
             t_z = reparameterize(t_tmu, t_tlv)
 
-        criterion2 = nn.CrossEntropyLoss().to(device) 
-        best = 0
+        # criterion2 = nn.CrossEntropyLoss().to(device) 
 
         for c_e in range(300):  # training cycle
             clf.train()
             out = clf(t_z)
+            # global feature -> part features (skeleton & semantic)
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_embedding, \
+                part_mu_feature, part_logvar_feature, sim_score, memory_weights, class_prob,sample_label_language, \
+                    part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic \
+                        = finegrain_model(t_z, attribute_features_dict, part_language, \
+                                sample_label_language,0, part_language_seen)
+
+            loss_global_ce, loss_cvae_reconstruction, loss_cvae_kld,loss_classification, loss_mse_align, \
+                loss_align_lpd, loss_align_spd, loss_prompt, loss_global_ce_semantic, loss_kl_divergence, \
+                    loss_calibration_unseen, loss_part_ce, loss_pd_label, loss_classification_unseen, \
+                        loss_ske_ce, loss_mse_ske_lb, loss_mse_lb_pd, loss_factor, loss_gcn_classify \
+                            = finegrain_model.loss_cal(part_visual_feature, global_visual_feature, part_language, \
+                                part_language_seen,part_language_seen_unseen, label_language_seen, label_language, \
+                                    true_label_array, all_label_language,unseen_classes,part_reconstruction_embedding, \
+                                        part_mu_feature, part_logvar_feature, sim_score, memory_weights, class_prob, \
+                                            part_visual_feature_pd, all_true_label_array, part_des_mapping_feature, \
+                                                gcn_feature, gcn_global, ske_feature, global_semantic)
+
+            loss = 0.1*loss_global_ce + loss_part_ce + 0.1*loss_pd_label   # ntu60
+            loss.backward()
+            cls_optimizer.step()
+
+            loss_value.append(loss.data.item())
+            # loss_part_infonce_value.append(loss_part_infonce.data.item())
+            loss_global_ce_value.append(loss_global_ce.data.item())
+            # loss_part_mse_value.append(loss_part_mse.data.item())
+            loss_part_ce_value.append(loss_part_ce.data.item())
+            # loss_cali_ce_value.append(loss_cali_ce.data.item())
+            # loss_global_mse_value.append(loss_global_mse.data.item())
+            loss_calibration_unseen_value.append(loss_calibration_unseen.data.item())
+            loss_cvae_reconstruction_value.append(loss_cvae_reconstruction.data.item())
+            # loss_sim_score_value.append(loss_sim_score.data.item())
+            loss_classification_value.append(loss_classification.data.item())
+            loss_cvae_kld_value.append(loss_cvae_kld.data.item())
+            loss_mse_align_value.append(loss_mse_align.data.item())
+            loss_align_lpd_value.append(loss_align_lpd.data.item())
+            loss_align_spd_value.append(loss_align_spd.data.item())
+            loss_prompt_value.append(loss_prompt.data.item())
+            loss_global_ce_semantic_value.append(loss_global_ce_semantic.data.item())
+            loss_kl_divergence_value.append(loss_kl_divergence.data.item())
+            loss_pd_label_value.append(loss_pd_label.data.item())
+            loss_classification_unseen_value.append(loss_classification_unseen.data.item())
+            loss_ske_ce_value.append(loss_ske_ce.data.item())
+            loss_mse_ske_lb_value.append(loss_mse_ske_lb.data.item())
+            loss_mse_lb_pd_value.append(loss_mse_lb_pd.data.item())
+            loss_factor_value.append(loss_factor.data.item())
+            loss_gcn_classify_value.append(loss_gcn_classify.data.item())
+
+            
             c_loss = criterion2(out, y)
             cls_optimizer.zero_grad()
             c_loss.backward()
@@ -303,14 +425,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             c_acc = float(torch.sum(y == torch.argmax(out, -1)))/(ss*500)
 
     clf.eval()
-
-    # import class "ModelMatch" from STAR to decompose global feature into part features.
-    # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
-    decompose_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
-
-    # load the semantic attributes
-    attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
-    action_descriptions = torch.load('/DATA3/cy/STAR/data/text_feature/ntu120_semantic_feature_dict_gpt35.tar')
 
     u_inds = torch.from_numpy(unseen_inds)
     final_embs = []
@@ -324,24 +438,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for (inp, target) in zsl_loader:    # inp: data of current patch. target: ground truth
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
-            
-            # load part language description
-            part_language = []
-            for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
-                part_language.append(action_descriptions[i+1].unsqueeze(1))
-            part_language1 = torch.cat(part_language, dim=1).cuda(device)
-            part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in target], dim=0)
-            # load part_language_seen 
-            unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
-            seen_classes = list(set(range(60))-set(unseen_classes))
-            part_language_seen = part_language1[seen_classes]
-            # global feature -> part features (skeleton & semantic)
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_embedding, \
-                part_mu_feature, part_logvar_feature, sim_score, memory_weights, class_prob,sample_label_language, \
-                    part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic \
-                        = decompose_model(inp, attribute_features_dict, part_language, \
-                               sample_label_language,0, part_language_seen)
-            
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
             pred = torch.argmax(t_out, -1).cpu()
