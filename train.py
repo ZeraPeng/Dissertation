@@ -314,6 +314,9 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for (inp, target) in zsl_loader:
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)
+            
+            print(f"The shape of nt_mu: {nt_smu.shape}")
+
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)
             pred = torch.argmax(t_out, -1).cpu()
