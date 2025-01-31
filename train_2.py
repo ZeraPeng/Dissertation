@@ -310,7 +310,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         finegrain_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
 
         # load the semantic attributes
-        attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
+        # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 
         # load part language description
