@@ -40,6 +40,14 @@ for idx, l in enumerate(range(60)):
     tmp[idx] = 1
     test_gzsl_label_dict[l] = tmp
 
+def import_class(import_str):
+    mod_str, _sep, class_str = import_str.rpartition('.')
+    __import__(mod_str)
+    try:
+        return getattr(sys.modules[mod_str], class_str)
+    except AttributeError:
+        raise ImportError('Class %s cannot be found (%s)' % (class_str, traceback.format_exception(*sys.exc_info())))
+
 
 def parse_arg():
     # Arg Parser
@@ -562,14 +570,6 @@ def main():
                 np.save(
                     f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_seen_zs.npy', seen_zs_embeddings)
                 
-
-def import_class(import_str):
-    mod_str, _sep, class_str = import_str.rpartition('.')
-    __import__(mod_str)
-    try:
-        return getattr(sys.modules[mod_str], class_str)
-    except AttributeError:
-        raise ImportError('Class %s cannot be found (%s)' % (class_str, traceback.format_exception(*sys.exc_info())))
 
 
 if __name__ == "__main__":
