@@ -311,7 +311,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
 
         # load the semantic attributes
         attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
-        action_descriptions = torch.load('/DATA3/cy/STAR/data/text_feature/ntu120_semantic_feature_dict_gpt35.tar')
+        action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 
         # load part language description
         part_language = []
@@ -345,9 +345,19 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_embedding, \
                 part_mu_feature, part_logvar_feature, sim_score, memory_weights, class_prob,sample_label_language, \
                     part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic \
-                        = finegrain_model(t_z, attribute_features_dict, part_language, \
-                                sample_label_language,0, part_language_seen)
+                        = finegrain_model(t_z, part_language, sample_label_language)
 
+            import json
+
+            with open("save_feature/part_visual_feature.json", "w") as file:
+                json.dump(part_visual_feature, file, indent=4)
+            with open("save_feature/part_mu_feature.json", "w") as file:
+                json.dump(part_mu_feature, file, indent=4)
+            with open("save_feature/part_logvar_feature.json", "w") as file:
+                json.dump(part_logvar_feature, file, indent=4)
+            with open("save_feature/global_visual_feature.json", "w") as file:
+                json.dump(global_visual_feature, file, indent=4)
+            
             # global        
             out = clf(t_z)
             global_c_loss = criterion2(out, y)

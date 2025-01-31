@@ -34,7 +34,7 @@ run_experiment() {
     echo "Stage 1" # train
     echo "..."
     r1=$(
-        python train.py \
+        python train_2.py \
             --num_classes $num_classes --ss "$ss" --st $st --ve $visual_encoder --le $language_encoder --tm $tm --num_cycles $nc --num_epoch_per_cycle $nepc \
             --latent_size $ls --i_latent_size $ils --lr $lr --phase train --mode $mode --dataset_path "$tdir" --wdir "$wdir_1" \
             --dis_step $dis_step --batch_size $batch_size --dataset $dataset_local

@@ -508,7 +508,7 @@ class ModelMatch(nn.Module):
         self.gcn_flobal_classifier = nn.Linear(256, 60)
 
             
-    def forward(self, x, st_attributes, part_des_feature, label_language, train_flag, part_language_seen):
+    def forward(self, x, part_des_feature, label_language):
         gcn_x, _ = self.pretraining_model(x)
         n,c,t,v = gcn_x.size()
         # spatial temporal attention
