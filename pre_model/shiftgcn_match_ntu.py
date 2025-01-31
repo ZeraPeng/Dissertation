@@ -3,8 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-from model.utils.tgcn import ConvTemporalGraphical
-from model.utils.graph import Graph
+from pre_model.utils.tgcn import ConvTemporalGraphical
+from pre_model.utils.graph import Graph
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -238,6 +238,7 @@ class SHIFTGCNModel(nn.Module):
 
 
 
+
 class STGCNModel(nn.Module):
     r"""Spatial temporal graph convolutional networks.
 
@@ -300,18 +301,26 @@ class STGCNModel(nn.Module):
 
         # contrastive learning
         self.linear_head_text = nn.ModuleDict()
+        # self.linear_head_image = nn.ModuleDict()
 
         self.logit_scale_text = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
+        # self.logit_scale_image = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
 
+        # self.text_part_list = nn.ModuleList()
+
+        # for i in range(6):
+        #     self.text_part_list.append(nn.Linear(256,512))
         self.head = head
         if 'ViT-B/32' in self.head:
             self.linear_head_text['ViT-B/32'] = nn.Linear(256,512)
             conv_init(self.linear_head_text['ViT-B/32'])
-   
+            # self.linear_head_image['ViT-B/32'] = nn.Linear(256,512)
+            # conv_init(self.linear_head_image['ViT-B/32'])
         if 'ViT-B/16' in self.head:
             self.linear_head_text['ViT-B/16'] = nn.Linear(256,512)
             conv_init(self.linear_head_text['ViT-B/16'])
-            
+            # self.linear_head_image['ViT-B/16'] = nn.Linear(256,512)
+            # conv_init(self.linear_head_image['ViT-B/16'])
         if 'ViT-L/14' in self.head:
             self.linear_head_text['ViT-L/14'] = nn.Linear(256,768)
             conv_init(self.linear_head_text['ViT-L/14'])
@@ -352,7 +361,7 @@ class STGCNModel(nn.Module):
         # N*M,C,T,V
         c_new = x.size(1)
 
-       
+        
 
         x_match_feature = x.view(N, c_new, T//4, V, M)
         x_match_feature = x_match_feature.mean(4)
@@ -365,7 +374,9 @@ class STGCNModel(nn.Module):
 
         for name in self.head:
             text_feature_dict[name] = self.linear_head_text[name](x)   # global text feature
-          
+            # image_feature_dict[name] = self.linear_head_image[name](x)   # global image feature
+
+
 
         return x_match_feature, x, text_feature_dict, self.logit_scale_text
     
@@ -422,6 +433,10 @@ class ImageCLIP(nn.Module):
 
 
 
+
+
+
+
 class ModelMatch(nn.Module):
     def __init__(self,num_class=60, num_point=25, num_person=2, graph=None, graph_args=dict(), in_channels=3,
                  drop_out=0, adaptive=True, head=['ViT-B/32'], k=0, body_part=6):
@@ -429,11 +444,11 @@ class ModelMatch(nn.Module):
         # pretrain model
         self.pretraining_model = SHIFTGCNModel(num_class=num_class,num_point=num_point, num_person=num_person, graph=graph, graph_args=graph_args, in_channels=in_channels)
         for p in self.parameters():
-            p.requires_grad = False
+            p.requires_grad = False     # frozen model parameters
         # match network
         # body part index
         self.body_part = body_part
-        self.body_part_index_list = nn.ParameterList()
+        self.body_part_index_list = nn.ParameterList()  #  store the key point indices corresponding to each body part.
         # head hand arm hip leg foot 
         self.body_part_index_list.append(nn.Parameter(torch.Tensor([2,3,20]).long(), requires_grad=False))
         self.body_part_index_list.append(nn.Parameter(torch.Tensor([7,11,21,22,23,24]).long(), requires_grad=False))
@@ -442,10 +457,12 @@ class ModelMatch(nn.Module):
         self.body_part_index_list.append(nn.Parameter(torch.Tensor([12,13,16,17]).long(), requires_grad=False))
         self.body_part_index_list.append(nn.Parameter(torch.Tensor([14,15,18,19]).long(), requires_grad=False))
         # body part spatial temporal attention network
-        self.body_part_st_attention_networks = nn.ModuleList()
+        self.body_part_st_attention_networks = nn.ModuleList()      # line 478: multi-head attention mechanism
         # self.body_part_st_attention_networks1 = nn.ModuleList()
         self.body_part_mapping_matrix1 = nn.ModuleList()
         self.body_part_mapping_matrix2 = nn.ModuleList()
+        # self.body_part_mapping_matrix3 = nn.ModuleList()
+        # self.body_part_mapping_matrix4 = nn.ModuleList()
         self.body_part_prompts = nn.ParameterList()
         # self.body_part_prompts1 = nn.ParameterList()
         self.body_part_w = nn.ParameterList()
@@ -454,16 +471,24 @@ class ModelMatch(nn.Module):
         self.part_weights_factor = nn.Parameter(torch.ones(1, 6), requires_grad=False)
         self.gcn_part_classifier = nn.ModuleList()
         self.pd_prompt = nn.ParameterList()
+        # self.lb_prompt = nn.Parameter(nn.init.normal_(torch.empty(60, 768)), requires_grad=False)
+        # self.temporal_dr = nn.ModuleList()
         for _ in range(self.body_part):
+            # self.temporal_dr.append(nn.Linear(75, 16))
             self.body_part_st_attention_networks.append(nn.MultiheadAttention(embed_dim=768, kdim=256, vdim=256, num_heads=4, batch_first=True))  # head:4
+            # self.body_part_st_attention_networks1.append(nn.MultiheadAttention(embed_dim=768, kdim=256, vdim=256, num_heads=4, batch_first=True))  # head:4
+            # self.body_part_mapping_matrix.append(nn.Parameter(nn.init.normal_(torch.empty(768, 768)), requires_grad=True))
             self.body_part_mapping_matrix1.append(nn.Linear(768, 768))
             self.body_part_mapping_matrix2.append(nn.Linear(768, 768))
+            # self.body_part_mapping_matrix3.append(nn.Linear(768, 256))
+            # self.body_part_mapping_matrix4.append(nn.Linear(256, 256))
             self.body_part_prompts.append(nn.Parameter(nn.init.normal_(torch.empty(100, 768)), requires_grad=True))   # 100 768
+            # self.body_part_prompts1.append(nn.Parameter(nn.init.normal_(torch.empty(100, 768)), requires_grad=True))   # 100 768
             self.body_part_w.append(nn.Parameter(nn.init.normal_(torch.empty(768, 768)), requires_grad=True))
             self.pd_mapping_matrix1.append(nn.Linear(768,256))
             self.pd_mapping_matrix2.append(nn.Linear(256,100))
             self.gcn_part_classifier.append(nn.Linear(256,100))
-            self.pd_prompt.append(nn.Parameter(nn.init.normal_(torch.empty(51, 768)), requires_grad=True))
+            self.pd_prompt.append(nn.Parameter(nn.init.normal_(torch.empty(60, 768)), requires_grad=True))
         self.relu = nn.ReLU()
         self.loss_mse = torch.nn.MSELoss()
         self.sim_loss_mse = torch.nn.MSELoss(reduce=False)
@@ -473,20 +498,17 @@ class ModelMatch(nn.Module):
         # classfication
         self.part_classification = nn.ModuleList()
         self.class_loss = nn.CrossEntropyLoss()
-        
         self.crossmodal_align1 = nn.Linear(768, 256)
-       
         self.crossmodal_align2 = nn.Linear(256, 100)
-
         self.kl = nn.KLDivLoss(reduction='batchmean')
         # part-global
         self.global_fc1 = nn.Linear(100*6, 256)
         self.global_fc2 = nn.Linear(256, 100)
         # gcn 
-        self.gcn_flobal_classifier = nn.Linear(256, 51)
-        
+        self.gcn_flobal_classifier = nn.Linear(256, 60)
+
             
-    def forward(self, x, st_attributes, part_des_feature, label_language, train_flag, part_language_seen):
+    def forward(self, x, part_des_feature, label_language):
         gcn_x, _ = self.pretraining_model(x)
         n,c,t,v = gcn_x.size()
         # spatial temporal attention
@@ -508,14 +530,13 @@ class ModelMatch(nn.Module):
             # normalize
             part_feature_original = gcn_x[:,:,:,self.body_part_index_list[i]].view(n,c,-1).permute(0,2,1)
             gcn_feature.append(self.gcn_part_classifier[i](part_feature_original.mean(1)).unsqueeze(1))
-
             part_feature = part_feature_original
-
+            # cross attention
             st_attributes_feature, _ = self.body_part_st_attention_networks[i](self.body_part_prompts[i].unsqueeze(0).expand(n, -1, -1), part_feature, part_feature)
             embedding_augamented = self.relu(self.body_part_mapping_matrix1[i](st_attributes_feature))
             embedding_augamented = self.body_part_mapping_matrix2[i](embedding_augamented)
 
-           
+            # embedding_semantic = torch.einsum('iv, vf, bif->bi',attributes, self.body_part_w[i], embedding_augamented)
             embedding_semantic = torch.einsum('iv, vf, bif->bi',self.body_part_prompts[i], self.body_part_w[i], embedding_augamented)
             # append feature
             global_visual_feature.append(embedding_semantic.unsqueeze(1))
@@ -530,10 +551,10 @@ class ModelMatch(nn.Module):
         gcn_feature = torch.cat(gcn_feature, dim=1)
         part_visual_feature_pd = torch.cat(part_visual_feature_pd, dim=1)
         global_visual_feature = torch.cat(global_visual_feature, dim=1)
-        
+
+        label_language = self.relu(self.crossmodal_align1(label_language))
         label_language = self.crossmodal_align2(label_language)
         part_des_mapping_feature = torch.cat(part_des_mapping_feature, dim=1)
-
         ske_feature = torch.cat(ske_feature, dim=1)
         ske_feature = self.relu(self.global_fc1(ske_feature))
         ske_feature = self.global_fc2(ske_feature)
@@ -541,9 +562,6 @@ class ModelMatch(nn.Module):
         gcn_global = self.gcn_flobal_classifier(gcn_global)
         global_semantic = torch.einsum('bpd,qp->bdq',global_visual_feature,self.part_weights_factor).squeeze(2)
         return part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic
-    
-    
-        
 
     def loss_cal(self, part_visual, global_visual, part_language, part_language_seen,part_language_seen_unseen,
                  label_langauge, mse_label_language, true_seen_label, all_label_language, unseen_label,
@@ -551,14 +569,14 @@ class ModelMatch(nn.Module):
                  all_true_label_array, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature,
                  global_semantic):
         n, _, _, _ = part_visual.size()
-        
         label_langauge = self.relu(self.crossmodal_align1(label_langauge))
         label_langauge = self.crossmodal_align2(label_langauge)
         label_langauge = label_langauge.expand(n, -1, -1)  # n 55 768
         all_label_language = self.relu(self.crossmodal_align1(all_label_language))
         all_label_language = self.crossmodal_align2(all_label_language)
+        np.save('/home/penghan/HAR/STAR/tsen_feature/semantic_space/action_name.npy', all_label_language.detach().cpu().numpy())
         global_vl_pred_score = torch.einsum('nk,njk->nj', F.normalize(global_semantic, dim=1, p=2), F.normalize(all_label_language.expand(n, -1, -1), dim=2, p=2))  # n 6 60
-        seen_label = list(set(range(51))-set(unseen_label))
+        seen_label = list(set(range(60))-set(unseen_label))
         loss_calibration_unseen = torch.tensor(1)
         global_vl_pred_score = F.softmax(global_vl_pred_score[:,seen_label], dim=1)
         global_vl_pred_score = torch.log(global_vl_pred_score+1e-12)
@@ -576,58 +594,49 @@ class ModelMatch(nn.Module):
             tmp = self.relu(self.pd_mapping_matrix1[i](tmp))
             tmp = self.pd_mapping_matrix2[i](tmp)
             global_pd_pred_score = torch.einsum('ni,ji->nj', F.normalize(global_visual[:,i,:], dim=1, p=2), F.normalize(tmp, dim=1, p=2))  # n 60
-
             global_pd_pred_score = F.softmax(global_pd_pred_score[:,seen_label], dim=1)
-
             global_pd_pred_score = torch.log(global_pd_pred_score+1e-12)
             loss_part = torch.mean(-torch.einsum('nc,nc->n',global_pd_pred_score, true_seen_label.float()),dim=0)
             loss_part_ce.append(loss_part)
         loss_part_ce = sum(loss_part_ce)/6
 
-
         loss_pd_label = []
         for i in range(6):
-
             tmp = part_language_seen_unseen[:,i,:] + self.pd_prompt[i]
             tmp = self.relu(self.pd_mapping_matrix1[i](tmp))
             tmp = self.pd_mapping_matrix2[i](tmp)  # 60 50
             sim = F.softmax(torch.einsum('cd,kd->ck',tmp, all_label_language), dim=1)  # 60 60
+            np.save('/home/penghan/HAR/STAR/tsen_feature/semantic_space/part_description_{}.npy'.format(i), tmp.detach().cpu().numpy())
             sim = -torch.log(torch.diag(sim)+1e-12)
             loss_pd_label.append(torch.mean(sim, dim=0))
         loss_pd_label = sum(loss_pd_label)/6
-        
+
         ske_pre_score = torch.einsum('nd,ncd->nc', ske_feature, all_label_language.unsqueeze(0).expand(n, -1, -1))  # n 55
         ske_pre_score = F.softmax(ske_pre_score, dim=1)
         ske_pre_score = torch.log(ske_pre_score+1e-12)
         loss_ske_ce = torch.sum(-torch.einsum('nc,nc->n',ske_pre_score, all_true_label_array.float()),dim=0)/n
-        # print("loss_ske_ce:",loss_ske_ce)
 
 
         loss_align_lpd = torch.tensor(1)
         loss_align_spd = torch.tensor(1)
-       
+
         loss_mse_align = self.loss_mse(F.normalize(global_visual, dim=2, p=2), F.normalize(part_des_mapping_feature,dim=2,p=2))
-        
         loss_mse_lb_pd = []
         for i in range(6):
-
             tmp = part_language_seen_unseen[:,i,:] + self.pd_prompt[i]
             tmp = self.relu(self.pd_mapping_matrix1[i](tmp))
             tmp = self.pd_mapping_matrix2[i](tmp)  # 60 50
-
+            # loss = self.loss_mse(tmp, all_label_language)
             loss = self.loss_mse(F.normalize(tmp,dim=1, p=2), F.normalize(all_label_language,dim=1, p=2))
             loss_mse_lb_pd.append(loss)
         loss_mse_lb_pd = sum(loss_mse_lb_pd)/6
-
         loss_mse_ske_lb = torch.tensor(1)
-
         loss_factor = torch.tensor(1)
 
         loss_prompt = torch.tensor(1)
-
         loss_cvae_reconstruction = torch.tensor(1)
         loss_cvae_kld = torch.tensor(1)
-    
+       
         loss_classification = torch.tensor(1)
         loss_classification_unseen = torch.tensor(1)
 
@@ -640,7 +649,7 @@ class ModelMatch(nn.Module):
         n,_,_ = global_visual.size()
         part_language_unseen = part_language_unseen.permute(1,0,2)
         part_language_unseen = part_language_unseen.unsqueeze(0).expand(n,-1,-1,-1)
-    
+        
         label_langauge = self.relu(self.crossmodal_align1(label_langauge))
         
         label_langauge = self.crossmodal_align2(label_langauge)
@@ -660,12 +669,12 @@ class ModelMatch(nn.Module):
     def get_gzsl_acc(self, global_visual, part_visual, label_langauge, part_language_unseen_seen,true_label_list, unseen_label, 
                      sim_score, part_mu_feature, part_logvar_feature, part_des_mapping_feature, ske_feature, global_semantic,gcn_global,gcn_feature):
         n,_,_ = global_visual.size()
-        
+
         part_language_unseen_seen = part_language_unseen_seen.permute(1,0,2)
         part_language_unseen_seen = part_language_unseen_seen.unsqueeze(0).expand(n,-1,-1,-1)
-        
-        label_langauge = self.relu(self.crossmodal_align1(label_langauge))
        
+        label_langauge = self.relu(self.crossmodal_align1(label_langauge))
+
         label_langauge = self.crossmodal_align2(label_langauge)
 
        
@@ -674,9 +683,9 @@ class ModelMatch(nn.Module):
         
         global_vl_pred = torch.einsum('nk,njk->nj', F.normalize(global_semantic, dim=1, p=2), F.normalize(label_langauge, dim=2,p=2))  # n 6 60
        
-        seen_label = list(set(range(51))-set(unseen_label))
+        seen_label = list(set(range(60))-set(unseen_label))
 
-       
+        
 
         global_vl_pred_idx = torch.max(global_vl_pred, dim=1)[1].data.cpu().numpy()
         
@@ -684,10 +693,15 @@ class ModelMatch(nn.Module):
         threshold_seen_list = []
         threshold_unseen_list = []
 
+       
         
         return (global_vl_pred_idx, true_label_list, threshold_seen_list, threshold_unseen_list, global_vl_pred)
     
-   
+    
+
+
+
+
         
 
 

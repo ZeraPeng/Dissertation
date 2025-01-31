@@ -13,7 +13,7 @@ import sys
 from data_cnn60 import AverageMeter, NTUDataLoaders
 from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize)
-from model.shiftgcn_match_ntu import ModelMatch
+from pre_model.shiftgcn_match_ntu import ModelMatch
 
 # import ipdb
 
