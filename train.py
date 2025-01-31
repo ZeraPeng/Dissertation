@@ -12,7 +12,7 @@ from data_cnn60 import AverageMeter, NTUDataLoaders
 from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize)
 
-import ipdb
+# import ipdb
 
 def parse_arg():
     # Arg Parser

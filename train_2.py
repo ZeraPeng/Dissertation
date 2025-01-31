@@ -14,7 +14,7 @@ from data_cnn60 import AverageMeter, NTUDataLoaders
 from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize)
 
-import ipdb
+# import ipdb
 
 unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
 # unseen_classes = [4,19,31,47,51]   # ablation study ntu60 split1
