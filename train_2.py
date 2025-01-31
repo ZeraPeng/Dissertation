@@ -484,9 +484,9 @@ def main():
     # DataLoader
     ntu_loaders = NTUDataLoaders(dataset_path, 'max', 1)
     train_loader = ntu_loaders.get_train_loader(
-        batch_size, 4)
-    zsl_loader = ntu_loaders.get_val_loader(batch_size, 4)
-    val_loader = ntu_loaders.get_test_loader(batch_size, 4)
+        batch_size, 0)
+    zsl_loader = ntu_loaders.get_val_loader(batch_size, 0)
+    val_loader = ntu_loaders.get_test_loader(batch_size, 0)
 
     # ipdb.set_trace()
     if phase == 'val':
