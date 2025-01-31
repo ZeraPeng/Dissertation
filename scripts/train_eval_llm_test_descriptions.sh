@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 st="r" results_dir="results"
-visual_encoder="stgcn" language_encoder="clip-vit-b-32" tm="self"
+visual_encoder="stgcn" language_encoder="clip-vit-b-32" tm="chat"
 mode="train"
 dataset=$1
 
@@ -46,7 +46,7 @@ run_experiment() {
     echo "Stage 2" # val
     echo "..."
     r2=$(
-        python train.py \
+        python train_2.py \
             --num_classes $num_classes --ss "$ss" --st $st --ve $visual_encoder --le $language_encoder --tm $tm --num_cycles $nc --num_epoch_per_cycle $nepc \
             --latent_size $ls --i_latent_size $ils --lr $lr --phase val --mode $mode --dataset_path "$edir" --wdir "$wdir_2" \
             --dis_step $dis_step --batch_size $batch_size --dataset $dataset_local

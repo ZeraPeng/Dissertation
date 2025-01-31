@@ -212,7 +212,7 @@ def train_one_cycle(cycle_num,
             original_batch_pred = discriminator(original_batch)
             perm_batch_pred = discriminator(perm_batch)
             loss_s_dis = (bce_criterion(original_batch_pred, ones) +
-                          bce_criterion(perm_batch_pred, zeros)) / 2
+                        bce_criterion(perm_batch_pred, zeros)) / 2
 
             # train discriminator with text branch
             dis_tz = reparameterize(tmu, tlv)
@@ -225,7 +225,7 @@ def train_one_cycle(cycle_num,
             original_batch_pred = discriminator(original_batch)
             perm_batch_pred = discriminator(perm_batch)
             loss_t_dis = (bce_criterion(original_batch_pred, ones) +
-                          bce_criterion(perm_batch_pred, zeros)) / 2
+                        bce_criterion(perm_batch_pred, zeros)) / 2
 
             loss_dis = (loss_s_dis + loss_t_dis) / 2
             scaled_loss_dis = kld_loss_factor_2 * loss_dis
@@ -285,9 +285,9 @@ def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_dec
     td_checkpoint = f'{wdir}/{le}/{tm}/td_{str(epoch)}.pth.tar'
 
     save_checkpoint({'epoch': epoch + 1,
-                     'state_dict': sequence_encoder.state_dict(),
-                     'optimizer': optimizer.state_dict()
-                     }, se_checkpoint)
+                    'state_dict': sequence_encoder.state_dict(),
+                    'optimizer': optimizer.state_dict()
+                    }, se_checkpoint)
     save_checkpoint({'epoch': epoch + 1,
                      'state_dict': sequence_decoder.state_dict(),
                      }, sd_checkpoint)
@@ -347,17 +347,14 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
                     part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic \
                         = finegrain_model(t_z, part_language, sample_label_language)
 
-            import json
+            import numpy as np
 
-            with open("save_feature/part_visual_feature.json", "w") as file:
-                json.dump(part_visual_feature, file, indent=4)
-            with open("save_feature/part_mu_feature.json", "w") as file:
-                json.dump(part_mu_feature, file, indent=4)
-            with open("save_feature/part_logvar_feature.json", "w") as file:
-                json.dump(part_logvar_feature, file, indent=4)
-            with open("save_feature/global_visual_feature.json", "w") as file:
-                json.dump(global_visual_feature, file, indent=4)
-            
+            np.save("save_feature/part_visual_feature.npy", part_visual_feature.cpu().numpy())
+            np.save("save_feature/part_mu_feature.npy", part_mu_feature.cpu().numpy())
+            np.save("save_feature/part_logvar_feature.npy", part_logvar_feature.cpu().numpy())
+            np.save("save_feature/global_visual_feature.npy", global_visual_feature.cpu().numpy())
+
+
             # global        
             out = clf(t_z)
             global_c_loss = criterion2(out, y)
