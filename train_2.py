@@ -322,6 +322,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         # load the semantic attributes
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+        label = torch.load('text_feature/ntu_label.tar')
 
         print(unseen_inds)
         print(unseen_inds.shape)
@@ -333,8 +334,9 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
         print("part_language1 shape: ", part_language1.shape)
         # label = {"head", "hand", "arm", "hip", "leg", "foot"}.cuda(device)
-        part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in unseen_inds], dim=0)
+        part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
+        sample_label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in label], dim=0).cuda(self.output_device)
 
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
         with torch.no_grad():   # prepare training data
