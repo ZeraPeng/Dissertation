@@ -324,13 +324,12 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
         label = torch.load('text_feature/ntu_label_text.tar')
 
-        action_descriptions = action_descriptions.to(device)
         label = label.to(device)
 
         print(unseen_inds.shape)
         print(action_descriptions.shape)
         print(label.shape)
-        
+
         # load part language description
         part_language = []
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
