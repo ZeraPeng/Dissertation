@@ -45,6 +45,8 @@ def ntu_attributes(device):
                 text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[6])) for pasta_list in ntu_semantic_text_map_gpt35])
             ntu120_semantic_feature_dict[ii] = clip_model.float().encode_text(text_dict[ii].to(device))
 
+    print(ntu120_semantic_feature_dict.shape)
+    print(ntu120_semantic_feature_dict[0].shape)
     torch.save(ntu120_label_text,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
     torch.save(ntu120_semantic_feature_dict,'/home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
     return ntu120_semantic_feature_dict
