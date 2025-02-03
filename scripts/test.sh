@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 st="r" results_dir="results"
-visual_encoder="stgcn" language_encoder="clip-vit-b-32" tm="chat"
+visual_encoder="shift" language_encoder="clip-vit-b-32" tm="chat"
 mode="train"
 dataset=$1
 
