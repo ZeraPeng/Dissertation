@@ -323,7 +323,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 
-        ipdb.set_trace()
+        # ipdb.set_trace()
 
         label = label.long().cuda(device)
 
