@@ -20,7 +20,7 @@ import sys
 sys.path.append("./model/Temporal_shift/")
 
 # from cuda.shift import Shift
-from Temporal_shift_cpu.shift import Shift
+from pre_model.Temporal_shift_cpu.shift import Shift
 
 
 
