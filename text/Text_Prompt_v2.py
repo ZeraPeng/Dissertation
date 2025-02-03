@@ -17,9 +17,38 @@ with open('/home/peng0185/Dissertation/text/ntu120_part_descriptions.txt') as in
         ntu_semantic_text_map_gpt35.append(temp_list)
 
 
+def ntu_label():
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    clip_model, _ = clip.load('ViT-L/14@336px', device)
+    # clip_model.cuda(device)
+
+    ntu120_label_text_dict = {}
+    with torch.no_grad():
+        text_dict = {}
+        num_text_aug = 7   # 7
+        for ii in range(num_text_aug):
+            if ii == 0:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[ii])) for pasta_list in label_text_map])   # class
+            elif ii == 1:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[1])) for pasta_list in label_text_map])
+            elif ii == 2:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[2])) for pasta_list in label_text_map])
+            elif ii == 3:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[3])) for pasta_list in label_text_map])
+            elif ii == 4:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[4])) for pasta_list in label_text_map])
+            elif ii == 5:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[5])) for pasta_list in label_text_map])
+            else:
+                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[6])) for pasta_list in label_text_map])
+            ntu120_label_text_dict[ii] = clip_model.float().encode_text(text_dict[ii].to(device))
+    
+    torch.save(ntu120_label_text_dict,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
+
+
 # load clip model
-def ntu_attributes(device):
-    # device = "cuda:0" if torch.cuda.is_available() else "cpu"
+def ntu_attributes():
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
     clip_model, _ = clip.load('ViT-L/14@336px', device)
     # clip_model.cuda(device)
 
@@ -73,5 +102,4 @@ def text_prompt():
 
 if __name__ == "__main__":
     device = 'cpu'
-    ntu_attributes(device)
-    text_prompt()
+    ntu_attributes()
