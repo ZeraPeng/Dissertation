@@ -19,8 +19,8 @@ from scipy.special import binom
 import sys
 sys.path.append("./model/Temporal_shift/")
 
-from cuda.shift import Shift
-
+# from cuda.shift import Shift
+from Temporal_shift_cpu.shift import Shift
 
 
 
@@ -574,7 +574,7 @@ class ModelMatch(nn.Module):
         label_langauge = label_langauge.expand(n, -1, -1)  # n 55 768
         all_label_language = self.relu(self.crossmodal_align1(all_label_language))
         all_label_language = self.crossmodal_align2(all_label_language)
-        np.save('/home/penghan/HAR/STAR/tsen_feature/semantic_space/action_name.npy', all_label_language.detach().cpu().numpy())
+        np.save('~/Dissertation/tsen_feature/semantic_space/action_name.npy', all_label_language.detach().cpu().numpy())
         global_vl_pred_score = torch.einsum('nk,njk->nj', F.normalize(global_semantic, dim=1, p=2), F.normalize(all_label_language.expand(n, -1, -1), dim=2, p=2))  # n 6 60
         seen_label = list(set(range(60))-set(unseen_label))
         loss_calibration_unseen = torch.tensor(1)
@@ -606,7 +606,7 @@ class ModelMatch(nn.Module):
             tmp = self.relu(self.pd_mapping_matrix1[i](tmp))
             tmp = self.pd_mapping_matrix2[i](tmp)  # 60 50
             sim = F.softmax(torch.einsum('cd,kd->ck',tmp, all_label_language), dim=1)  # 60 60
-            np.save('/home/penghan/HAR/STAR/tsen_feature/semantic_space/part_description_{}.npy'.format(i), tmp.detach().cpu().numpy())
+            np.save('~/Dissertation/tsen_feature/semantic_space/part_description_{}.npy'.format(i), tmp.detach().cpu().numpy())
             sim = -torch.log(torch.diag(sim)+1e-12)
             loss_pd_label.append(torch.mean(sim, dim=0))
         loss_pd_label = sum(loss_pd_label)/6

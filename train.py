@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from data_cnn60 import AverageMeter, NTUDataLoaders
-from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
+from pre_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize)
 
 # import ipdb
