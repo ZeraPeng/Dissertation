@@ -4,13 +4,13 @@ import numpy as np
 
 
 label_text_map = []
-with open('text/ntu120_label.txt') as infile:
+with open('/home/peng0185/Dissertation/text/ntu120_label.txt') as infile:
     lines = infile.readlines()
     for ind, line in enumerate(lines):
         label_text_map.append(line.rstrip().lstrip())
 
 ntu_semantic_text_map_gpt35= []
-with open('text/ntu120_part_descriptions.txt') as infile:
+with open('/home/peng0185/Dissertation/text/ntu120_part_descriptions.txt') as infile:
     lines = infile.readlines()
     for ind, line in enumerate(lines):
         temp_list = line.rstrip().lstrip().split(';')
