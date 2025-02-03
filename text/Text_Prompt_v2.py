@@ -22,8 +22,7 @@ def ntu_attributes(device):
     # device = "cuda:0" if torch.cuda.is_available() else "cpu"
     clip_model, _ = clip.load('ViT-L/14@336px', device)
     # clip_model.cuda(device)
-    ntu120_label_text = torch.cat([clip.tokenize(c) for c in label_text_map])
-    print(ntu120_label_text.shape)
+
     ntu120_semantic_feature_dict = {}
     with torch.no_grad():
         text_dict = {}
@@ -47,13 +46,32 @@ def ntu_attributes(device):
 
     print(len(ntu120_semantic_feature_dict))
     print(ntu120_semantic_feature_dict[0].shape)
-    torch.save(ntu120_label_text,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
     torch.save(ntu120_semantic_feature_dict,'/home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
     return ntu120_semantic_feature_dict
 
 
+def text_prompt():
+    text_aug = [f"a photo of action {{}}", f"a picture of action {{}}", f"Human action of {{}}", f"{{}}, an action",
+                f"{{}} this is an action", f"{{}}, a video of action", f"Playing action of {{}}", f"{{}}",
+                f"Playing a kind of action, {{}}", f"Doing a kind of action, {{}}", f"Look, the human is {{}}",
+                f"Can you recognize the action of {{}}?", f"Video classification of {{}}", f"A video of {{}}",
+                f"The man is {{}}", f"The woman is {{}}"]
+    text_dict = {}
+    num_text_aug = len(text_aug)
+
+    for ii, txt in enumerate(text_aug):
+        text_dict[ii] = torch.cat([clip.tokenize(txt.format(c)) for c in label_text_map])
+
+
+    classes = torch.cat([v for k, v in text_dict.items()])
+    print(classes.shape)
+    print(classes[0].shape)  
+    torch.save(classes,'/home/peng0185/Dissertation/text_feature/ntu_label_text_aug.tar')
+
+    return classes, num_text_aug, text_dict
 
 
 if __name__ == "__main__":
     device = 'cpu'
     ntu_attributes(device)
+    text_prompt()
