@@ -23,7 +23,7 @@ fi
 
 ss="5"
 dataset_local="ntu60"
-tdir="resources/sk_feats/${visual_encoder}_${dataset_local}_${ss}_r/"
+tdir="resources/sk_feats/${visual_encoder}_${dataset_local}_${ss}_r"
 edir="resources/sk_feats/${visual_encoder}_${dataset_local}_val_${ss}_r/"
 wdir_1="results/${visual_encoder}_${dataset_local}_${ss}_r/"
 wdir_2="results/${visual_encoder}_${dataset_local}_val_${ss}_r/"
