@@ -325,9 +325,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         label = torch.load('text_feature/ntu_label_text_aug.tar')
 
         label = label.to(device)
-
-        print(unseen_inds.shape)
-        print(action_descriptions[0].shape)
         print(label.shape)
 
         # load part language description
@@ -336,7 +333,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
         print("part_language1 shape: ", part_language1.shape)
-        label = ["head", "hand", "arm", "hip", "leg", "foot"]
         part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
         sample_label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in label], dim=0).cuda(device)
