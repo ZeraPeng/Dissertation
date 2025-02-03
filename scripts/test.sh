@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 st="r" results_dir="results"
-visual_encoder="stgcn" language_encoder="clip-vit-b-32" tm="chat"
+visual_encoder="shiftgcn" language_encoder="clip-vit-b-32" tm="chat"
 mode="train"
 dataset=$1
 
@@ -21,28 +21,23 @@ else
     exit 1
 fi
 
-run_experiment() {
-    ss=$1
-    dataset_local=$2
-    tdir="resources/sk_feats/${visual_encoder}_${dataset_local}_${ss}_r/"
-    edir="resources/sk_feats/${visual_encoder}_${dataset_local}_val_${ss}_r/"
-    wdir_1="results/${visual_encoder}_${dataset_local}_${ss}_r/"
-    wdir_2="results/${visual_encoder}_${dataset_local}_val_${ss}_r/"
+ss=$1
+dataset_local=$2
+tdir="resources/sk_feats/${visual_encoder}_${dataset_local}_${ss}_r/"
+edir="resources/sk_feats/${visual_encoder}_${dataset_local}_val_${ss}_r/"
+wdir_1="results/${visual_encoder}_${dataset_local}_${ss}_r/"
+wdir_2="results/${visual_encoder}_${dataset_local}_val_${ss}_r/"
 
-    echo "-----------------------------------"
-    echo "=========="
-    echo "Stage 1" # train
-    echo "..."
-    r1=$(
-        python train_2.py \
-            --num_classes $num_classes --ss "$ss" --st $st --ve $visual_encoder --le $language_encoder --tm $tm --num_cycles $nc --num_epoch_per_cycle $nepc \
-            --latent_size $ls --i_latent_size $ils --lr $lr --phase train --mode $mode --dataset_path "$tdir" --wdir "$wdir_1" \
-            --dis_step $dis_step --batch_size $batch_size --dataset $dataset_local
-    )
-    za=${r1:0-35:5} c=${r1:0-18:1}
-    echo "Best ZSL Acc: $za on cycle $c"
-}
+echo "-----------------------------------"
+echo "=========="
+echo "Stage 1" # train
+echo "..."
+r1=$(
+    python train_2.py \
+        --num_classes $num_classes --ss "$ss" --st $st --ve $visual_encoder --le $language_encoder --tm $tm --num_cycles $nc --num_epoch_per_cycle $nepc \
+        --latent_size $ls --i_latent_size $ils --lr $lr --phase train --mode $mode --dataset_path "$tdir" --wdir "$wdir_1" \
+        --dis_step $dis_step --batch_size $batch_size --dataset $dataset_local
+)
+za=${r1:0-35:5} c=${r1:0-18:1}
+echo "Best ZSL Acc: $za on cycle $c"
 
-for dataset_split in "${available_splits[@]}"; do
-    run_experiment $ss $dataset"_"$dataset_split
-done
