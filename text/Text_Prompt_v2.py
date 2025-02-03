@@ -55,8 +55,8 @@ if __name__ == "__main__":
     device = 'cpu'
     ntu_attributes(device)
     ntu120_label_text = torch.load('/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
-    for key, value in ntu120_label_text.items():
+    for key, value in ntu120_label_text.item():
         print(f"Shape of tensor for key {key}: {value.shape}")
     ntu_semantic_feature_dict = torch.load('//home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
-    for key, value in ntu_semantic_feature_dict.items():
+    for key, value in ntu_semantic_feature_dict.item():
         print(f"Shape of tensor for key {key}: {value.shape}")
