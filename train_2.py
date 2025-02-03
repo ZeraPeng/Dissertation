@@ -327,7 +327,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         label = label.to(device)
 
         print(unseen_inds.shape)
-        print(action_descriptions.shape)
+        print(action_descriptions[0].shape)
         print(label.shape)
 
         # load part language description
