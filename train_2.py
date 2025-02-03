@@ -15,7 +15,7 @@ from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize)
 from pre_model.shiftgcn_match_ntu import ModelMatch
 
-# import ipdb
+import ipdb
 
 unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
 # unseen_classes = [4,19,31,47,51]   # ablation study ntu60 split1
@@ -323,12 +323,16 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 
+        ipdb.set_trace()
+
+        label = label.long().cuda(device)
+
         # load part language description
         part_language = []
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
-        part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in target], dim=0)
+        part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
         # part_language_seen_unseen = part_language[:60]
         # label_language_seen = action_descriptions[0].cuda(device)[seen_classes]
