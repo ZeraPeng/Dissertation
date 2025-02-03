@@ -22,6 +22,7 @@ else
 fi
 
 ss=$1
+ss=$dataset"_"$dataset_split
 dataset_local=$2
 tdir="resources/sk_feats/${visual_encoder}_${dataset_local}_${ss}_r/"
 edir="resources/sk_feats/${visual_encoder}_${dataset_local}_val_${ss}_r/"
