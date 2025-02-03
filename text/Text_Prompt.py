@@ -100,7 +100,7 @@ def ntu_attributes(device):
         # tokenize_tmp = torch.cat([clip.tokenize(ntu_spatial_temporal_attribute_text_map[i],truncate=True) for i in range(23, 27)]).to(device)
         # ntu_spatial_temporal_attribute_feature_dict['foot'] = clip_model.float().encode_text(tokenize_tmp)
     
-    torch.save(ntu120_semantic_feature_dict,'~/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+    torch.save(ntu120_semantic_feature_dict,'/home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
     # torch.save(ntu_spatial_attribute_feature_dict,'/DATA3/cy/STAR/data/text_feature/pkuv1_spatial_attribute_feature_dict_gpt35.tar')
     # torch.save(ntu_spatial_temporal_attribute_feature_dict,'/DATA3/cy/STAR/data/text_feature/pkuv1_spatial_temporal_attribute_feature_dict_gpt35.tar')
     return ntu120_semantic_feature_dict
