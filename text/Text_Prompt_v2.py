@@ -23,6 +23,7 @@ def ntu_attributes(device):
     clip_model, _ = clip.load('ViT-L/14@336px', device)
     # clip_model.cuda(device)
     ntu120_label_text = torch.cat([clip.tokenize(c) for c in label_text_map])
+    print(ntu120_label_text.shape)
     ntu120_semantic_feature_dict = {}
     with torch.no_grad():
         text_dict = {}
