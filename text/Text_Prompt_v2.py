@@ -45,7 +45,6 @@ def ntu_attributes(device):
                 text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[6])) for pasta_list in ntu_semantic_text_map_gpt35])
             ntu120_semantic_feature_dict[ii] = clip_model.float().encode_text(text_dict[ii].to(device))
 
-    print(ntu120_semantic_feature_dict.shape)
     print(ntu120_semantic_feature_dict[0].shape)
     torch.save(ntu120_label_text,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
     torch.save(ntu120_semantic_feature_dict,'/home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
@@ -57,9 +56,3 @@ def ntu_attributes(device):
 if __name__ == "__main__":
     device = 'cpu'
     ntu_attributes(device)
-    ntu120_label_text = torch.load('/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
-    for key, value in ntu120_label_text.item():
-        print(f"Shape of tensor for key {key}: {value.shape}")
-    ntu_semantic_feature_dict = torch.load('//home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
-    for key, value in ntu_semantic_feature_dict.item():
-        print(f"Shape of tensor for key {key}: {value.shape}")
