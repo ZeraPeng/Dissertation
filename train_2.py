@@ -334,6 +334,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
 
         part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
+        label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
 
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
         with torch.no_grad():   # prepare training data
