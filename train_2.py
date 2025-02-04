@@ -317,7 +317,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
     else:
         # import class "ModelMatch" from STAR to finegrain global feature into part features.
         # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
-        finegrain_model = ModelMatch
+        finegrain_model = ModelMatch()
 
         # load the semantic attributes
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
