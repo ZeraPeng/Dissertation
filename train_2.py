@@ -360,8 +360,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
                 part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
                     sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
                         gcn_feature, gcn_global, ske_feature, global_semantic \
-                            = finegrain_model(t_z, attribute_features_dict, part_language, \
-                                        label_language,1, part_language_seen)
+                            = finegrain_model(t_z, part_language_seen, label_language)
 
             # different outputs -> criterion -> losses
 
