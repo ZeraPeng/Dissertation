@@ -321,24 +321,21 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
 
         # load the semantic attributes
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
-        attribute_features_dict = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+        print("action_descriptions shape: ", len(action_descriptions), len(action_descriptions[0]), len(action_descriptions[0][0]))
 
-        label = torch.load('text_feature/ntu_label_text.tar')
+        label = list(range(0, 120))
 
-        label = label.to(device)
-        print(label.shape)
+        print("label shape: ", len(label))
 
         # load part language description
         part_language = []
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
-        
-        print("part_language shape: ", len(part_language), len(part_language[0]), len(part_language[0][0]))
-        print("part_language1 shape: ", len(part_language1), len(part_language1[0]), len(part_language1[0][0]))
 
-        part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
+        part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
 
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
