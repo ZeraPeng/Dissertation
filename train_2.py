@@ -335,8 +335,10 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
         
-        print("part_language shape: ", part_language.shape)
-        print("part_language1 shape: ", part_language1.shape)
+        arr_part_language = np.array(part_language.cpu())
+        arr_part_language1 = np.array(part_language1.cpu())
+        print("part_language shape: ", arr_part_language.shape)
+        print("part_language1 shape: ", arr_part_language1.shape)
 
         part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
