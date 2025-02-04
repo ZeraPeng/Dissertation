@@ -17,8 +17,8 @@ for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
     part_language.append(action_descriptions[i+1].unsqueeze(1))
 part_language1 = torch.cat(part_language, dim=1).cuda(device)
 
-print("part_language shape: ", len(part_language), len(part_language[0]), len(part_language[0][0], len(part_language[0][0][0]))
-print("part_language1 shape: ", len(part_language1), len(part_language1[0]), len(part_language1[0][0])
+print("part_language shape: ", len(part_language), len(part_language[0]), len(part_language[0][0], len(part_language[0][0][0])))
+print("part_language1 shape: ", len(part_language1), len(part_language1[0]), len(part_language1[0][0]))
 
 part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
 part_language_seen = part_language1[seen_classes]
