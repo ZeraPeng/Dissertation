@@ -9,7 +9,6 @@ print("action_descriptions shape: ", len(action_descriptions), len(action_descri
 
 label = torch.load('text_feature/ntu_label_text.tar', weights_only=False)
 
-label = label.to(device)
 print("label shape: ", len(label), len(label[0]))
 
 # load part language description
