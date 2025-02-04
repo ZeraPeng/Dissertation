@@ -322,6 +322,8 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         # load the semantic attributes
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+        attribute_features_dict = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+
         label = torch.load('text_feature/ntu_label_text_aug.tar')
 
         label = label.to(device)
@@ -332,7 +334,10 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
+        
+        print("part_language shape: ", part_language.shape)
         print("part_language1 shape: ", part_language1.shape)
+
         part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
         part_language_seen = part_language1[seen_classes]
         sample_label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in label], dim=0).cuda(device)
@@ -352,25 +357,18 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for c_e in range(300):  # training cycle
             clf.train()
             # global feature -> part features (skeleton & semantic)
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_embedding, \
-                part_mu_feature, part_logvar_feature, sim_score, memory_weights, class_prob,sample_label_language, \
-                    part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic \
-                        = finegrain_model(t_z, part_language, sample_label_language)
-
-            import numpy as np
-
-            np.save("save_feature/part_visual_feature.npy", part_visual_feature.cpu().numpy())
-            np.save("save_feature/part_mu_feature.npy", part_mu_feature.cpu().numpy())
-            np.save("save_feature/part_logvar_feature.npy", part_logvar_feature.cpu().numpy())
-            np.save("save_feature/global_visual_feature.npy", global_visual_feature.cpu().numpy())
 
 
             # global        
             out = clf(t_z)
             global_c_loss = criterion2(out, y)
 
-            # different part features -> classifiers -> different outputs
-            
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, \
+                part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
+                    sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
+                        gcn_feature, gcn_global, ske_feature, global_semantic \
+                            = finegrain_model(t_z, attribute_features_dict, part_language, \
+                                        label_language,1, part_language_seen)
 
             # different outputs -> criterion -> losses
 
@@ -397,6 +395,21 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for (inp, target) in zsl_loader:    # inp: data of current patch. target: ground truth
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
+            
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, \
+                part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
+                    sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
+                        gcn_feature, gcn_global, ske_feature, global_semantic \
+                            = finegrain_model(nt_smu, attribute_features_dict, part_language, \
+                                        label_language,1, part_language_seen)
+
+            import numpy as np
+
+            np.save("save_feature/part_visual_feature.npy", part_visual_feature.cpu().numpy())
+            np.save("save_feature/part_mu_feature.npy", part_mu_feature.cpu().numpy())
+            np.save("save_feature/part_logvar_feature.npy", part_logvar_feature.cpu().numpy())
+            np.save("save_feature/global_visual_feature.npy", global_visual_feature.cpu().numpy())
+
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
             pred = torch.argmax(t_out, -1).cpu()
