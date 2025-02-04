@@ -34,6 +34,57 @@ def ntu_label():
     
     torch.save(ntu120_label_text_dict,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
 
+def ntu_label(file_path, batch_size=32):
+    """
+    从文件中读取文本并使用CLIP进行编码
+    
+    参数:
+    file_path: 文本文件路径
+    batch_size: 批处理大小，用于控制内存使用
+    
+    返回:
+    numpy数组，shape为(120, 768)
+    """
+    # 设置设备并加载CLIP模型
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    clip_model, preprocess = clip.load('ViT-L/14@336px', device)
+    
+    # 读取文本文件
+    with open(file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    
+    # 确保正好有120行
+    assert len(lines) == 120, f"文件应该包含120行，但实际包含{len(lines)}行"
+    
+    # 预处理文本：去除空白字符
+    lines = [line.strip() for line in lines]
+    
+    # 用于存储编码结果
+    embeddings = []
+    
+    # 分批处理
+    for i in range(0, len(lines), batch_size):
+        batch_lines = lines[i:i + batch_size]
+        
+        # 使用CLIP的tokenizer处理文本
+        text_tokens = clip.tokenize(batch_lines).to(device)
+        
+        # 获取文本特征
+        with torch.no_grad():
+            text_features = clip_model.encode_text(text_tokens)
+            # 将特征转移到CPU并转换为numpy数组
+            batch_embeddings = text_features.cpu().numpy()
+            embeddings.append(batch_embeddings)
+    
+    # 合并所有批次的结果
+    embeddings = np.concatenate(embeddings, axis=0)
+    
+    # 确保输出shape正确
+    feature_dim = embeddings.shape[1]  # CLIP ViT-L/14 的特征维度
+    assert embeddings.shape == (120, feature_dim), \
+        f"输出shape应为(120, {feature_dim})，但得到{embeddings.shape}"
+    
+    return embeddings
 
 # load clip model
 def ntu_attributes():
@@ -91,4 +142,5 @@ def text_prompt():
 
 if __name__ == "__main__":
     # device = 'cpu'
-    ntu_label()
+    label_path = '/home/peng0185/Dissertation/text/ntu120_label.txt'
+    ntu_label(label_path)
