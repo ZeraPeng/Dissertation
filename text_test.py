@@ -9,7 +9,7 @@ action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gp
 label = torch.load('text_feature/ntu_label_text_aug.tar')
 
 label = label.to(device)
-print("label shape: ", len(label), len(label[0]), len(label[0][0]))
+print("label shape: ", len(label), len(label[0]))
 
 # load part language description
 part_language = []
