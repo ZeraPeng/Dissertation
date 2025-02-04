@@ -185,6 +185,7 @@ class SHIFTGCNModel(nn.Module):
             raise ValueError()
         else:
             Graph = import_class("model.utils.graph")
+            print(**graph_args)
             self.graph = Graph(**graph_args)
 
         A = self.graph.A
