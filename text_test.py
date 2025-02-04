@@ -7,7 +7,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 print("action_descriptions shape: ", len(action_descriptions), len(action_descriptions[0]), len(action_descriptions[0][0]))
 
-label = torch.load('text_feature/ntu_label_text.tar')
+label = torch.load('text_feature/ntu_label_text.tar', weights_only=False)
 
 label = label.to(device)
 print("label shape: ", len(label), len(label[0]))
