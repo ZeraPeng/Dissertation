@@ -335,6 +335,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
         
+        import numpy as np
         arr_part_language = np.array(part_language.cpu())
         arr_part_language1 = np.array(part_language1.cpu())
         print("part_language shape: ", arr_part_language.shape)
