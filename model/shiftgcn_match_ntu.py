@@ -178,13 +178,13 @@ class TCN_GCN_unit(nn.Module):
 
 
 class SHIFTGCNModel(nn.Module):
-    def __init__(self, num_class=60, num_point=25, num_person=2, graph="graph.ntu_rgb_d.Graph", graph_args={'labeling_mode': 'spatial'}, in_channels=3):
+    def __init__(self, num_class=60, num_point=25, num_person=2, graph=None, graph_args={'labeling_mode': 'spatial'}, in_channels=3):
         super(SHIFTGCNModel, self).__init__()
 
+        graph = "graph.ntu_rgb_d.Graph"
         if graph is None:
             raise ValueError()
         else:
-            graph="graph.ntu_rgb_d.Graph"
             graph_args = {'labeling_mode': 'spatial'}
             Graph = import_class(graph)
             self.graph = Graph(**graph_args)
