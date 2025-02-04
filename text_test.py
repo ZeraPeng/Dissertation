@@ -21,6 +21,6 @@ part_language1 = torch.cat(part_language, dim=1).cuda(device)
 print("part_language shape: ", len(part_language), len(part_language[0]), len(part_language[0][0]), len(part_language[0][0][0]))
 print("part_language1 shape: ", len(part_language1), len(part_language1[0]), len(part_language1[0][0]))
 
-part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in label], dim=0)
+part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
 part_language_seen = part_language1[seen_classes]
-sample_label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in label], dim=0).cuda(device)
+sample_label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
