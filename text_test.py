@@ -8,7 +8,7 @@ action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gp
 print("action_descriptions shape: ", len(action_descriptions), len(action_descriptions[0]), len(action_descriptions[0][0]))
 
 # label = torch.load('text_feature/ntu_label_text.tar', weights_only=False)
-label = list(range(1, 121))
+label = list(range(0, 120))
 
 print("label shape: ", len(label))
 
