@@ -9,7 +9,7 @@ with open('/home/peng0185/Dissertation/text/ntu120_label.txt') as infile:
     for ind, line in enumerate(lines):
         label_text_map.append(line.rstrip().lstrip())
 
-ntu_semantic_text_map_gpt35= []
+ntu_semantic_text_map_gpt35 = []
 with open('/home/peng0185/Dissertation/text/ntu120_part_descriptions.txt') as infile:
     lines = infile.readlines()
     for ind, line in enumerate(lines):
@@ -22,26 +22,16 @@ def ntu_label():
     clip_model, _ = clip.load('ViT-L/14@336px', device)
     # clip_model.cuda(device)
 
-    ntu120_label_text_dict = {}
-    with torch.no_grad():
-        text_dict = {}
-        num_text_aug = 7   # 7
-        for ii in range(num_text_aug):
-            if ii == 0:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[ii])) for pasta_list in label_text_map])   # class
-            elif ii == 1:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[1])) for pasta_list in label_text_map])
-            elif ii == 2:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[2])) for pasta_list in label_text_map])
-            elif ii == 3:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[3])) for pasta_list in label_text_map])
-            elif ii == 4:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[4])) for pasta_list in label_text_map])
-            elif ii == 5:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[5])) for pasta_list in label_text_map])
-            else:
-                text_dict[ii] = torch.cat([clip.tokenize((pasta_list[0] + ',' + pasta_list[6])) for pasta_list in label_text_map])
-            ntu120_label_text_dict[ii] = clip_model.float().encode_text(text_dict[ii].to(device))
+    ntu120_label_text_dict = []
+    
+    # 分批处理
+    for i in range(0, len(lines)):
+        with torch.no_grad():
+            outputs = clip_model(lines[i])
+            ntu120_label_text_dict.append(outputs.float().cpu())
+        
+    # 确保输出shape正确
+    assert ntu120_label_text_dict.shape == (120, 768), f"输出shape应为(120, 768)，但得到{ntu120_label_text_dict.shape}"
     
     torch.save(ntu120_label_text_dict,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
 
@@ -101,5 +91,5 @@ def text_prompt():
 
 
 if __name__ == "__main__":
-    device = 'cpu'
-    ntu_attributes()
+    # device = 'cpu'
+    ntu_label()
