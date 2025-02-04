@@ -24,10 +24,9 @@ def ntu_label():
 
     ntu120_label_text_dict = []
     
-    # 分批处理
     for i in range(0, len(lines)):
         with torch.no_grad():
-            outputs = clip_model(lines[i])
+            outputs = clip_model.float().encode_text(lines[i].to(device))
             ntu120_label_text_dict.append(outputs.float().cpu())
         
     # 确保输出shape正确
