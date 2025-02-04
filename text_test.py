@@ -7,8 +7,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 print("action_descriptions shape: ", len(action_descriptions), len(action_descriptions[0]), len(action_descriptions[0][0]))
 
-label = torch.load('text_feature/ntu_label_text.tar', weights_only=False)
-# label = list(range(1, 121))
+# label = torch.load('text_feature/ntu_label_text.tar', weights_only=False)
+label = list(range(1, 121))
 
 print("label shape: ", len(label))
 
@@ -26,4 +26,4 @@ part_language_seen = part_language1[seen_classes]
 sample_label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
 
 print("part_language shape: ", len(part_language), len(part_language[0]), len(part_language[0][0]), len(part_language[0][0][0]))
-print("part_language_seen shape: ", len(part_language_seen), len(part_language_seen[0]), len(part_language_seen[0][0]), len(part_language_seen[0][0][0]))
+print("part_language_seen shape: ", len(part_language_seen), len(part_language_seen[0]), len(part_language_seen[0][0]))
