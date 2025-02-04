@@ -356,6 +356,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             out = clf(t_z)
             global_c_loss = criterion2(out, y)
 
+            print("shape of t_z: ", t_z.shape)
             part_visual_feature, part_visual_feature_pd, global_visual_feature, \
                 part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
                     sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
