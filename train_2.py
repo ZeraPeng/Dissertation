@@ -323,11 +323,8 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
-        print("action_descriptions shape: ", len(action_descriptions), len(action_descriptions[0]), len(action_descriptions[0][0]))
-
+        attribute_features_dict = action_descriptions
         label = list(range(0, 120))
-
-        print("label shape: ", len(label))
 
         # load part language description
         part_language = []
