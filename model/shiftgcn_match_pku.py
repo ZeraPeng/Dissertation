@@ -3,8 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-from pre_model.utils.tgcn import ConvTemporalGraphical
-from pre_model.utils.graph import Graph
+from model.utils.tgcn import ConvTemporalGraphical
+from model.utils.graph import Graph
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,8 +18,10 @@ from scipy.special import binom
 
 import sys
 sys.path.append("./model/Temporal_shift/")
-
 from cuda.shift import Shift
+
+# sys.path.append("./model/Temporal_shift_cpu/shift.py")
+# from shift import Shift
 
 
 

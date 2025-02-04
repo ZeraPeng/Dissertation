@@ -11,9 +11,8 @@ import traceback
 import sys
 
 from data_cnn60 import AverageMeter, NTUDataLoaders
-from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
+from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize)
-from pre_model.shiftgcn_match_ntu import ModelMatch
 
 import ipdb
 
@@ -317,7 +316,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
     else:
         # import class "ModelMatch" from STAR to finegrain global feature into part features.
         # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
-        finegrain_model = ModelMatch()
+        finegrain_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
 
         # load the semantic attributes
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
