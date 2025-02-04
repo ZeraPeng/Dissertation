@@ -184,8 +184,8 @@ class SHIFTGCNModel(nn.Module):
         if graph is None:
             raise ValueError()
         else:
-            Graph = import_class("model.utils.graph")
-            self.graph = Graph(**graph_args)
+            Graph = import_class(graph)
+            self.graph = Graph(graph_args)
 
         A = self.graph.A
         self.data_bn = nn.BatchNorm1d(num_person * in_channels * num_point)
