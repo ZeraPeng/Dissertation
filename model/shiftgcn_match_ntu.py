@@ -184,8 +184,10 @@ class SHIFTGCNModel(nn.Module):
         if graph is None:
             raise ValueError()
         else:
+            graph="graph.ntu_rgb_d.Graph"
+            graph_args = {'labeling_mode': 'spatial'}
             Graph = import_class(graph)
-            self.graph = Graph(graph_args)
+            self.graph = Graph(**graph_args)
 
         A = self.graph.A
         self.data_bn = nn.BatchNorm1d(num_person * in_channels * num_point)
