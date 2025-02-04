@@ -84,6 +84,9 @@ def ntu_label(file_path, batch_size=32):
     assert embeddings.shape == (120, feature_dim), \
         f"输出shape应为(120, {feature_dim})，但得到{embeddings.shape}"
     
+    torch.save(embeddings,'/home/peng0185/Dissertation/text_feature/ntu_label_text.tar')
+    print("ntu120 label text feature saved.")
+
     return embeddings
 
 # load clip model

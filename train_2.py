@@ -324,7 +324,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
         attribute_features_dict = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
 
-        label = torch.load('text_feature/ntu_label_text_aug.tar')
+        label = torch.load('text_feature/ntu_label_text.tar')
 
         label = label.to(device)
         print(label.shape)
