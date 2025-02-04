@@ -5,6 +5,7 @@ seen_classes = list(set(range(60))-set(unseen_classes))  # ntu60
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+print("part_language1 shape: ", len(action_descriptions), len(action_descriptions[0]), len(action_descriptions[0][0]))
 
 label = torch.load('text_feature/ntu_label_text_aug.tar')
 
