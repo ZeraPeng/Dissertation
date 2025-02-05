@@ -336,7 +336,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
 
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
-        with torch.no_grad():   # prepare training data
+        with torch.no_grad():   
             n_t = unseen_text_emb.to(device).float()
             n_t = n_t.repeat([500, 1])
             y = torch.tensor(range(ss)).to(device)
@@ -344,18 +344,8 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             text_encoder.eval()
             t_tmu, t_tlv = text_encoder(n_t)
             t_z = reparameterize(t_tmu, t_tlv)
-
-        criterion2 = nn.CrossEntropyLoss().to(device) 
-
-        for c_e in range(300):  # training cycle
-            clf.train()
-            # global feature -> part features (skeleton & semantic)
-
-
-            # global        
-            out = clf(t_z)
-            global_c_loss = criterion2(out, y)
-
+            
+            # Decompose the global feature into part features
             print("shape of t_z: ", t_z.shape)
             part_visual_feature, part_visual_feature_pd, global_visual_feature, \
                 part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
@@ -363,11 +353,26 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
                         gcn_feature, gcn_global, ske_feature, global_semantic \
                             = finegrain_model(t_z, part_language_seen, label_language)
 
-            # different outputs -> criterion -> losses
+            import numpy as np
+            np.save("save_feature/part_visual_feature.npy", part_visual_feature.cpu().numpy())
+            np.save("save_feature/part_mu_feature.npy", part_mu_feature.cpu().numpy())
+            np.save("save_feature/part_logvar_feature.npy", part_logvar_feature.cpu().numpy())
+            np.save("save_feature/global_visual_feature.npy", global_visual_feature.cpu().numpy())
 
+        criterion2 = nn.CrossEntropyLoss().to(device) 
+
+        for c_e in range(300):  # training cycle
+            clf.train()
+
+            # global        
+            out = clf(t_z)
+            global_c_loss = criterion2(out, y)
+
+            part_out = clf(part_mu_feature)
+            part_losses = criterion2(part_out, y)
 
             # global and part losses -> fuse -> total loss
-            c_loss = global_c_loss
+            c_loss = global_c_loss + part_losses    # 还需要一个 balance factor
 
             cls_optimizer.zero_grad()
             c_loss.backward()
@@ -395,13 +400,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
                         gcn_feature, gcn_global, ske_feature, global_semantic \
                             = finegrain_model(nt_smu, attribute_features_dict, part_language, \
                                         label_language,1, part_language_seen)
-
-            import numpy as np
-
-            np.save("save_feature/part_visual_feature.npy", part_visual_feature.cpu().numpy())
-            np.save("save_feature/part_mu_feature.npy", part_mu_feature.cpu().numpy())
-            np.save("save_feature/part_logvar_feature.npy", part_logvar_feature.cpu().numpy())
-            np.save("save_feature/global_visual_feature.npy", global_visual_feature.cpu().numpy())
 
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
