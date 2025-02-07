@@ -336,6 +336,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
 
+        # use text features to train the classifier
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
         with torch.no_grad():   
             n_t = unseen_text_emb.to(device).float()
@@ -347,24 +348,12 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_z = reparameterize(t_tmu, t_tlv)
             print("shape of t_z: ", t_z.shape)
 
-            label = range(6)
-
-            # Decompose the global feature into part features
-            part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
+            unseen_label_ind = range(ss)
+            # 这里可能需要把 unseen_label_ind 转成 有 item() 的数据, 具体是什么还需要看一下 (可能: label序号, label名称, label名称的embeddings)
+            part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in unseen_label_ind], dim=0)
             part_language_seen = part_language1[seen_classes]
-            label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
+            label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in unseen_label_ind], dim=0).cuda(device)
 
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, \
-                part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
-                    sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
-                        gcn_feature, gcn_global, ske_feature, global_semantic \
-                            = finegrain_model(t_z, part_language_seen, label_language)
-
-            import numpy as np
-            np.save("save_feature/part_visual_feature.npy", part_visual_feature.cpu().numpy())
-            np.save("save_feature/part_mu_feature.npy", part_mu_feature.cpu().numpy())
-            np.save("save_feature/part_logvar_feature.npy", part_logvar_feature.cpu().numpy())
-            np.save("save_feature/global_visual_feature.npy", global_visual_feature.cpu().numpy())
 
         criterion2 = nn.CrossEntropyLoss().to(device) 
 
@@ -375,17 +364,21 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             out = clf(t_z)
             global_c_loss = criterion2(out, y)
 
-            part_out = clf(part_mu_feature)
-            part_losses = criterion2(part_out, y)
+            part_loss_list = []
+            for i in range(5):  # 5 parts
+                part_out = clf(part_language[:i:])
+                part_loss = criterion2(part_out, y)
+                part_loss_list.append(part_loss)
 
             # global and part losses -> fuse -> total loss
-            c_loss = global_c_loss + part_losses    # 还需要一个 balance factor
+            c_loss = global_c_loss + sum(part_loss_list)    # 还需要一个 balance factor
 
             cls_optimizer.zero_grad()
             c_loss.backward()
             cls_optimizer.step()
             c_acc = float(torch.sum(y == torch.argmax(out, -1)))/(ss*500)
 
+    # use skeleton features to do the actual classification
     clf.eval()
 
     u_inds = torch.from_numpy(unseen_inds)
@@ -401,6 +394,10 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
             
+            part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in target], dim=0)
+            part_language_seen = part_language1[seen_classes]
+            label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in target], dim=0).cuda(device)
+
             part_visual_feature, part_visual_feature_pd, global_visual_feature, \
                 part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
                     sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
