@@ -314,6 +314,13 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         cls_checkpoint = f'{wdir}/{le}/{tm}/classifier.pth.tar'
         clf.load_state_dict(torch.load(cls_checkpoint)['state_dict'])
     else:
+        print("unseen_ids: ", unseen_inds)
+        print("len(unseen_ids): ", len(unseen_inds))
+        print("type of unseen_text_emb: ", type(unseen_text_emb))
+        print("len of unseen_text_emb: ", len(unseen_text_emb))
+        print("shape of unseen_inds: ", unseen_inds.shape)
+        print("shape of unseen_text_emb: ", unseen_text_emb.shape)
+
         # import class "ModelMatch" from STAR to finegrain global feature into part features.
         # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
         finegrain_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
@@ -340,7 +347,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_z = reparameterize(t_tmu, t_tlv)
             print("shape of t_z: ", t_z.shape)
 
-            label = range(0,120)
+            label = range(ss)
 
             # Decompose the global feature into part features
             part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
@@ -398,8 +405,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
                 part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
                     sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
                         gcn_feature, gcn_global, ske_feature, global_semantic \
-                            = finegrain_model(nt_smu, attribute_features_dict, part_language, \
-                                        label_language,1, part_language_seen)
+                            = finegrain_model(t_z, part_language_seen, label_language)
 
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
@@ -522,14 +528,7 @@ def main():
     text_emb = text_feat / torch.norm(text_feat, dim=1, keepdim=True)
     text_emb = text_emb.to(device, non_blocking=True)
 
-    print("unseen_ids: ", unseen_inds, "seen_inds: ", seen_inds)
-    print("len(unseen_ids): ", len(unseen_inds), "len(seen_inds): ", len(seen_inds))
-
     unseen_text_emb = text_emb[unseen_inds, :]
-
-    print("type of unseen_text_emb: ", type(unseen_text_emb))
-    print("len of unseen_text_emb: ", len(unseen_text_emb))
-
     print("language embeddings loaded.")
 
     # VAE: variational autoencoders
