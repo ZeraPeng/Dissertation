@@ -347,7 +347,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_z = reparameterize(t_tmu, t_tlv)
             print("shape of t_z: ", t_z.shape)
 
-            label = range(ss)
+            label = range(6)
 
             # Decompose the global feature into part features
             part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
