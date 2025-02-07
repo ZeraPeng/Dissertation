@@ -190,6 +190,7 @@ class SHIFTGCNModel(nn.Module):
             self.graph = Graph(**graph_args)
 
         A = self.graph.A
+        print(type(num_person), type(in_channels), type(num_point))
         self.data_bn = nn.BatchNorm1d(num_person * in_channels * num_point)
 
         self.l1 = TCN_GCN_unit(3, 64, A, residual=False)
