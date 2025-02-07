@@ -340,6 +340,7 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             t_z = reparameterize(t_tmu, t_tlv)
             print("shape of t_z: ", t_z.shape)
 
+            label = range(0,120)
 
             # Decompose the global feature into part features
             part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
@@ -528,7 +529,7 @@ def main():
 
     print("type of unseen_text_emb: ", type(unseen_text_emb))
     print("len of unseen_text_emb: ", len(unseen_text_emb))
-    
+
     print("language embeddings loaded.")
 
     # VAE: variational autoencoders
