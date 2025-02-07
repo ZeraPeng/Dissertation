@@ -322,8 +322,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
-        attribute_features_dict = action_descriptions
-        label = list(range(0, 120))
 
         # load part language description
         part_language = []
@@ -331,22 +329,23 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_language.append(action_descriptions[i+1].unsqueeze(1))
         part_language1 = torch.cat(part_language, dim=1).cuda(device)
 
-        part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
-        part_language_seen = part_language1[seen_classes]
-        label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
-
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
         with torch.no_grad():   
             n_t = unseen_text_emb.to(device).float()
             n_t = n_t.repeat([500, 1])
-            y = torch.tensor(range(ss)).to(device)
+            y = torch.tensor(range(ss)).to(device)      # ss=5 here
             y = y.repeat([500])
             text_encoder.eval()
             t_tmu, t_tlv = text_encoder(n_t)
             t_z = reparameterize(t_tmu, t_tlv)
-            
-            # Decompose the global feature into part features
             print("shape of t_z: ", t_z.shape)
+
+
+            # Decompose the global feature into part features
+            part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in label], dim=0)
+            part_language_seen = part_language1[seen_classes]
+            label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in label], dim=0).cuda(device)
+
             part_visual_feature, part_visual_feature_pd, global_visual_feature, \
                 part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
                     sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
@@ -501,7 +500,7 @@ def main():
         batch_size, 0)
     zsl_loader = ntu_loaders.get_val_loader(batch_size, 0)
     val_loader = ntu_loaders.get_test_loader(batch_size, 0)
-
+    
     # ipdb.set_trace()
     if phase == 'val':
         unseen_inds = np.sort(
@@ -522,7 +521,14 @@ def main():
     text_emb = text_feat / torch.norm(text_feat, dim=1, keepdim=True)
     text_emb = text_emb.to(device, non_blocking=True)
 
+    print("unseen_ids: ", unseen_inds, "seen_inds: ", seen_inds)
+    print("len(unseen_ids): ", len(unseen_inds), "len(seen_inds): ", len(seen_inds))
+
     unseen_text_emb = text_emb[unseen_inds, :]
+
+    print("type of unseen_text_emb: ", type(unseen_text_emb))
+    print("len of unseen_text_emb: ", len(unseen_text_emb))
+    
     print("language embeddings loaded.")
 
     # VAE: variational autoencoders
