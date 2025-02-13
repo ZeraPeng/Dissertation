@@ -287,11 +287,17 @@ def train_one_cycle(cycle_num,
     return
 
 
-def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_decoder, optimizer):
-    se_checkpoint = f'{wdir}/{le}/{tm}/se_{str(epoch)}.pth.tar'
-    sd_checkpoint = f'{wdir}/{le}/{tm}/sd_{str(epoch)}.pth.tar'
-    te_checkpoint = f'{wdir}/{le}/{tm}/te_{str(epoch)}.pth.tar'
-    td_checkpoint = f'{wdir}/{le}/{tm}/td_{str(epoch)}.pth.tar'
+def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_decoder, optimizer, type="global"):
+    if type is "global":
+        se_checkpoint = f'{wdir}/{le}/{tm}/se_{str(epoch)}.pth.tar'
+        sd_checkpoint = f'{wdir}/{le}/{tm}/sd_{str(epoch)}.pth.tar'
+        te_checkpoint = f'{wdir}/{le}/{tm}/te_{str(epoch)}.pth.tar'
+        td_checkpoint = f'{wdir}/{le}/{tm}/td_{str(epoch)}.pth.tar'
+    elif type is "part":
+        se_checkpoint = f'{wdir}/{le}/{tm}/se_{str(epoch)}.pth.tar'
+        sd_checkpoint = f'{wdir}/{le}/{tm}/sd_{str(epoch)}.pth.tar'
+        te_checkpoint = f'{wdir}/{le}/{tm}/te_{str(epoch)}.pth.tar'
+        td_checkpoint = f'{wdir}/{le}/{tm}/td_{str(epoch)}.pth.tar'
 
     save_checkpoint({'epoch': epoch + 1,
                     'state_dict': sequence_encoder.state_dict(),
@@ -529,6 +535,7 @@ def main():
     print("language embeddings loaded.")
 
     # VAE: variational autoencoders
+    # global
     sequence_encoder = Encoder(
         [vis_emb_input_size, semantic_latent_size + style_latent_size], style_latent_size).to(device)
     sequence_decoder = Decoder(
@@ -549,16 +556,61 @@ def main():
     optimizer = optim.Adam(params, lr=args.lr)
     dis_optimizer = optim.Adam(discriminator.parameters(), lr=args.lr)
 
+    # part
+    p_sequence_encoder_list = []
+    p_sequence_decoder_list = []
+    p_text_encoder_list = []
+    p_text_decoder_list = []
+    p_discriminator_list = []
+    p_optimizer_list = []
+    p_dis_optimizer_list = []
+    for i in range(0,6):
+        p_sequence_encoder = Encoder(
+            [vis_emb_input_size, semantic_latent_size + style_latent_size], style_latent_size).to(device)
+        p_sequence_decoder = Decoder(
+            [semantic_latent_size + style_latent_size, vis_emb_input_size]).to(device)
+        p_text_encoder = Encoder(
+            [text_emb_input_size, semantic_latent_size]).to(device)
+        p_text_decoder = Decoder(
+            [semantic_latent_size, text_emb_input_size]).to(device)
+
+        # Discriminator
+        p_discriminator = Discriminator(
+            semantic_latent_size + style_latent_size).to(device)
+
+        # Optimizer
+        p_params = []
+        for model in [p_sequence_encoder, p_sequence_decoder, p_text_encoder, p_text_decoder]:
+            p_params += list(model.parameters())
+        p_optimizer = optim.Adam(p_params, lr=args.lr)
+        p_dis_optimizer = optim.Adam(p_discriminator.parameters(), lr=args.lr)
+        
+        p_sequence_encoder_list.append(p_sequence_encoder)
+        p_sequence_decoder_list.append(p_sequence_decoder)
+        p_text_encoder_list.append(p_text_encoder)
+        p_text_decoder_list.append(p_text_decoder)
+        p_discriminator_list.append(p_discriminator)
+        p_optimizer_list.append(p_optimizer)
+        p_dis_optimizer_list.append(p_dis_optimizer)
+
     # Training
     best = 0
     for epoch in range(num_epochs):
         train_one_cycle(epoch,
                         sequence_encoder, sequence_decoder, text_encoder, text_decoder, discriminator,
                         optimizer, dis_optimizer,
-                        train_loader, device, text_emb)
+                        train_loader, device, text_emb)     # train_loader: Data_Loader from data_cnn60.py
         if phase == 'train':
             save_model(cycle_length*(epoch+1)-1, sequence_encoder,
-                       sequence_decoder, text_encoder, text_decoder, optimizer)
+                        sequence_decoder, text_encoder, text_decoder, optimizer)
+        for i in range(0,6):
+            train_one_cycle(epoch,
+                            p_sequence_encoder_list[i], p_sequence_decoder_list[i], p_text_encoder_list[i], 
+                            p_text_decoder_list[i], p_discriminator_list[i], p_optimizer_list[i], p_dis_optimizer_list[i],
+                            train_loader, device, text_emb)
+            if phase == 'train':
+                save_model(cycle_length*(epoch+1)-1, p_sequence_encoder_list[i],
+                            p_sequence_encoder_list[i], p_text_encoder_list[i], p_text_decoder_list[i], p_optimizer_list[i])
         zsl_acc, val_out_embs, clf = train_classifier(
             text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device)
         if (zsl_acc > best):
