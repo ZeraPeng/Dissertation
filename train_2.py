@@ -12,8 +12,9 @@ import sys
 
 from data_cnn60 import AverageMeter, NTUDataLoaders
 from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
-                   permute_dims, reparameterize)
+                   permute_dims, reparameterize, fuse_logits)
 
+from model.shiftgcn_match_ntu import ModelMatch
 import ipdb
 
 unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
@@ -315,74 +316,96 @@ def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_dec
 
 
 def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device):
-    clf = MLP([semantic_latent_size, ss]).to(device)  # MLP classifier. semantic_laten_size, ss (step size) are args.
+    clf = MLP([semantic_latent_size, ss]).to(device)  # MLP classifier. semantic_laten_size, ss (step size) are args.    
+    clf_p1 = MLP([semantic_latent_size, ss]).to(device)
+    clf_p2 = MLP([semantic_latent_size, ss]).to(device)
+    clf_p3 = MLP([semantic_latent_size, ss]).to(device)
+    clf_p4 = MLP([semantic_latent_size, ss]).to(device)
+    clf_p5 = MLP([semantic_latent_size, ss]).to(device)
+    clf_p6 = MLP([semantic_latent_size, ss]).to(device)
+    
     if load_classifier == True:
         cls_checkpoint = f'{wdir}/{le}/{tm}/classifier.pth.tar'
         clf.load_state_dict(torch.load(cls_checkpoint)['state_dict'])
     else:
-        print("unseen_ids: ", unseen_inds)
-        print("len(unseen_ids): ", len(unseen_inds))
-        print("type of unseen_text_emb: ", type(unseen_text_emb))
-        print("len of unseen_text_emb: ", len(unseen_text_emb))
-        print("shape of unseen_inds: ", unseen_inds.shape)
-        print("shape of unseen_text_emb: ", unseen_text_emb.shape)
-
-        # import class "ModelMatch" from STAR to finegrain global feature into part features.
         # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
-        finegrain_model = import_class("model.shiftgcn_match_ntu.ModelMatch")
 
         # load the semantic attributes
         # attribute_features_dict = torch.load('/DATA3/cy/STAR/data/text_feature/ntu_spatial_temporal_attribute_feature_dict_gpt35.tar')
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+        action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part_512.tar')
 
         # load part language description
         part_language = []
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
             part_language.append(action_descriptions[i+1].unsqueeze(1))
-        part_language1 = torch.cat(part_language, dim=1).cuda(device)
+        part_language1 = torch.cat(part_language, dim=1).cuda(device)      # part_language1.shape: torch.Size([120, 6, 768]) [action label, body part, text embeddings]
+
+        unseen_label_ind = range(ss)        # 这里是 unseen_label 的 index, 现在设置为与下面的 y 保持一致. 需要检查 SA-DVAE 中的 unseen_class 是怎么设置的
+        # 这里可能需要把 unseen_label_ind 转成 有 item() 的数据, 具体是什么还需要看一下 (可能: label序号, label名称, label名称的embeddings)
+        part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in unseen_label_ind], dim=0)   
+        part_language_seen = part_language1[seen_classes]   
+
+        label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in unseen_label_ind], dim=0).cuda(device)  # label_language.shape: torch.Size([5, 768])
 
         # use text features to train the classifier
         cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
         with torch.no_grad():   
-            n_t = unseen_text_emb.to(device).float()
-            n_t = n_t.repeat([500, 1])
             y = torch.tensor(range(ss)).to(device)      # ss=5 here
             y = y.repeat([500])
+
             text_encoder.eval()
+            n_t = unseen_text_emb.to(device).float()
+            n_t = n_t.repeat([500, 1])
             t_tmu, t_tlv = text_encoder(n_t)
             t_z = reparameterize(t_tmu, t_tlv)
-            print("shape of t_z: ", t_z.shape)
+            
+            n_pl = part_language.float()
+            n_pl = n_pl.repeat([500, 1, 1])
 
-            unseen_label_ind = range(ss)
-            # 这里可能需要把 unseen_label_ind 转成 有 item() 的数据, 具体是什么还需要看一下 (可能: label序号, label名称, label名称的embeddings)
-            part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in unseen_label_ind], dim=0)
-            part_language_seen = part_language1[seen_classes]
-            label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in unseen_label_ind], dim=0).cuda(device)
+            t_z_pl = []
+            for i in range(6):
+                t_tmu_pl, t_tlv_pl = text_encoder(n_pl[:,i,:])
+                t_z_pl_i = reparameterize(t_tmu_pl, t_tlv_pl)
+                t_z_pl.append(t_z_pl_i)
+            t_z_pl = torch.stack(t_z_pl, dim=1)
 
+        criterion_global = nn.CrossEntropyLoss().to(device) 
+        criterion_part = nn.CrossEntropyLoss().to(device)   # 更改
 
-        criterion2 = nn.CrossEntropyLoss().to(device) 
-
+        clf_train_history = {
+                "c_acc": [],
+                "c_loss": [],
+                "global_c_loss": [],
+                "part_loss": []
+            }
         for c_e in range(300):  # training cycle
             clf.train()
 
-            # global        
-            out = clf(t_z)
-            global_c_loss = criterion2(out, y)
+            # ipdb.set_trace()
 
-            part_loss_list = []
-            for i in range(5):  # 5 parts
-                part_out = clf(part_language[:i:])
-                part_loss = criterion2(part_out, y)
-                part_loss_list.append(part_loss)
+            # global        
+            global_out = clf(t_z)
+            global_c_loss = criterion_global(global_out, y)
+            # part 
+            part_out_list = []
+            for i in range(6):  # 6 parts
+                part_out = clf(t_z_pl[:,i,:])       # 这里的 classifier 需要换吗?
+                part_out_list.append(part_out)
+
+            # fuse logits
+            part_fused_output = fuse_logits(part_out_list, fusion_type="logsumexp")
+            part_c_loss = criterion_part(part_fused_output, y)
 
             # global and part losses -> fuse -> total loss
-            c_loss = global_c_loss + sum(part_loss_list)    # 还需要一个 balance factor
-
+            c_loss = global_c_loss + part_c_loss    # 还需要一个 balance factor
+            # c_loss = global_c_loss
             cls_optimizer.zero_grad()
             c_loss.backward()
             cls_optimizer.step()
-            c_acc = float(torch.sum(y == torch.argmax(out, -1)))/(ss*500)
+            c_acc = float(torch.sum(y == torch.argmax(global_out, -1)))/(ss*500)
+
+            # print(f"Training... {c_e+1} c_acc: {c_acc}, c_loss: {c_loss}")
 
     # use skeleton features to do the actual classification
     clf.eval()
@@ -396,19 +419,17 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         num = 0
         preds = []
         tars = []
+
+        # import class "ModelMatch" from STAR to finegrain global feature into part features.
         for (inp, target) in zsl_loader:    # inp: data of current patch. target: ground truth
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
             
-            part_language = torch.cat([part_language1[l.item(),:,:].unsqueeze(0) for l in target], dim=0)
+            part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in target], dim=0)
             part_language_seen = part_language1[seen_classes]
-            label_language = torch.cat([action_descriptions[0][l.item()].unsqueeze(0) for l in target], dim=0).cuda(device)
-
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, \
-                part_reconstruction_embedding, part_mu_feature, part_logvar_feature, \
-                    sim_score, memory_weights, class_prob, label_language, part_des_mapping_feature, \
-                        gcn_feature, gcn_global, ske_feature, global_semantic \
-                            = finegrain_model(t_z, part_language_seen, label_language)
+            label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in target], dim=0).cuda(device)
+            # ipdb.set_trace()
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic = ModelMatch(nt_smu, part_language, label_language)
 
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)

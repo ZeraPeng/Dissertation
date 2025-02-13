@@ -22,7 +22,7 @@ import sys
 # from model.Temporal_shift_cpu.shift import Shift
 
 from model.Temporal_shift_cpu.shift import Shift
-
+import ipdb
 
 def import_class(name):
     components = name.split('.')
@@ -444,7 +444,7 @@ class ModelMatch(nn.Module):
                  drop_out=0, adaptive=True, head=['ViT-B/32'], k=0, body_part=6):
         super(ModelMatch, self).__init__()
         # pretrain model
-        self.pretraining_model = SHIFTGCNModel(num_class=num_class,num_point=num_point, num_person=num_person, graph=graph, graph_args=graph_args, in_channels=in_channels)
+        # self.pretraining_model = SHIFTGCNModel(num_class=num_class,num_point=num_point, num_person=num_person, graph=graph, graph_args=graph_args, in_channels=in_channels)
         for p in self.parameters():
             p.requires_grad = False     # frozen model parameters
         # match network
@@ -511,7 +511,9 @@ class ModelMatch(nn.Module):
 
             
     def forward(self, x, part_des_feature, label_language):
-        gcn_x, _ = self.pretraining_model(x)
+        # gcn_x, _ = self.pretraining_model(x)
+        gcn_x = x
+        print(gcn_x.shape)
         n,c,t,v = gcn_x.size()
         # spatial temporal attention
         part_visual_feature = []

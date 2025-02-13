@@ -4,13 +4,13 @@ import numpy as np
 
 
 label_text_map = []
-with open('/home/peng0185/Dissertation/text/ntu120_label.txt') as infile:
+with open('/usr1/home/s124mdg53_04/Dissertation/text/ntu120_label.txt') as infile:
     lines = infile.readlines()
     for ind, line in enumerate(lines):
         label_text_map.append(line.rstrip().lstrip())
 
 ntu_semantic_text_map_gpt35 = []
-with open('/home/peng0185/Dissertation/text/ntu120_part_descriptions.txt') as infile:
+with open('/usr1/home/s124mdg53_04/Dissertation/text/ntu120_part_descriptions.txt') as infile:
     lines = infile.readlines()
     for ind, line in enumerate(lines):
         temp_list = line.rstrip().lstrip().split(';')
@@ -19,7 +19,8 @@ with open('/home/peng0185/Dissertation/text/ntu120_part_descriptions.txt') as in
 
 def ntu_label():
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    clip_model, _ = clip.load('ViT-L/14@336px', device)
+    # clip_model, _ = clip.load('ViT-L/14@336px', device)
+    clip_model, _ = clip.load('ViT-B/32', device)
     # clip_model.cuda(device)
 
     ntu120_label_text_dict = []
@@ -92,7 +93,8 @@ def ntu_label(file_path, batch_size=32):
 # load clip model
 def ntu_attributes():
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    clip_model, _ = clip.load('ViT-L/14@336px', device)
+    # clip_model, _ = clip.load('ViT-L/14@336px', device)
+    clip_model, _ = clip.load('ViT-B/32', device)
     # clip_model.cuda(device)
 
     ntu120_semantic_feature_dict = {}
@@ -118,8 +120,10 @@ def ntu_attributes():
 
     print(len(ntu120_semantic_feature_dict))
     print(ntu120_semantic_feature_dict[0].shape)
-    torch.save(ntu120_semantic_feature_dict,'/home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+    # torch.save(ntu120_semantic_feature_dict,'/home/peng0185/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part.tar')
+    torch.save(ntu120_semantic_feature_dict,'/usr1/home/s124mdg53_04/Dissertation/text_feature/ntu_semantic_part_feature_dict_gpt35_6part_512.tar')
     return ntu120_semantic_feature_dict
+
 
 
 def text_prompt():
@@ -145,5 +149,6 @@ def text_prompt():
 
 if __name__ == "__main__":
     # device = 'cpu'
-    label_path = '/home/peng0185/Dissertation/text/ntu120_label.txt'
-    ntu_label(label_path)
+    # label_path = '/home/peng0185/Dissertation/text/ntu120_label.txt'
+    # ntu_label(label_path)
+    ntu_attributes()

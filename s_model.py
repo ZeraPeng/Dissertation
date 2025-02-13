@@ -11,6 +11,38 @@ def weights_init(m):
     elif classname.find('BatchNorm') != -1:
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
+import torch
+import torch.nn.functional as F
+
+def fuse_logits(part_logits_list, fusion_type="weighted_sum"):
+    """
+    Fuse global logits and six part logits using different fusion strategies.
+
+    Args:
+        part_logits_list (list of Tensor): A list of 6 tensors, each of shape [batch_size, num_classes].
+        fusion_type (str): Fusion method, choose from:
+            - "weighted_sum" (default): Weighted sum fusion.
+            - "logsumexp": Log-Sum-Exp fusion for stability.
+
+    Returns:
+        fused_logits (Tensor): Shape [batch_size, num_classes], fused logits.
+    """
+    # assert len(part_logits_list) == 6, "part_logits_list must contain exactly 6 tensors."
+
+    # Compute the mean of part logits
+    part_logits = sum(part_logits_list) / len(part_logits_list)  # Shape: [batch_size, num_classes]
+
+    if fusion_type == "weighted_sum":
+        # ⚡ Method 1: Weighted sum fusion
+        fused_logits = part_logits
+    elif fusion_type == "logsumexp":
+        # ⚡ Method 2: Log-Sum-Exp fusion (more numerically stable)
+        stacked_logits = torch.stack(part_logits_list, dim=0)  # Shape: [7, batch_size, num_classes]
+        fused_logits = torch.logsumexp(stacked_logits, dim=0)  # Log-Sum-Exp computation
+    else:
+        raise ValueError("Unsupported fusion_type. Use 'weighted_sum' or 'logsumexp'.")
+
+    return fused_logits
 
 
 class Encoder(nn.Module):
