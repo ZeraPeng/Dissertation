@@ -67,7 +67,7 @@ class Encoder(nn.Module):
 
         self.apply(weights_init)
 
-    def forward(self, x, instance_style=False):
+    def forward(self, x, instance_style=False, type='global'):
 
         h = self.model(x)
         mu = self.mu(h)

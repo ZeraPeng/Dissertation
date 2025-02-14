@@ -136,7 +136,8 @@ def load_models(load_epoch, sequence_encoder, sequence_decoder, text_encoder, te
 def train_one_cycle(cycle_num,
                     sequence_encoder, sequence_decoder, text_encoder, text_decoder, discriminator,
                     optimizer, dis_optimizer,
-                    train_loader, device, text_emb):  # 0-10, 1700
+                    train_loader, device, text_emb, type='global'):  # 0-10, 1700
+    print(f"training {type} VAE.")
     dis_step = args.dis_step
     # Loss
     mse_criterion = nn.MSELoss().to(device)
@@ -171,12 +172,12 @@ def train_one_cycle(cycle_num,
                     (float(i) / len(train_loader) - 1/3) * args.beta_y
 
         cross_alignment_loss_factor = 1 * (i > cr_fact_iter)
-        ipdb.set_trace()
+        
         s = inputs.to(device, non_blocking=True)
         t = target.to(device, non_blocking=True)
         t = get_text_data(text_emb, t).to(device, non_blocking=True)
 
-        smu, slv, ismu, islv = sequence_encoder(s, instance_style=True)
+        smu, slv, ismu, islv = sequence_encoder(s, instance_style=True, type=type)      
         sz = reparameterize(smu, slv)
         isz = reparameterize(ismu, islv)
         sout = sequence_decoder(torch.cat([sz, isz], dim=-1))
@@ -184,7 +185,7 @@ def train_one_cycle(cycle_num,
         tmu, tlv = text_encoder(t)
         tz = reparameterize(tmu, tlv)
         tout = text_decoder(tz)
-
+        
         sfromt = sequence_decoder(torch.cat([tz, isz], dim=-1))
         tfroms = text_decoder(sz)
 
@@ -310,7 +311,7 @@ def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_dec
                         }, td_checkpoint)
         
     elif type == "part":
-        for i in range(0, 6):
+        for i in range(0,6):
             save_checkpoint({'epoch': epoch + 1,
                             'state_dict': sequence_encoder[i].state_dict(),
                             }, f'{wdir}/{le}/{tm}/se_{str(epoch)}_part_{i}.pth.tar')
@@ -327,15 +328,12 @@ def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_dec
 
 
 
-def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device):
+def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequence_encoder_list, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device):
     clf = MLP([semantic_latent_size, ss]).to(device)  # MLP classifier. semantic_laten_size, ss (step size) are args.    
-    clf_p1 = MLP([semantic_latent_size, ss]).to(device)
-    clf_p2 = MLP([semantic_latent_size, ss]).to(device)
-    clf_p3 = MLP([semantic_latent_size, ss]).to(device)
-    clf_p4 = MLP([semantic_latent_size, ss]).to(device)
-    clf_p5 = MLP([semantic_latent_size, ss]).to(device)
-    clf_p6 = MLP([semantic_latent_size, ss]).to(device)
-    
+    part_clf_list = []
+    for i in range(0,6):
+        part_clf = MLP([semantic_latent_size, ss]).to(device)
+        part_clf_list.append(part_clf)
     if load_classifier == True:
         cls_checkpoint = f'{wdir}/{le}/{tm}/classifier.pth.tar'
         clf.load_state_dict(torch.load(cls_checkpoint)['state_dict'])
@@ -377,7 +375,8 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
 
             t_z_pl = []
             for i in range(6):
-                t_tmu_pl, t_tlv_pl = text_encoder(n_pl[:,i,:])
+                part_te = p_text_encoder_list[i]
+                t_tmu_pl, t_tlv_pl = part_te(n_pl[:,i,:])
                 t_z_pl_i = reparameterize(t_tmu_pl, t_tlv_pl)
                 t_z_pl.append(t_z_pl_i)
             t_z_pl = torch.stack(t_z_pl, dim=1)
@@ -394,15 +393,14 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for c_e in range(300):  # training cycle
             clf.train()
 
-            # ipdb.set_trace()
-
             # global        
             global_out = clf(t_z)
             global_c_loss = criterion_global(global_out, y)
             # part 
             part_out_list = []
             for i in range(6):  # 6 parts
-                part_out = clf(t_z_pl[:,i,:])       # 这里的 classifier 需要换吗?
+                part_clf = part_clf_list[i]
+                part_out = part_clf(t_z_pl[:,i,:])       # 这里的 classifier 需要换吗?
                 part_out_list.append(part_out)
 
             # fuse logits
@@ -440,8 +438,8 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
             part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in target], dim=0)
             part_language_seen = part_language1[seen_classes]
             label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in target], dim=0).cuda(device)
-            # ipdb.set_trace()
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic = ModelMatch(nt_smu, part_language, label_language)
+
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic = ModelMatch(t_s, part_language, label_language)
 
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
@@ -661,7 +659,7 @@ def main():
             save_model(cycle_length*(epoch+1)-1, p_sequence_encoder_list,
                         p_sequence_encoder_list, p_text_encoder_list, p_text_decoder_list, p_optimizer_list, type='part')
         zsl_acc, val_out_embs, clf = train_classifier(
-            text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device)
+            text_encoder, sequence_encoder, p_text_encoder_list, p_sequence_encoder_list, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device)
         if (zsl_acc > best):
             best = zsl_acc
             save_classifier(clf)
