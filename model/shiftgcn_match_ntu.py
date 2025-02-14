@@ -444,7 +444,9 @@ class ModelMatch(nn.Module):
                  drop_out=0, adaptive=True, head=['ViT-B/32'], k=0, body_part=6):
         super(ModelMatch, self).__init__()
         # pretrain model
-        # self.pretraining_model = SHIFTGCNModel(num_class=num_class,num_point=num_point, num_person=num_person, graph=graph, graph_args=graph_args, in_channels=in_channels)
+        print(f"num_person: {num_person.shape}, in_channels: {in_channels.shape}, num_point: {num_point.shape}")
+        print(f"Expected num_features={num_person * in_channels * num_point}")   
+        self.pretraining_model = SHIFTGCNModel(num_class=num_class,num_point=num_point, num_person=num_person, graph=graph, graph_args=graph_args, in_channels=in_channels)
         for p in self.parameters():
             p.requires_grad = False     # frozen model parameters
         # match network
@@ -507,7 +509,7 @@ class ModelMatch(nn.Module):
         self.global_fc1 = nn.Linear(100*6, 256)
         self.global_fc2 = nn.Linear(256, 100)
         # gcn 
-        self.gcn_flobal_classifier = nn.Linear(256, 60)
+        self.gcn_flobal_classifier = nn.Linear(256, 60)   
 
             
     def forward(self, x, part_des_feature, label_language):

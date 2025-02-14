@@ -430,7 +430,14 @@ def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequ
         preds = []
         tars = []
 
+        Graph = import_class("graph.ntu_rgb_d.Graph")
         # import class "ModelMatch" from STAR to finegrain global feature into part features.
+        finegrain_model = ModelMatch(num_class=60,
+                         num_point=25,
+                         num_person=2,
+                         graph=Graph,
+                         graph_args={'labeling_mode': 'spatial'},
+                         in_channels=3)
         for (inp, target) in zsl_loader:    # inp: data of current patch. target: ground truth
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
@@ -439,7 +446,7 @@ def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequ
             part_language_seen = part_language1[seen_classes]
             label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in target], dim=0).cuda(device)
 
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic = ModelMatch(t_s, part_language, label_language)
+            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic = finegrain_model(t_s, part_language, label_language)
 
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
@@ -646,18 +653,18 @@ def main():
         train_one_cycle(epoch,
                         sequence_encoder, sequence_decoder, text_encoder, text_decoder, discriminator,
                         optimizer, dis_optimizer,
-                        train_loader, device, text_emb)     # train_loader: Data_Loader from data_cnn60.py            
+                        train_loader, device, text_emb, type='global')     # train_loader: Data_Loader from data_cnn60.py            
         if phase == 'train':
             save_model(cycle_length*(epoch+1)-1, sequence_encoder,
                         sequence_decoder, text_encoder, text_decoder, optimizer)
-        for i in range(0,6):
-            train_one_cycle(epoch,
-                            p_sequence_encoder_list[i], p_sequence_decoder_list[i], p_text_encoder_list[i], 
-                            p_text_decoder_list[i], p_discriminator_list[i], p_optimizer_list[i], p_dis_optimizer_list[i],
-                            train_loader, device, part_text_emb[:,i,:])
-        if phase == 'train':
-            save_model(cycle_length*(epoch+1)-1, p_sequence_encoder_list,
-                        p_sequence_encoder_list, p_text_encoder_list, p_text_decoder_list, p_optimizer_list, type='part')
+        # for i in range(0,6):
+        #     train_one_cycle(epoch,
+        #                     p_sequence_encoder_list[i], p_sequence_decoder_list[i], p_text_encoder_list[i], 
+        #                     p_text_decoder_list[i], p_discriminator_list[i], p_optimizer_list[i], p_dis_optimizer_list[i],
+        #                     train_loader, device, part_text_emb[:,i,:], type='part')
+        # if phase == 'train':
+        #     save_model(cycle_length*(epoch+1)-1, p_sequence_encoder_list,
+        #                 p_sequence_encoder_list, p_text_encoder_list, p_text_decoder_list, p_optimizer_list, type='part') 
         zsl_acc, val_out_embs, clf = train_classifier(
             text_encoder, sequence_encoder, p_text_encoder_list, p_sequence_encoder_list, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device)
         if (zsl_acc > best):
