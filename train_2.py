@@ -171,7 +171,7 @@ def train_one_cycle(cycle_num,
                     (float(i) / len(train_loader) - 1/3) * args.beta_y
 
         cross_alignment_loss_factor = 1 * (i > cr_fact_iter)
-
+        ipdb.set_trace()
         s = inputs.to(device, non_blocking=True)
         t = target.to(device, non_blocking=True)
         t = get_text_data(text_emb, t).to(device, non_blocking=True)
@@ -289,30 +289,42 @@ def train_one_cycle(cycle_num,
 
 
 def save_model(epoch, sequence_encoder, sequence_decoder, text_encoder, text_decoder, optimizer, type="global"):
-    if type is "global":
-        se_checkpoint = f'{wdir}/{le}/{tm}/se_{str(epoch)}.pth.tar'
-        sd_checkpoint = f'{wdir}/{le}/{tm}/sd_{str(epoch)}.pth.tar'
-        te_checkpoint = f'{wdir}/{le}/{tm}/te_{str(epoch)}.pth.tar'
-        td_checkpoint = f'{wdir}/{le}/{tm}/td_{str(epoch)}.pth.tar'
-    elif type is "part":
+    if type == "global":
         se_checkpoint = f'{wdir}/{le}/{tm}/se_{str(epoch)}.pth.tar'
         sd_checkpoint = f'{wdir}/{le}/{tm}/sd_{str(epoch)}.pth.tar'
         te_checkpoint = f'{wdir}/{le}/{tm}/te_{str(epoch)}.pth.tar'
         td_checkpoint = f'{wdir}/{le}/{tm}/td_{str(epoch)}.pth.tar'
 
-    save_checkpoint({'epoch': epoch + 1,
-                    'state_dict': sequence_encoder.state_dict(),
-                    'optimizer': optimizer.state_dict()
-                    }, se_checkpoint)
-    save_checkpoint({'epoch': epoch + 1,
-                     'state_dict': sequence_decoder.state_dict(),
-                     }, sd_checkpoint)
-    save_checkpoint({'epoch': epoch + 1,
-                     'state_dict': text_encoder.state_dict(),
-                     }, te_checkpoint)
-    save_checkpoint({'epoch': epoch + 1,
-                     'state_dict': text_decoder.state_dict(),
-                     }, td_checkpoint)
+        save_checkpoint({'epoch': epoch + 1,
+                        'state_dict': sequence_encoder.state_dict(),
+                        'optimizer': optimizer.state_dict()
+                        }, se_checkpoint)
+        save_checkpoint({'epoch': epoch + 1,
+                        'state_dict': sequence_decoder.state_dict(),
+                        }, sd_checkpoint)
+        save_checkpoint({'epoch': epoch + 1,
+                        'state_dict': text_encoder.state_dict(),
+                        }, te_checkpoint)
+        save_checkpoint({'epoch': epoch + 1,
+                        'state_dict': text_decoder.state_dict(),
+                        }, td_checkpoint)
+        
+    elif type == "part":
+        for i in range(0, 6):
+            save_checkpoint({'epoch': epoch + 1,
+                            'state_dict': sequence_encoder[i].state_dict(),
+                            }, f'{wdir}/{le}/{tm}/se_{str(epoch)}_part_{i}.pth.tar')
+            save_checkpoint({'epoch': epoch + 1,
+                            'state_dict': sequence_decoder[i].state_dict(),
+                            }, f'{wdir}/{le}/{tm}/sd_{str(epoch)}_part_{i}.pth.tar')
+            save_checkpoint({'epoch': epoch + 1,
+                            'state_dict': text_encoder[i].state_dict(),
+                            }, f'{wdir}/{le}/{tm}/te_{str(epoch)}_part_{i}.pth.tar')
+            save_checkpoint({'epoch': epoch + 1,
+                            'state_dict': text_decoder[i].state_dict(),
+                            }, f'{wdir}/{le}/{tm}/td_{str(epoch)}_part_{i}.pth.tar')
+
+
 
 
 def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device):
@@ -543,7 +555,7 @@ def main():
             np.load(f'resources/label_splits/{dataset}/{st}u{str(ss)}.npy'))
         seen_inds = np.load(
             f'resources/label_splits/{dataset}/{st}s{str(num_classes - ss)}.npy')
-
+    
     tml = tm.split('_')
     tfl = [torch.from_numpy(
         np.load(f'resources/text_feats/{args.dataset}/{le}/{m}_{num_classes}.npy')) for m in tml]
@@ -553,7 +565,23 @@ def main():
     text_emb = text_emb.to(device, non_blocking=True)
 
     unseen_text_emb = text_emb[unseen_inds, :]
-    print("language embeddings loaded.")
+    print("global language embeddings loaded.")
+
+    action_descriptions = torch.load('text_feature/ntu_semantic_part_feature_dict_gpt35_6part_512.tar')
+
+    # load part language description
+    part_language = []
+    for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+        part_language.append(action_descriptions[i+1].unsqueeze(1))
+    part_language1 = torch.cat(part_language, dim=1).cuda(device)      # part_language1.shape: torch.Size([120, 6, 768]) [action label, body part, text embeddings]
+
+    if num_classes == 60:
+        part_text_feat = part_language1[:60]
+    
+    part_text_emb = part_text_feat / torch.norm(part_text_feat, dim=1, keepdim=True)
+    part_text_emb = part_text_emb.to(device, non_blocking=True)
+
+    print("part language embeddings loaded.")
 
     # VAE: variational autoencoders
     # global
@@ -620,7 +648,7 @@ def main():
         train_one_cycle(epoch,
                         sequence_encoder, sequence_decoder, text_encoder, text_decoder, discriminator,
                         optimizer, dis_optimizer,
-                        train_loader, device, text_emb)     # train_loader: Data_Loader from data_cnn60.py
+                        train_loader, device, text_emb)     # train_loader: Data_Loader from data_cnn60.py            
         if phase == 'train':
             save_model(cycle_length*(epoch+1)-1, sequence_encoder,
                         sequence_decoder, text_encoder, text_decoder, optimizer)
@@ -628,10 +656,10 @@ def main():
             train_one_cycle(epoch,
                             p_sequence_encoder_list[i], p_sequence_decoder_list[i], p_text_encoder_list[i], 
                             p_text_decoder_list[i], p_discriminator_list[i], p_optimizer_list[i], p_dis_optimizer_list[i],
-                            train_loader, device, text_emb)
-            if phase == 'train':
-                save_model(cycle_length*(epoch+1)-1, p_sequence_encoder_list[i],
-                            p_sequence_encoder_list[i], p_text_encoder_list[i], p_text_decoder_list[i], p_optimizer_list[i])
+                            train_loader, device, part_text_emb[:,i,:])
+        if phase == 'train':
+            save_model(cycle_length*(epoch+1)-1, p_sequence_encoder_list,
+                        p_sequence_encoder_list, p_text_encoder_list, p_text_decoder_list, p_optimizer_list, type='part')
         zsl_acc, val_out_embs, clf = train_classifier(
             text_encoder, sequence_encoder, zsl_loader, val_loader, unseen_inds, unseen_text_emb, device)
         if (zsl_acc > best):
