@@ -32,9 +32,9 @@ class NTUDataLoaders(object):
         self.case = case
         self.aug = aug
         self.create_datasets()
-        self.train_set = NTUDataset(self.train_X, self.train_Y)
-        self.val_set = NTUDataset(self.val_X, self.val_Y)
-        self.test_set = NTUDataset(self.test_X, self.test_Y)
+        self.train_set = NTUDataset(self.train_X, self.train_Y) # train
+        self.val_set = NTUDataset(self.val_X, self.val_Y)   # zsl
+        self.test_set = NTUDataset(self.test_X, self.test_Y)    # gzsl
         self.val_out_set = NTUDataset(self.val_out_X, self.val_Y)
         self.test_out_set = NTUDataset(self.test_out_X, self.test_Y)
 

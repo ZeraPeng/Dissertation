@@ -57,7 +57,7 @@ class Encoder(nn.Module):
 
         self.style_latent_size = style_latent_size
 
-        self.model = nn.Sequential(*layers)
+        self.model = nn.Sequential(*layers) # pooling
         self.mu = nn.Sequential(
             nn.Linear(layer_sizes[-2], layer_sizes[-1])
         )

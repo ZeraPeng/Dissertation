@@ -14,7 +14,7 @@ from data_cnn60 import AverageMeter, NTUDataLoaders
 from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
                    permute_dims, reparameterize, fuse_logits)
 
-from model.shiftgcn_match_ntu import ModelMatch
+from model.get_part_feature import ModelMatch, SHIFTGCNModel
 import ipdb
 
 unseen_classes = [10, 11, 19, 26, 56]   # ntu60_55/5_split
@@ -142,7 +142,7 @@ def train_one_cycle(cycle_num,
     # Loss
     mse_criterion = nn.MSELoss().to(device)
     bce_criterion = nn.BCELoss().to(device)
-
+    ipdb.set_trace()
     cr_fact_iter = int(0.8 * len(train_loader))
     beta_iter = int(len(train_loader) / 3)
     for i, (inputs, target) in enumerate(train_loader):
@@ -430,12 +430,11 @@ def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequ
         preds = []
         tars = []
 
-        Graph = import_class("graph.ntu_rgb_d.Graph")
         # import class "ModelMatch" from STAR to finegrain global feature into part features.
         finegrain_model = ModelMatch(num_class=60,
                          num_point=25,
                          num_person=2,
-                         graph=Graph,
+                         graph="graph.ntu_rgb_d.Graph",
                          graph_args={'labeling_mode': 'spatial'},
                          in_channels=3)
         for (inp, target) in zsl_loader:    # inp: data of current patch. target: ground truth
@@ -446,7 +445,6 @@ def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequ
             part_language_seen = part_language1[seen_classes]
             label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in target], dim=0).cuda(device)
 
-            part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic = finegrain_model(t_s, part_language, label_language)
 
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
@@ -455,7 +453,6 @@ def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequ
             tars.append(target)
             count += torch.sum(u_inds[pred] == target)
             num += len(target)
-
     zsl_accuracy = float(count)/num
     final_embs = np.array([j.cpu().numpy() for i in final_embs for j in i])
     p = [j.item() for i in preds for j in i]
@@ -549,7 +546,6 @@ def main():
     zsl_loader = ntu_loaders.get_val_loader(batch_size, 0)
     val_loader = ntu_loaders.get_test_loader(batch_size, 0)
     
-    # ipdb.set_trace()
     if phase == 'val':
         unseen_inds = np.sort(
             np.load(f'resources/label_splits/{dataset}/{st}v{str(ss)}_0.npy'))

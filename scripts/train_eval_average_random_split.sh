@@ -9,7 +9,7 @@ if [ "$dataset" = "ntu60" ]; then
     th=0 t=0
     num_classes=60 nc=10 nepc=1700
     ss=5
-    available_splits=("split2" "split3" "split4")
+    available_splits=("split2" "split3" "split4")     
 elif [ "$dataset" = "ntu120" ]; then
     ls=176 ils=20 lr=7.360616069743272e-05 batch_size=32 dis_step=12
     th=0 t=0
