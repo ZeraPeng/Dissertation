@@ -508,7 +508,7 @@ class ModelMatch(nn.Module):
         # gcn 
         self.gcn_flobal_classifier = nn.Linear(256, 60)
 
-            
+    
     def forward(self, x, st_attributes, part_des_feature, label_language, train_flag, part_language_seen):
         gcn_x, _ = self.pretraining_model(x)
         n,c,t,v = gcn_x.size()
@@ -563,6 +563,18 @@ class ModelMatch(nn.Module):
         gcn_global = self.gcn_flobal_classifier(gcn_global)
         global_semantic = torch.einsum('bpd,qp->bdq',global_visual_feature,self.part_weights_factor).squeeze(2)
         return part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic
+    
+    def get_gcn_feats(self, x):
+        gcn_x, global_visual_features = self.pretraining_model(x)
+        n,c,t,v = gcn_x.size()
+        # spatial temporal attention
+        part_visual_features = []
+        for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+            # normalize
+            part_feature_original = gcn_x[:,:,:,self.body_part_index_list[i]].view(n,c,-1).permute(0,2,1)
+            part_visual_features.append(part_feature_original)
+
+        return global_visual_features, part_visual_features     
 
     def loss_cal(self, part_visual, global_visual, part_language, part_language_seen,part_language_seen_unseen,
                  label_langauge, mse_label_language, true_seen_label, all_label_language, unseen_label,

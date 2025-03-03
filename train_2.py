@@ -441,11 +441,6 @@ def train_classifier(text_encoder, sequence_encoder, p_text_encoder_list, p_sequ
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)   # encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
             
-            part_language = torch.cat([part_language1[l,:,:].unsqueeze(0) for l in target], dim=0)
-            part_language_seen = part_language1[seen_classes]
-            label_language = torch.cat([action_descriptions[0][l].unsqueeze(0) for l in target], dim=0).cuda(device)
-
-
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)                     # t_out: contains logits output by clf (MLP)
             pred = torch.argmax(t_out, -1).cpu()
