@@ -564,6 +564,20 @@ class ModelMatch(nn.Module):
         global_semantic = torch.einsum('bpd,qp->bdq',global_visual_feature,self.part_weights_factor).squeeze(2)
         return part_visual_feature, part_visual_feature_pd, global_visual_feature, part_reconstruction_feature, part_mu_feature, part_logvar_feature, sim_score,memory_weights, class_prob, label_language, part_des_mapping_feature, gcn_feature, gcn_global, ske_feature, global_semantic
     
+    def get_feats(self, x):
+        gcn_x, _ = self.pretraining_model(x)
+        n,c,t,v = gcn_x.size()
+        # spatial temporal attention
+        gcn_part = []
+        gcn_global = gcn_x.mean(3).mean(2)
+        for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+            # normalize
+            part_feature_original = gcn_x[:,:,:,self.body_part_index_list[i]].view(n,c,-1).permute(0,2,1)
+            gcn_part.append(part_feature_original)
+
+        return gcn_global, gcn_part
+    
+
     def get_gcn_feats(self, x):
         gcn_x, global_visual_features = self.pretraining_model(x)
         n,c,t,v = gcn_x.size()

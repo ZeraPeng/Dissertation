@@ -76,6 +76,7 @@ def parse_arg():
     parser.add_argument('--load_epoch', type=int,
                         help="load epoch", default=None)
     parser.add_argument('--load_classifier', action='store_true')
+    parser.add_argument('--load_vae', action='store_true')
     parser.add_argument('--tm', type=str, help='text mode')
     parser.add_argument("--batch_size", type=int,
                         default=64, help='batch size')
@@ -103,6 +104,7 @@ style_latent_size = args.i_latent_size
 load_epoch = args.load_epoch
 mode = args.mode
 load_classifier = args.load_classifier
+load_vae = args.load_vae
 tm = args.tm
 batch_size = args.batch_size
 
@@ -142,7 +144,6 @@ def train_one_cycle(cycle_num,
     #     print(f"training global VAE.")
     # elif type == 'part':
     #     print(f"training part VAE {part_ind}.")
-
     dis_step = args.dis_step
     # Loss
     mse_criterion = nn.MSELoss().to(device)
@@ -332,23 +333,27 @@ def save_all_model(epoch, part_models):
 
 
 def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, val_loader, unseen_inds, unseen_text_emb, part_unseen_text_emb, device):
-    alpha = 0.7
-    beta = 0.3
-    weights = torch.tensor([alpha] + [beta/6] * 6)
+    alpha = 0
+    beta = 1.0
+    # weights = torch.tensor([alpha] + [beta/6] * 6)
+    weights_setting = {'s1': torch.tensor([1,0,0,0,0,0,0]),
+                       's2': torch.tensor([0] + [1.0/6] * 6),
+                       's3': torch.tensor([0.7] + [0.3/6] * 6)}
     # Init all the classifiers 
-    clf = MLP([semantic_latent_size, ss]).to(device)  # MLP classifier. semantic_laten_size, ss (step size) are args.    
-    part_clf_dict = {}
-    for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
-        part_clf_dict[part_name] = MLP([semantic_latent_size, ss]).to(device)
+    clf_dict = {}
+    for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"] + ["global"]):
+        clf_dict[part_name] = MLP([semantic_latent_size, ss]).to(device)
 
     if load_classifier == True:
-        cls_checkpoint = f'{wdir}/{le}/{tm}/classifier.pth.tar'
-        clf.load_state_dict(torch.load(cls_checkpoint)['state_dict'])
+        cls_checkpoint = f'{wdir}/{le}/{tm}/classifiers.pth.tar'
+        clf_load_dict = torch.load(cls_checkpoint, weights_only=False)
+        for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"] + ["global"]):
+            clf_dict[part_name].load_state_dict(clf_load_dict['state_dict'][part_name])
     else:
-        cls_optimizer = optim.Adam(clf.parameters(), lr=0.001) # SGD or Adam
+        cls_optimizer = optim.Adam(clf_dict["global"].parameters(), lr=0.001) # SGD or Adam
         part_cls_optimizer = {}
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
-            part_cls_optimizer[part_name] = optim.Adam(part_clf_dict[part_name].parameters(), lr=0.001)
+            part_cls_optimizer[part_name] = optim.Adam(clf_dict[part_name].parameters(), lr=0.001)
 
         # Reference: https://github.com/cseeyangchen/STAR. /model/shiftgcn_match_ntu.py
 
@@ -396,8 +401,8 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
         for c_e in range(300):  # training cycle
             pred_list = []
             # global        
-            clf.train()
-            global_out = clf(t_z)       # torch.Size([2500, 5])
+            clf_dict["global"].train()
+            global_out = clf_dict["global"](t_z)       # torch.Size([2500, 5])
             global_c_loss = criterion_global(global_out, y)
             
             cls_optimizer.zero_grad()
@@ -410,7 +415,7 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
             part_out_list = []
             part_c_acc = {}
             for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):  # 6 parts
-                part_clf = part_clf_dict[part_name]
+                part_clf = clf_dict[part_name]
                 part_clf.train()
                 part_out = part_clf(t_z_pl[:,i,:])  
                 part_out_list.append(part_out)
@@ -422,11 +427,11 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
                 part_c_acc[part_name] = float(torch.sum(y == torch.argmax(part_out, -1)))/(ss*500)
                 pred_list.append(torch.argmax(part_out, -1))
             
-            pred_list = [p.cpu() for p in pred_list]
-            pred_list = torch.stack(pred_list, dim=0)
-            pred_result = torch.sum(pred_list * weights[:, None], dim=0)
-            pred_result = pred_result.round().to(device)
-            pred_acc = float(torch.sum(y == pred_result))/(ss*500)
+            # pred_list = [p.cpu() for p in pred_list]
+            # pred_list = torch.stack(pred_list, dim=0)
+            # pred_result = torch.sum(pred_list * weights[:, None], dim=0)
+            # pred_result = pred_result.round().to(device)
+            # pred_acc = float(torch.sum(y == pred_result))/(ss*500)
 
             # print(f"Training ... prediction accuracy: {pred_acc}.")
             # global_out = global_out.unsqueeze(1)
@@ -446,9 +451,10 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
         sequence_encoder.eval()
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
             part_models[part_name]['sequence_encoder'].eval()
-            part_clf_dict[part_name].eval()
-        clf.eval()
-        count = 0
+            clf_dict[part_name].eval()
+        clf_dict["global"].eval()
+        # count = 0
+        count_dict = {'s1': 0, 's2': 0, 's3': 0}
         num = 0
         preds = []
         tars = []
@@ -459,13 +465,13 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
             t_s = global_feats.to(device)   # torch.Size([32, 256])
             nt_smu, t_slv = sequence_encoder(t_s)   # torch.Size([32, 96]) encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
             final_embs.append(nt_smu)
-            global_t_out = clf(nt_smu)         # torch.Size([32, 5])        
+            global_t_out = clf_dict["global"](nt_smu)         # torch.Size([32, 5])        
             pred_t_list.append(torch.argmax(global_t_out, -1).cpu())
             # part
             t_s_part = part_feats.to(device)
             part_t_out_list = []
             for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
-                part_clf = part_clf_dict[part_name]
+                part_clf = clf_dict[part_name]
                 part_se = part_models[part_name]['sequence_encoder']
                 nt_smu_part, t_slv_part = part_se(t_s_part[:,i,:])
                 part_t_out = part_clf(nt_smu_part)
@@ -478,14 +484,22 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
 
             pred_t_list = [p.cpu() for p in pred_t_list]
             pred_t_list = torch.stack(pred_t_list, dim=0)
-            pred_t_result = torch.sum(pred_t_list * weights[:, None], dim=0)
-            pred_t_result = torch.round(pred_t_result).to(torch.long)
-
-            preds.append(u_inds[pred_t_result])
-            tars.append(target)
-            count += torch.sum(u_inds[pred_t_result] == target)
+            pred_t_result = {}
+            for key, weights in weights_setting.items():
+                pred_t_result[key] = torch.sum(pred_t_list * weights[:, None], dim=0)
+                pred_t_result[key] = torch.round(pred_t_result[key]).to(torch.long)
+                preds.append(u_inds[pred_t_result[key]]) 
+                tars.append(target)
+                count_dict[key] += torch.sum(u_inds[pred_t_result[key]] == target)
             num += len(target)
-    zsl_accuracy = float(count)/num
+    best_zsl_accuracy = 0
+    best_weights = torch.tensor([1,0,0,0,0,0,0])
+    for key, weights in weights_setting.items():
+        zsl_accuracy = float(count_dict[key])/num
+        print(f"Under setting {key}-{weights}, zsl_acc: {zsl_accuracy}.")
+        if zsl_accuracy > best_zsl_accuracy:
+            best_zsl_accuracy = zsl_accuracy
+            best_weights = weights
     final_embs = np.array([j.cpu().numpy() for i in final_embs for j in i])
     p = [j.item() for i in preds for j in i]
     t = [j.item() for i in tars for j in i]
@@ -498,8 +512,8 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
         sequence_encoder.eval()
         for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
             part_models[part_name]['sequence_encoder'].eval()
-            part_clf_dict[part_name].eval()
-        clf.eval()
+            clf_dict[part_name].eval()
+        clf_dict["global"].eval()
         gzsl_count = 0
         gzsl_num = 0
         gzsl_preds = []
@@ -509,13 +523,13 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
             gzsl_pred_list = []     
             t_s = global_feats.to(device)
             t_smu, t_slv = sequence_encoder(t_s)    
-            global_t_out = clf(t_smu)  
+            global_t_out = clf_dict["global"](t_smu)  
             gzsl_pred_list.append(torch.argmax(global_t_out, -1).cpu()) 
             
             t_s_part = part_feats.to(device)
             part_t_out_list = []
             for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
-                part_clf = part_clf_dict[part_name]
+                part_clf = clf_dict[part_name]
                 part_se = part_models[part_name]['sequence_encoder']
                 nt_smu_part, t_slv_part = part_se(t_s_part[:,i,:])
                 part_t_out = part_clf(nt_smu_part)
@@ -530,7 +544,7 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
             
             gzsl_pred_list = [p.cpu() for p in gzsl_pred_list]
             gzsl_pred_list = torch.stack(gzsl_pred_list, dim=0)
-            gzsl_pred_result = torch.sum(gzsl_pred_list * weights[:, None], dim=0)
+            gzsl_pred_result = torch.sum(gzsl_pred_list * best_weights[:, None], dim=0)
             gzsl_pred_result = torch.round(gzsl_pred_result).to(torch.long)
 
             gzsl_preds.append(u_inds[gzsl_pred_result])
@@ -539,38 +553,50 @@ def train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, va
             num += len(target)
 
     val_out_logits = np.array([j.cpu().numpy() for i in val_out_logits for j in i])
-    val_out_embs = np.array([j.cpu().numpy() for i in val_out_embs for j in i])
+    val_out_embs = np.array([j.cpu().numpy() for i in val_out_embs for j in i])  # "ztest_out.npy"
     
-    part_clf_dict['global'] = clf       # here: all classifiers, including global and part
-    print(zsl_accuracy)
-    return zsl_accuracy, val_out_embs, val_out_logits, part_clf_dict
+    return best_zsl_accuracy, val_out_embs, val_out_logits, clf_dict, best_weights
 
 
-def get_seen_zs_embeddings(clf, sequence_encoder, val_loader, device, unseen_inds):
+def get_seen_zs_embeddings(clf_dict, sequence_encoder, part_models, val_loader, device, unseen_inds):
     final_embs = []
     out_val_embeddings = []
     u_inds = torch.from_numpy(unseen_inds)
     with torch.no_grad():
         sequence_encoder.eval()
-        clf.eval()
+        clf_dict['global'].eval()
+        for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+            part_models[part_name]['sequence_encoder'].eval()
+            clf_dict[part_name].eval()
         count = 0
         num = 0
         preds = []
         tars = []
-        for (inp, target) in val_loader:
-            t_s = inp.to(device)
-            t_smu, t_slv = sequence_encoder(t_s)
-            final_embs.append(t_smu)
-            t_out = clf(t_smu)
-            out_val_embeddings.append(F.softmax(t_out, dim=1))
-            pred = torch.argmax(t_out, -1).cpu()
-            preds.append(u_inds[pred])
-            tars.append(target)
-            count += torch.sum(u_inds[pred] == target)
-            num += len(target)
+        pred_t_list = []
+        for (global_feats, part_feats, target) in val_loader:
+            t_s = global_feats.to(device)   # torch.Size([32, 256])
+            nt_smu, t_slv = sequence_encoder(t_s)   # torch.Size([32, 96]) encoded skeleton latent embeddings. In Encoder forward(): nt_smu -> "mu", t_slv -> "logvar"
+            final_embs.append(nt_smu)
+            global_t_out = clf_dict["global"](nt_smu)         # torch.Size([32, 5])        
+            pred_t_list.append(torch.argmax(global_t_out, -1).cpu())
+            # part
+            t_s_part = part_feats.to(device)
+            part_t_out_list = []
+            for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+                part_clf = clf_dict[part_name]
+                part_se = part_models[part_name]['sequence_encoder']
+                nt_smu_part, t_slv_part = part_se(t_s_part[:,i,:])
+                part_t_out = part_clf(nt_smu_part)
+                part_t_out_list.append(part_t_out)
+                pred_t_list.append(torch.argmax(part_t_out, -1).cpu())
+            
+            global_t_out = global_t_out.unsqueeze(1)
+            part_t_out_list_stacked = torch.stack(part_t_out_list, dim=1)   # torch.Size([2500, 6, 5])
+            global_part_t_out = torch.cat([global_t_out, part_t_out_list_stacked], dim=1)
+            out_val_embeddings.append(F.softmax(global_part_t_out, 1))
 
     out_val_embeddings = np.array([j.cpu().numpy()
-                                  for i in out_val_embeddings for j in i])
+                                  for i in out_val_embeddings for j in i])          # "val_out.npy"
     return out_val_embeddings
 
 
@@ -713,33 +739,47 @@ def main():
     best = 0
     for epoch in range(num_epochs):
         # ===== Train Cross-Alignment Module =====
-        train_one_cycle(epoch,
-                        sequence_encoder, sequence_decoder, text_encoder, text_decoder, discriminator,
-                        optimizer, dis_optimizer,
-                        train_loader, device, text_emb, type='global')     # train_loader: Data_Loader from data_cnn60.py            
-        # if phase == 'train':
-        #     save_model(cycle_length*(epoch+1)-1, sequence_encoder,
-        #                 sequence_decoder, text_encoder, text_decoder, optimizer)
-        for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+        if load_vae == True:
+            vae_checkpoint = f'{wdir}{le}/{tm}/se_16999_vae_models.pth.tar'
+            vae_load_dict = torch.load(vae_checkpoint, weights_only=False)
+            # global
+            sequence_encoder.load_state_dict(vae_load_dict['state_dict']['global']['sequence_encoder'])
+            text_encoder.load_state_dict(vae_load_dict['state_dict']['global']['text_encoder'])
+            text_decoder.load_state_dict(vae_load_dict['state_dict']['global']['text_decoder'])
+            sequence_decoder.load_state_dict(vae_load_dict['state_dict']['global']['sequence_decoder'])
+            # part
+            for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+                for model_name, model in part_models.items():
+                    if model_name in ['sequence_encoder', 'sequence_decoder', 'text_encoder', 'text_decoder', 'optimizer']:
+                        model.load_state_dict(vae_load_dict['state_dict'][part_name][model_name])
+        else:
             train_one_cycle(epoch,
-                            part_models[part_name]['sequence_encoder'], part_models[part_name]['sequence_decoder'],
-                            part_models[part_name]['text_encoder'], part_models[part_name]['text_decoder'], 
-                            part_models[part_name]['discriminator'], part_models[part_name]['optimizer'], part_models[part_name]['dis_optimizer'], 
-                            train_loader, device, part_text_emb[:,i,:], type='part', part_ind=i)
-        if phase == 'train':
-            part_models['global'] = {
-                "sequence_encoder": sequence_encoder,
-                "sequence_decoder": sequence_decoder,
-                "text_encoder": text_encoder,
-                "text_decoder": text_decoder,
-                "discriminator": discriminator,
-                "optimizer": optimizer,
-                "dis_optimizer": dis_optimizer
-            }
-            save_all_model(cycle_length*(epoch+1)-1, part_models) 
+                            sequence_encoder, sequence_decoder, text_encoder, text_decoder, discriminator,
+                            optimizer, dis_optimizer,
+                            train_loader, device, text_emb, type='global')     # train_loader: Data_Loader from data_cnn60.py            
+            # if phase == 'train':
+            #     save_model(cycle_length*(epoch+1)-1, sequence_encoder,
+            #                 sequence_decoder, text_encoder, text_decoder, optimizer)
+            for i, part_name in enumerate(["head", "hand", "arm", "hip", "leg", "foot"]):
+                train_one_cycle(epoch,
+                                part_models[part_name]['sequence_encoder'], part_models[part_name]['sequence_decoder'],
+                                part_models[part_name]['text_encoder'], part_models[part_name]['text_decoder'], 
+                                part_models[part_name]['discriminator'], part_models[part_name]['optimizer'], part_models[part_name]['dis_optimizer'], 
+                                train_loader, device, part_text_emb[:,i,:], type='part', part_ind=i)
+            if phase == 'train':
+                part_models['global'] = {
+                    "sequence_encoder": sequence_encoder,
+                    "sequence_decoder": sequence_decoder,
+                    "text_encoder": text_encoder,
+                    "text_decoder": text_decoder,
+                    "discriminator": discriminator,
+                    "optimizer": optimizer,
+                    "dis_optimizer": dis_optimizer
+                }
+                save_all_model(cycle_length*(epoch+1)-1, part_models) 
     
         # ===== Train Classifier =====
-        zsl_acc, val_out_embs, val_out_logits, clf_dict = train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, val_loader, unseen_inds, unseen_text_emb, part_unseen_text_emb, device)
+        zsl_acc, val_out_embs, val_out_logits, clf_dict, weights = train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, val_loader, unseen_inds, unseen_text_emb, part_unseen_text_emb, device)
         if (zsl_acc > best):
             best = zsl_acc
             save_clf_dict(clf_dict)
@@ -752,11 +792,11 @@ def main():
                     f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_gzsl_zs.npy', val_out_embs)
             else:
                 np.save(
-                    f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_unseen_zs.npy', val_out_embs)
+                    f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_unseen_zs.npy', val_out_embs)    # "ztest_out.npy"
                 seen_zs_embeddings = get_seen_zs_embeddings(
-                    clf_dict, sequence_encoder, val_loader, device, unseen_inds)
+                    clf_dict, sequence_encoder, part_models, val_loader, device, unseen_inds)
                 np.save(
-                    f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_seen_zs.npy', seen_zs_embeddings)
+                    f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_seen_zs.npy', seen_zs_embeddings)        # "val_out.npy"
                 
 
 

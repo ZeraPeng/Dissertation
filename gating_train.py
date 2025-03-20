@@ -3,7 +3,7 @@ import pickle as pkl
 
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-
+import ipdb
 
 parser = argparse.ArgumentParser(description='View adaptive')
 parser.add_argument('--ss', type=int, required=True, help="split size")
@@ -57,7 +57,7 @@ seen_zs = np.load(f'{wdir}/{le}/{tm}/MSF_{num_unseen_classes}_r_seen_zs.npy')
 unseen_train = np.load(f'{dataset_path}/ztest_out.npy')
 # seen cls output of "val.npy"
 seen_train = np.load(f'{dataset_path}/val_out.npy')
-
+ipdb.set_trace()
 seen_random_idx = np.random.choice(
     np.arange(seen_train.shape[0]),
     min(unseen_train.shape[0], seen_train.shape[0]),

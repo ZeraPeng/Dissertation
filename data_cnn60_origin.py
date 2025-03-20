@@ -4,7 +4,7 @@ import numpy as np
 import scipy.misc
 import torch
 from torch.utils.data import DataLoader, Dataset
-import ipdb
+
 
 class NTUDataset(Dataset):
     """
@@ -21,13 +21,9 @@ class NTUDataset(Dataset):
 
     def __len__(self):
         return len(self.y)
-    
-    def __getitem__(self, index):
-        global_feat = self.x['global'][index]
-        part_feat = self.x['part'][index]
-        return [global_feat, part_feat, int(self.y[index])]
-        # return [self.x[index], int(self.y[index])]
 
+    def __getitem__(self, index):
+        return [self.x[index], int(self.y[index])]
 
 
 class NTUDataLoaders(object):
@@ -36,9 +32,9 @@ class NTUDataLoaders(object):
         self.case = case
         self.aug = aug
         self.create_datasets()
-        self.train_set = NTUDataset(self.train_X, self.train_Y) # train
-        self.val_set = NTUDataset(self.val_X, self.val_Y)   # zsl
-        self.test_set = NTUDataset(self.test_X, self.test_Y)    # gzsl
+        self.train_set = NTUDataset(self.train_X, self.train_Y)
+        self.val_set = NTUDataset(self.val_X, self.val_Y)
+        self.test_set = NTUDataset(self.test_X, self.test_Y)
         self.val_out_set = NTUDataset(self.val_out_X, self.val_Y)
         self.test_out_set = NTUDataset(self.test_out_X, self.test_Y)
 
@@ -160,23 +156,22 @@ class NTUDataLoaders(object):
 
         if '_val' in path:
             print("Loading gate dataset")
-            self.train_X = np.load(path + '/train.npy', allow_pickle=True).item()  # (31216, 256)
+            self.train_X = np.load(path + '/train.npy')  # 31216
             self.train_Y = np.load(path + '/train_label.npy')
-            self.val_X = np.load(path + '/ztest.npy', allow_pickle=True).item()  # (1367, 256)
-            self.val_Y = np.load(path + '/z_label.npy')   # (1367,)
-            self.test_X = np.load(path + '/val.npy', allow_pickle=True).item()  # (2000, 256)
-            self.test_Y = np.load(path + '/val_label.npy') # (2000,)
-            self.val_out_X = None
-            self.test_out_X = None
-            # self.val_out_X = np.load(path + '/ztest_out.npy', allow_pickle=True).item()  # (1367, 60)
-            # self.test_out_X = np.load(path + '/val_out.npy', allow_pickle=True).item()    #(2000, 60)
+            self.val_X = np.load(path + '/ztest.npy')  # 1367
+            self.val_Y = np.load(path + '/z_label.npy')
+            self.test_X = np.load(path + '/val.npy')  # 2000
+            self.test_Y = np.load(path + '/val_label.npy')
+            self.val_out_X = np.load(path + '/ztest_out.npy')
+            self.test_out_X = np.load(path + '/val_out.npy')
+
         else:
             print("Loading normal dataset")
-            self.train_X = np.load(path + '/train.npy', allow_pickle=True).item()
+            self.train_X = np.load(path + '/train.npy')
             self.train_Y = np.load(path + '/train_label.npy')
-            self.val_X = np.load(path + '/ztest.npy', allow_pickle=True).item()
+            self.val_X = np.load(path + '/ztest.npy')
             self.val_Y = np.load(path + '/z_label.npy')
-            self.test_X = np.load(path + '/gtest.npy', allow_pickle=True).item()
+            self.test_X = np.load(path + '/gtest.npy')
             self.test_Y = np.load(path + '/g_label.npy')
             self.val_out_X = None
             self.test_out_X = None
@@ -185,7 +180,7 @@ class NTUDataLoaders(object):
             self.max = 5.18858098984
             self.min = -5.28981208801
         else:
-            x = np.concatenate([self.train_X['global'], self.val_X['global'], self.test_X['global']], 0)
+            x = np.concatenate([self.train_X, self.val_X, self.test_X], 0)
             max_val, min_val = self.compute_max_min(x)
             self.max = max_val
             self.min = min_val

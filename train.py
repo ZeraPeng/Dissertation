@@ -7,12 +7,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import traceback
+import sys
 
-from data_cnn60 import AverageMeter, NTUDataLoaders
-from model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
-                   permute_dims, reparameterize)
+from data_cnn60_origin import AverageMeter, NTUDataLoaders
+from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
+                   permute_dims, reparameterize, fuse_logits)
 
-# import ipdb
+from model.get_part_feature import ModelMatch, SHIFTGCNModel
+import ipdb
 
 def parse_arg():
     # Arg Parser
@@ -314,9 +317,6 @@ def train_classifier(text_encoder, sequence_encoder, zsl_loader, val_loader, uns
         for (inp, target) in zsl_loader:
             t_s = inp.to(device)
             nt_smu, t_slv = sequence_encoder(t_s)
-            
-            print(f"The shape of nt_mu: {nt_smu.shape}")
-
             final_embs.append(nt_smu)
             t_out = clf(nt_smu)
             pred = torch.argmax(t_out, -1).cpu()
