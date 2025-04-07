@@ -1,0 +1,23 @@
+# This is an example of drinking water...
+drink water:
+  label: drink water
+  xprompt_oo:
+    - where water is contained in a cup
+    - where water enters the mouth
+    - where a cup contacts the mouth
+  xprompt_ao:
+    - which involves water as the patient
+    - which uses a cup as a tool
+    - which uses the mouth as a body part
+
+eat meal:
+  label: eat meal
+  xprompt_oo:
+    - where food is contacted by a utensil
+    - where food enters the mouth
+    - where a utensil contacts the mouth
+  xprompt_ao:
+    - involving food as the patient
+    - utilizing a utensil as the tool
+    - involving the mouth as the body part
+

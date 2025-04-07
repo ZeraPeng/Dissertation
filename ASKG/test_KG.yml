@@ -1,0 +1,53 @@
+drink water:
+  label: drink water
+  obj_li:
+    - water
+    - cup
+    - mouth
+  obj_rel_triples:
+    - <water,contained_in,cup>
+    - <water,enters,mouth>
+    - <cup,contacts,mouth>
+  act_obj_triples:
+    - <drink water,has_patient,water>
+    - <drink water,uses_tool,cup>
+    - <drink water,uses_body_part,mouth>
+  sub_act_li:
+    - grasp
+    - lift
+    - tilt
+    - sip
+    - swallow
+  sub_act_rel_triples:
+    - <grasp,precedes,lift>
+    - <lift,precedes,tilt>
+    - <tilt,precedes,sip>
+    - <sip,precedes,swallow>
+
+eat meal:
+  label: eat meal
+  obj_li:
+    - food
+    - utensil
+    - mouth
+  obj_rel_triples:
+    - <food,contacted_by,utensil>
+    - <food,enters,mouth>
+    - <utensil,contacts,mouth>
+  act_obj_triples:
+    - <eat meal,has_patient,food>
+    - <eat meal,uses_tool,utensil>
+    - <eat meal,uses_body_part,mouth>
+  sub_act_li:
+    - cut
+    - scoop
+    - lift
+    - bite
+    - chew
+    - swallow
+  sub_act_rel_triples:
+    - <cut,precedes,scoop>
+    - <scoop,precedes,lift>
+    - <lift,precedes,bite>
+    - <bite,precedes,chew>
+    - <chew,precedes,swallow>
