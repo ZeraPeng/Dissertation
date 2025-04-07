@@ -1,0 +1,264 @@
+===data split: ntu60_12
+alpha=0.8, alpha_p=0, body_part=2
+===== ntu60_12 with side info =====
+Loading normal dataset
+=== total acc: 0.022789425706472195 ===
+global: 0.07231844424187177
+upper body: 0.044667274384685506
+lower body: 0.017927681555758128
+---------------------
+zsl_accuracy increased to 2.28% on cycle  0
+checkpoint saved
+=== total acc: 0.06867213612883621 ===
+global: 0.00030385900941962927
+upper body: 0.062291096931024005
+lower body: 0.07930720145852324
+---------------------
+zsl_accuracy increased to 6.87% on cycle  1
+checkpoint saved
+=== total acc: 0.06502582801580067 ===
+global: 0.0799149194773625
+upper body: 0.06806441810999696
+lower body: 0.06806441810999696
+=== total acc: 0.05894864782740808 ===
+global: 0.08052263749620177
+upper body: 0.06411425098754178
+lower body: 0.07171072622303251
+=== total acc: 0.06927985414767548 ===
+global: 0.08082649650562139
+upper body: 0.07718018839258584
+lower body: 0.06624126405347919
+---------------------
+zsl_accuracy increased to 6.93% on cycle  4
+checkpoint saved
+=== total acc: 0.045882710422364026 ===
+global: 0.08082649650562139
+upper body: 0.05256760862959587
+lower body: 0.03494378608325737
+=== total acc: 0.054998480704952904 ===
+global: 0.08021877848678213
+upper body: 0.06411425098754178
+lower body: 0.053479185657854755
+=== total acc: 0.04800972348830143 ===
+global: 0.07596475235490732
+upper body: 0.044667274384685506
+lower body: 0.052263749620176235
+=== total acc: 0.04284412032816773 ===
+global: 0.07961106046794288
+upper body: 0.044667274384685506
+lower body: 0.04527499240352476
+=== total acc: 0.04952901853539957 ===
+global: 0.07869948343968398
+upper body: 0.0498328775448192
+lower body: 0.06593740504405955
+alpha=0.8, alpha_p=0.3, body_part=2
+===== ntu60_12 with side info =====
+Loading normal dataset
+=== total acc: 0.02157398966879368 ===
+global: 0.07231844424187177
+upper body: 0.044667274384685506
+lower body: 0.017927681555758128
+---------------------
+zsl_accuracy increased to 2.16% on cycle  0
+checkpoint saved
+=== total acc: 0.005165603160133698 ===
+global: 0.00030385900941962927
+upper body: 0.062291096931024005
+lower body: 0.07930720145852324
+=== total acc: 0.06411425098754178 ===
+global: 0.0799149194773625
+upper body: 0.06806441810999696
+lower body: 0.06806441810999696
+---------------------
+zsl_accuracy increased to 6.41% on cycle  2
+checkpoint saved
+=== total acc: 0.05894864782740808 ===
+global: 0.08052263749620177
+upper body: 0.06411425098754178
+lower body: 0.07171072622303251
+=== total acc: 0.06927985414767548 ===
+global: 0.08082649650562139
+upper body: 0.07718018839258584
+lower body: 0.06624126405347919
+---------------------
+zsl_accuracy increased to 6.93% on cycle  4
+checkpoint saved
+=== total acc: 0.045882710422364026 ===
+global: 0.08082649650562139
+upper body: 0.05256760862959587
+lower body: 0.03494378608325737
+=== total acc: 0.054998480704952904 ===
+global: 0.08021877848678213
+upper body: 0.06411425098754178
+lower body: 0.053479185657854755
+=== total acc: 0.04679428745062291 ===
+global: 0.07596475235490732
+upper body: 0.044667274384685506
+lower body: 0.052263749620176235
+=== total acc: 0.04284412032816773 ===
+global: 0.07961106046794288
+upper body: 0.044667274384685506
+lower body: 0.04527499240352476
+=== total acc: 0.049225159525979945 ===
+global: 0.07869948343968398
+upper body: 0.0498328775448192
+lower body: 0.06593740504405955
+alpha=0.8, alpha_p=0.5, body_part=2
+===== ntu60_12 with side info =====
+Loading normal dataset
+=== total acc: 0.022485566697052567 ===
+global: 0.07231844424187177
+upper body: 0.044667274384685506
+lower body: 0.017927681555758128
+---------------------
+zsl_accuracy increased to 2.25% on cycle  0
+checkpoint saved
+=== total acc: 0.005165603160133698 ===
+global: 0.00030385900941962927
+upper body: 0.062291096931024005
+lower body: 0.07930720145852324
+=== total acc: 0.06776055910057734 ===
+global: 0.0799149194773625
+upper body: 0.06806441810999696
+lower body: 0.06806441810999696
+---------------------
+zsl_accuracy increased to 6.78% on cycle  2
+checkpoint saved
+=== total acc: 0.05986022485566697 ===
+global: 0.08052263749620177
+upper body: 0.06411425098754178
+lower body: 0.07171072622303251
+=== total acc: 0.070495290185354 ===
+global: 0.08082649650562139
+upper body: 0.07718018839258584
+lower body: 0.06624126405347919
+---------------------
+zsl_accuracy increased to 7.05% on cycle  4
+checkpoint saved
+=== total acc: 0.059252506836827715 ===
+global: 0.08082649650562139
+upper body: 0.05256760862959587
+lower body: 0.03494378608325737
+=== total acc: 0.05986022485566697 ===
+global: 0.08021877848678213
+upper body: 0.06411425098754178
+lower body: 0.053479185657854755
+=== total acc: 0.05256760862959587 ===
+global: 0.07596475235490732
+upper body: 0.044667274384685506
+lower body: 0.052263749620176235
+=== total acc: 0.04679428745062291 ===
+global: 0.07961106046794288
+upper body: 0.044667274384685506
+lower body: 0.04527499240352476
+=== total acc: 0.054694621695533276 ===
+global: 0.07869948343968398
+upper body: 0.0498328775448192
+lower body: 0.06593740504405955
+alpha=0.8, alpha_p=0.8, body_part=2
+===== ntu60_12 with side info =====
+Loading normal dataset
+=== total acc: 0.054694621695533276 ===
+global: 0.07231844424187177
+upper body: 0.044667274384685506
+lower body: 0.017927681555758128
+---------------------
+zsl_accuracy increased to 5.47% on cycle  0
+checkpoint saved
+=== total acc: 0.00030385900941962927 ===
+global: 0.00030385900941962927
+upper body: 0.062291096931024005
+lower body: 0.07930720145852324
+=== total acc: 0.07718018839258584 ===
+global: 0.0799149194773625
+upper body: 0.06806441810999696
+lower body: 0.06806441810999696
+---------------------
+zsl_accuracy increased to 7.72% on cycle  2
+checkpoint saved
+=== total acc: 0.07718018839258584 ===
+global: 0.08052263749620177
+upper body: 0.06411425098754178
+lower body: 0.07171072622303251
+=== total acc: 0.08082649650562139 ===
+global: 0.08082649650562139
+upper body: 0.07718018839258584
+lower body: 0.06624126405347919
+---------------------
+zsl_accuracy increased to 8.08% on cycle  4
+checkpoint saved
+=== total acc: 0.07687632938316621 ===
+global: 0.08082649650562139
+upper body: 0.05256760862959587
+lower body: 0.03494378608325737
+=== total acc: 0.07809176542084473 ===
+global: 0.08021877848678213
+upper body: 0.06411425098754178
+lower body: 0.053479185657854755
+=== total acc: 0.07019143117593436 ===
+global: 0.07596475235490732
+upper body: 0.044667274384685506
+lower body: 0.052263749620176235
+=== total acc: 0.07140686721361289 ===
+global: 0.07961106046794288
+upper body: 0.044667274384685506
+lower body: 0.04527499240352476
+=== total acc: 0.07110300820419325 ===
+global: 0.07869948343968398
+upper body: 0.0498328775448192
+lower body: 0.06593740504405955
+alpha=0.8, alpha_p=1.0, body_part=2
+===== ntu60_12 with side info =====
+Loading normal dataset
+=== total acc: 0.07231844424187177 ===
+global: 0.07231844424187177
+upper body: 0.044667274384685506
+lower body: 0.017927681555758128
+---------------------
+zsl_accuracy increased to 7.23% on cycle  0
+checkpoint saved
+=== total acc: 0.00030385900941962927 ===
+global: 0.00030385900941962927
+upper body: 0.062291096931024005
+lower body: 0.07930720145852324
+=== total acc: 0.0799149194773625 ===
+global: 0.0799149194773625
+upper body: 0.06806441810999696
+lower body: 0.06806441810999696
+---------------------
+zsl_accuracy increased to 7.99% on cycle  2
+checkpoint saved
+=== total acc: 0.08052263749620177 ===
+global: 0.08052263749620177
+upper body: 0.06411425098754178
+lower body: 0.07171072622303251
+---------------------
+zsl_accuracy increased to 8.05% on cycle  3
+checkpoint saved
+=== total acc: 0.08082649650562139 ===
+global: 0.08082649650562139
+upper body: 0.07718018839258584
+lower body: 0.06624126405347919
+---------------------
+zsl_accuracy increased to 8.08% on cycle  4
+checkpoint saved
+=== total acc: 0.08082649650562139 ===
+global: 0.08082649650562139
+upper body: 0.05256760862959587
+lower body: 0.03494378608325737
+=== total acc: 0.08021877848678213 ===
+global: 0.08021877848678213
+upper body: 0.06411425098754178
+lower body: 0.053479185657854755
+=== total acc: 0.07596475235490732 ===
+global: 0.07596475235490732
+upper body: 0.044667274384685506
+lower body: 0.052263749620176235
+=== total acc: 0.07961106046794288 ===
+global: 0.07961106046794288
+upper body: 0.044667274384685506
+lower body: 0.04527499240352476
+=== total acc: 0.07869948343968398 ===
+global: 0.07869948343968398
+upper body: 0.0498328775448192
+lower body: 0.06593740504405955

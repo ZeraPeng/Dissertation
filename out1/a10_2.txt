@@ -1,0 +1,44 @@
+alpha=1.0
+===== ntu120_10 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 32.95% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 51.24% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.19% on cycle  5
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.57% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.82% on cycle  7
+checkpoint saved
+---------------------
+zsl_accuracy increased to 60.58% on cycle  8
+checkpoint saved
+===== ntu120_24 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 25.21% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 32.76% on cycle  2
+checkpoint saved
+---------------------
+zsl_accuracy increased to 36.02% on cycle  3
+checkpoint saved
+---------------------
+zsl_accuracy increased to 36.29% on cycle  4
+checkpoint saved
+---------------------
+zsl_accuracy increased to 39.08% on cycle  5
+checkpoint saved
+---------------------
+zsl_accuracy increased to 43.02% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 45.52% on cycle  7
+checkpoint saved

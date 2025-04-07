@@ -1,0 +1,75 @@
+alpha=0.5
+===== ntu60_5 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 22.37% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.70% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 76.39% on cycle  2
+checkpoint saved
+===== ntu60_12 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 21.36% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.40% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.82% on cycle  3
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.94% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 38.71% on cycle  7
+checkpoint saved
+---------------------
+zsl_accuracy increased to 39.38% on cycle  8
+checkpoint saved
+===== ntu120_10 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 32.95% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 50.98% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 54.88% on cycle  5
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.28% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.90% on cycle  7
+checkpoint saved
+---------------------
+zsl_accuracy increased to 60.53% on cycle  8
+checkpoint saved
+===== ntu120_24 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 26.96% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 32.71% on cycle  2
+checkpoint saved
+---------------------
+zsl_accuracy increased to 35.90% on cycle  3
+checkpoint saved
+---------------------
+zsl_accuracy increased to 36.27% on cycle  4
+checkpoint saved
+---------------------
+zsl_accuracy increased to 38.81% on cycle  5
+checkpoint saved
+---------------------
+zsl_accuracy increased to 42.83% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 45.54% on cycle  7
+checkpoint saved

@@ -1,0 +1,34 @@
+alpha=0.6
+===== ntu60_5 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 22.37% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.70% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 76.32% on cycle  2
+checkpoint saved
+===== ntu60_12 with side info =====
+Loading normal dataset
+> [0;32m/usr1/home/s124mdg53_04/Dissertation/train_f.py[0m(405)[0;36mtrain_classifier[0;34m()[0m
+[0;32m    404 [0;31m        [0mipdb[0m[0;34m.[0m[0mset_trace[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m--> 405 [0;31m        [0;32mfor[0m [0mc_e[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m150[0m[0;34m)[0m[0;34m:[0m  [0;31m# training cycle[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m    406 [0;31m            [0mpred_dict[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m
+ipdb> ===== ntu120_10 with side info =====
+Loading normal dataset
+> [0;32m/usr1/home/s124mdg53_04/Dissertation/train_f.py[0m(405)[0;36mtrain_classifier[0;34m()[0m
+[0;32m    404 [0;31m        [0mipdb[0m[0;34m.[0m[0mset_trace[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m--> 405 [0;31m        [0;32mfor[0m [0mc_e[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m150[0m[0;34m)[0m[0;34m:[0m  [0;31m# training cycle[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m    406 [0;31m            [0mpred_dict[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
+[0m
+ipdb> ===== ntu120_24 with side info =====
+Loading normal dataset
+> [0;32m/usr1/home/s124mdg53_04/Dissertation/train_f.py[0m(405)[0;36mtrain_classifier[0;34m()[0m
+[0;32m    404 [0;31m        [0mipdb[0m[0;34m.[0m[0mset_trace[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m--> 405 [0;31m        [0;32mfor[0m [0mc_e[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m150[0m[0;34m)[0m[0;34m:[0m  [0;31m# training cycle[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m    406 [0;31m            [0mpred_dict[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
+[0m
+ipdb> 

@@ -1,0 +1,74 @@
+alpha=0.3
+===== ntu60_5 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 21.78% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 57.60% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 77.56% on cycle  2
+checkpoint saved
+===== ntu60_12 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 20.81% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 29.26% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 30.29% on cycle  4
+checkpoint saved
+---------------------
+zsl_accuracy increased to 30.96% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 31.08% on cycle  7
+checkpoint saved
+---------------------
+zsl_accuracy increased to 36.52% on cycle  8
+checkpoint saved
+===== ntu120_10 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 21.04% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.78% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 39.00% on cycle  2
+checkpoint saved
+---------------------
+zsl_accuracy increased to 39.89% on cycle  6
+checkpoint saved
+===== ntu120_24 with side info =====
+Loading normal dataset
+> [0;32m/usr1/home/s124mdg53_04/Dissertation/train_f.py[0m(690)[0;36mmain[0;34m()[0m
+[0;32m    689 [0;31m    [0;31m# load part language description[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m--> 690 [0;31m    [0mpart_language[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m    691 [0;31m    [0;32mfor[0m [0mi[0m[0;34m,[0m [0mpart_name[0m [0;32min[0m [0menumerate[0m[0;34m([0m[0;34m[[0m[0;34m"head"[0m[0;34m,[0m [0;34m"hand"[0m[0;34m,[0m [0;34m"arm"[0m[0;34m,[0m [0;34m"hip"[0m[0;34m,[0m [0;34m"leg"[0m[0;34m,[0m [0;34m"foot"[0m[0;34m][0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0m
+ipdb> ---------------------
+zsl_accuracy increased to 12.22% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 12.85% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 15.09% on cycle  2
+checkpoint saved
+---------------------
+zsl_accuracy increased to 17.45% on cycle  3
+checkpoint saved
+---------------------
+zsl_accuracy increased to 17.64% on cycle  4
+checkpoint saved
+---------------------
+zsl_accuracy increased to 18.22% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 18.52% on cycle  7
+checkpoint saved

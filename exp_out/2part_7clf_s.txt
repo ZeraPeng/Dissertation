@@ -1,0 +1,15 @@
+alpha=0.8, alpha_p=0, body_part=2
+=====  with side info =====
+Loading normal dataset
+alpha=0.8, alpha_p=0.3, body_part=2
+=====  with side info =====
+Loading normal dataset
+alpha=0.8, alpha_p=0.5, body_part=2
+=====  with side info =====
+Loading normal dataset
+alpha=0.8, alpha_p=0.8, body_part=2
+=====  with side info =====
+Loading normal dataset
+alpha=0.8, alpha_p=1.0, body_part=2
+=====  with side info =====
+Loading normal dataset

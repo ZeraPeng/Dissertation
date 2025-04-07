@@ -1,0 +1,120 @@
+drink water; Upper body: raises hand to mouth, tilts head slightly back; Lower body: stands or sits with minimal leg movement
+eat meal; Upper body: moves hand repeatedly between plate and mouth; Lower body: sits with stable legs
+brush teeth; Upper body: moves hand in repetitive brushing near mouth; Lower body: stands still
+brush hair; Upper body: moves arm in sweeping motion over head; Lower body: stands still or slight weight shift
+drop; Upper body: releases object from hand, may lower arm; Lower body: minimal leg movement or slight bend
+pick up; Upper body: bends upper body, reaches down with arm; Lower body: knees bend or one foot steps forward
+throw; Upper body: draws arm back and then thrusts it forward; Lower body: shifts weight from back foot to front
+sit down; Upper body: arms may assist balance, torso leans slightly; Lower body: knees bend as body lowers to chair
+stand up; Upper body: uses arms to push or balance, torso leans forward; Lower body: extends knees to lift body
+clapping; Upper body: brings both hands together repeatedly; Lower body: stands with stable legs
+reading; Upper body: holds object at eye level, head tilts slightly; Lower body: usually seated or standing still
+writing; Upper body: one hand moves in small strokes, other may stabilize; Lower body: seated with feet flat
+tear up paper; Upper body: pulls hands apart forcefully; Lower body: stands or sits with stable legs
+put on jacket; Upper body: arms extend backward and forward alternately; Lower body: minimal leg movement
+take off jacket; Upper body: shrugs shoulders, pulls arms out of sleeves; Lower body: minimal leg movement
+put on a shoe; Upper body: bends down, uses hands to position shoe; Lower body: one leg raised or knee bent
+take off a shoe; Upper body: bends or lifts leg, pulls shoe off; Lower body: balances on one foot
+put on glasses; Upper body: brings glasses to face, adjusts over ears; Lower body: minimal or no leg movement
+take off glasses; Upper body: removes glasses from face; Lower body: standing or seated with no leg motion
+put on a hat/cap; Upper body: raises hand to head, places item; Lower body: minimal or no leg motion
+take off a hat/cap; Upper body: raises hand to head, lifts item off; Lower body: no leg motion
+cheer up; Upper body: raises both arms, facial expression brightens; Lower body: may jump or shift weight
+hand waving; Upper body: moves arm side to side at shoulder level; Lower body: stands with feet still
+kicking something; Upper body: arms may balance or swing opposite leg; Lower body: one leg swings forward forcefully
+reach into pocket; Upper body: bends elbow, moves hand toward waist; Lower body: minimal leg movement
+hopping; Upper body: arms may help balance; Lower body: repeated single-leg jumps
+jump up; Upper body: arms swing upward; Lower body: both feet push off ground
+phone call; Upper body: holds phone to ear; Lower body: stands or walks slowly
+play with phone/tablet; Upper body: head tilts down, hands tap or swipe; Lower body: usually seated or standing still
+type on a keyboard; Upper body: fingers tap keys, wrists and forearms move; Lower body: seated with stable feet
+point to something; Upper body: extends arm and index finger; Lower body: may shift weight or step slightly
+taking a selfie; Upper body: extends arm with phone, poses; Lower body: stands still or shifts pose
+check time (from watch); Upper body: raises wrist, tilts head slightly; Lower body: usually stands still
+rub two hands; Upper body: palms move against each other; Lower body: stands still
+nod head/bow; Upper body: head moves up and down or torso inclines; Lower body: minimal or no leg movement
+shake head; Upper body: head turns side to side; Lower body: no leg movement
+wipe face; Upper body: hand moves across face; Lower body: typically seated or standing
+salute; Upper body: raises hand to forehead; Lower body: stands upright
+put palms together; Upper body: hands join in front of chest; Lower body: stands still
+cross hands in front; Upper body: arms fold or cross at chest/waist level; Lower body: standing or sitting
+sneeze/cough; Upper body: raises elbow/hand to mouth, head jerks; Lower body: stands or sits
+staggering; Upper body: arms flail to balance, torso wobbles; Lower body: legs take uneven, unstable steps
+falling down; Upper body: arms reach out reflexively; Lower body: knees buckle, body collapses to ground
+headache; Upper body: hands hold or press on head; Lower body: minimal or no leg movement
+chest pain; Upper body: hands clutch chest area; Lower body: standing or seated with slight bend
+back pain; Upper body: hand moves to lower back, torso arches; Lower body: may bend knees or lean slightly
+neck pain; Upper body: one hand touches neck, head tilts; Lower body: minimal leg movement
+nausea/vomiting; Upper body: hand covers mouth, torso leans forward; Lower body: knees bend or legs brace
+fan self; Upper body: waves hand near face repeatedly; Lower body: standing or seated
+punch/slap; Upper body: one arm strikes forward forcefully; Lower body: legs support balance or step slightly
+kicking; Upper body: one leg swings forward, arms balance; Lower body: kicking leg lifts and swings
+pushing; Upper body: both hands extend forward forcefully; Lower body: legs brace and lean forward
+pat on back; Upper body: raises hand, taps another’s back; Lower body: stands close to recipient
+point finger; Upper body: extends arm, isolates index finger; Lower body: slight lean or shift in stance
+hugging; Upper body: wraps arms around another; Lower body: stands close or shifts weight
+giving object; Upper body: extends hand with object; Lower body: may take a step toward recipient
+touch pocket; Upper body: hand moves toward pocket area; Lower body: minimal leg movement
+shaking hands; Upper body: extends hand and grips another’s; Lower body: stands still or leans forward
+walking towards; Upper body: arms swing naturally; Lower body: legs alternate stepping forward
+walking apart; Upper body: arms swing, turns body; Lower body: legs step in opposite directions
+put on headphone; Upper body: raises both hands to head; Lower body: minimal or no leg movement
+take off headphone; Upper body: hands lift headphones from head; Lower body: standing or seated
+shoot at basket; Upper body: raises arms, flicks wrist upward; Lower body: jumps slightly or steps forward
+bounce ball; Upper body: hand pushes ball downward repeatedly; Lower body: knees slightly bent, legs shift
+tennis bat swing; Upper body: arms swing racket across body; Lower body: legs step and rotate torso
+juggle table tennis ball; Upper body: repeated short arm movements; Lower body: usually stationary legs
+hush; Upper body: index finger to lips; Lower body: minimal leg movement
+flick hair; Upper body: head tilts or shakes, hand may assist; Lower body: standing or seated
+thumb up; Upper body: raises hand with thumb extended; Lower body: standing or seated
+thumb down; Upper body: arm raised, thumb points down; Lower body: minimal lower body motion
+make OK sign; Upper body: forms 'O' with thumb and forefinger; Lower body: stationary body
+make victory sign; Upper body: raises hand with V-shaped fingers; Lower body: usually still
+staple book; Upper body: presses stapler with one hand; Lower body: sits or stands near table
+counting money; Upper body: hands move bills, thumbs separate notes; Lower body: seated or standing
+cutting nails; Upper body: brings hand close, small hand motion; Lower body: usually seated
+cutting paper; Upper body: uses scissors with back-and-forth motion; Lower body: sitting or standing
+snap fingers; Upper body: thumb and finger flick together; Lower body: minimal lower body movement
+open bottle; Upper body: hand twists or pulls cap; Lower body: standing or sitting still
+sniff/smell; Upper body: brings object close to nose, inhales; Lower body: slight head tilt
+squat down; Upper body: arms balance, torso leans forward; Lower body: knees bend, hips lower
+toss a coin; Upper body: flicks coin upward with thumb; Lower body: usually standing
+fold paper; Upper body: hands manipulate paper; Lower body: seated or standing
+ball up paper; Upper body: hands crumple paper; Lower body: minimal lower body movement
+play magic cube; Upper body: hands twist and turn cube; Lower body: seated or standing still
+apply cream on face; Upper body: hand rubs face gently; Lower body: standing or seated
+apply cream on hand; Upper body: hands rub together or apply with fingers; Lower body: minimal leg motion
+put on bag; Upper body: arms lift straps, move behind shoulders; Lower body: standing or leaning forward
+take off bag; Upper body: arms pull straps forward; Lower body: slight lean or shift
+put object into bag; Upper body: arm reaches toward bag opening; Lower body: minimal lower body action
+take object out of bag; Upper body: arm pulls item from bag; Lower body: seated or standing
+open a box; Upper body: uses hands to lift or unfold flaps; Lower body: squats or leans down
+move heavy objects; Upper body: arms strain and pull or push; Lower body: legs brace and support movement
+shake fist; Upper body: raises clenched hand, shakes it; Lower body: angry posture, stable stance
+throw up cap/hat; Upper body: arm swings upward forcefully; Lower body: may jump slightly
+capitulate; Upper body: raises hands or lowers head; Lower body: knees may drop to ground
+cross arms; Upper body: folds arms across chest; Lower body: neutral lower body posture
+arm circles; Upper body: rotates arms in wide circles; Lower body: standing with stable base
+arm swings; Upper body: arms swing front to back; Lower body: standing with legs slightly apart
+run on the spot; Upper body: arms pump, body bounces; Lower body: legs alternate high knees
+butt kicks; Upper body: arms assist balance; Lower body: legs alternate kicking backward
+cross toe touch; Upper body: arms reach diagonally to feet; Lower body: one leg crosses over other
+side kick; Upper body: arms balance or guard; Lower body: one leg kicks sideways
+yawn; Upper body: hand covers mouth, head tilts; Lower body: usually seated or standing still
+stretch oneself; Upper body: arms extend upward or outward; Lower body: legs support stretched pose
+blow nose; Upper body: hands hold tissue, head leans; Lower body: stable standing posture
+hit with object; Upper body: arm swings with held item; Lower body: legs support striking motion
+wield knife; Upper body: arm moves in slicing or stabbing motion; Lower body: feet position for balance
+knock over; Upper body: arm pushes object strongly; Lower body: may step or lean
+grab stuff; Upper body: reaches quickly with hand; Lower body: may lean or take a step
+shoot with gun; Upper body: arms extend, finger pulls trigger; Lower body: stance solid for recoil
+step on foot; Upper body: body leans forward; Lower body: one foot steps on other’s
+high-five; Upper body: arm lifts, hand hits another’s; Lower body: may step slightly
+cheers and drink; Upper body: raises glass, clinks, then drinks; Lower body: standing or seated
+carry object; Upper body: holds item in arms or hands; Lower body: walks or stands with it
+take a photo; Upper body: raises camera, presses button; Lower body: may lean or step for angle
+follow; Upper body: arms swing naturally; Lower body: legs move in direction of another
+whisper; Upper body: leans head close, hand near mouth; Lower body: usually stands still
+exchange things; Upper body: extends hand to give or take; Lower body: may step forward
+support somebody; Upper body: one arm around other, body leans; Lower body: walks or stands close
+rock-paper-scissors; Upper body: hand shows shape, quick movements; Lower body: minimal leg movement

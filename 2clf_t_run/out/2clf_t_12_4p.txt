@@ -1,0 +1,92 @@
+Running on train_2clf_t.py
+data split: 12
+alpha=0.8, alpha_p=0.8, body_part=4
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.20054694621695535 ===
+global: 0.27438468550592526
+part: 0.1826192646611972
+---------------------
+zsl_accuracy increased to 20.05% on cycle  0
+checkpoint saved
+=== total acc: 0.21695533272561532 ===
+global: 0.2932239440899423
+part: 0.29838954725007594
+---------------------
+zsl_accuracy increased to 21.70% on cycle  1
+checkpoint saved
+=== total acc: 0.19629292008508054 ===
+global: 0.2780309936189608
+part: 0.3175326648435126
+=== total acc: 0.27711941659070194 ===
+global: 0.4074749316317229
+part: 0.3205712549377089
+---------------------
+zsl_accuracy increased to 27.71% on cycle  3
+checkpoint saved
+=== total acc: 0.33029474323913705 ===
+global: 0.4086903676694014
+part: 0.3011242783348526
+---------------------
+zsl_accuracy increased to 33.03% on cycle  4
+checkpoint saved
+=== total acc: 0.27013065937405045 ===
+global: 0.34913400182315407
+part: 0.2768155575812823
+=== total acc: 0.26496505621391675 ===
+global: 0.34791856578547553
+part: 0.31145548465512
+=== total acc: 0.24916438772409602 ===
+global: 0.3108477666362808
+part: 0.2907930720145852
+=== total acc: 0.23792160437556972 ===
+global: 0.28046186569431786
+part: 0.309024612579763
+=== total acc: 0.2643573381950775 ===
+global: 0.3266484351261015
+part: 0.2801580066848982
+alpha=0.8, alpha_p=1.0, body_part=4
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.27438468550592526 ===
+global: 0.27438468550592526
+part: 0.1826192646611972
+---------------------
+zsl_accuracy increased to 27.44% on cycle  0
+checkpoint saved
+=== total acc: 0.2932239440899423 ===
+global: 0.2932239440899423
+part: 0.29838954725007594
+---------------------
+zsl_accuracy increased to 29.32% on cycle  1
+checkpoint saved
+=== total acc: 0.2780309936189608 ===
+global: 0.2780309936189608
+part: 0.3175326648435126
+=== total acc: 0.4074749316317229 ===
+global: 0.4074749316317229
+part: 0.3205712549377089
+---------------------
+zsl_accuracy increased to 40.75% on cycle  3
+checkpoint saved
+=== total acc: 0.4086903676694014 ===
+global: 0.4086903676694014
+part: 0.3011242783348526
+---------------------
+zsl_accuracy increased to 40.87% on cycle  4
+checkpoint saved
+=== total acc: 0.34913400182315407 ===
+global: 0.34913400182315407
+part: 0.2768155575812823
+=== total acc: 0.34791856578547553 ===
+global: 0.34791856578547553
+part: 0.31145548465512
+=== total acc: 0.3108477666362808 ===
+global: 0.3108477666362808
+part: 0.2907930720145852
+=== total acc: 0.28046186569431786 ===
+global: 0.28046186569431786
+part: 0.309024612579763
+=== total acc: 0.3266484351261015 ===
+global: 0.3266484351261015
+part: 0.2801580066848982

@@ -1,0 +1,268 @@
+Running on train_7clf_t.py
+data split: 24
+alpha=0.8, alpha_p=0, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.0564092195713708 ===
+global: 0.283158107561666
+upper body: 0.09856449656287909
+lower body: 0.11837848766680145
+---------------------
+zsl_accuracy increased to 5.64% on cycle  0
+checkpoint saved
+=== total acc: 0.07925596441568944 ===
+global: 0.3564496562879094
+upper body: 0.20157703194500606
+lower body: 0.12717347351395067
+---------------------
+zsl_accuracy increased to 7.93% on cycle  1
+checkpoint saved
+=== total acc: 0.04063890012131015 ===
+global: 0.36575010109179135
+upper body: 0.1336433481601294
+lower body: 0.08532147189648201
+=== total acc: 0.08289526890416499 ===
+global: 0.40760210270926
+upper body: 0.18813182369591588
+lower body: 0.10816821674080064
+---------------------
+zsl_accuracy increased to 8.29% on cycle  3
+checkpoint saved
+=== total acc: 0.08633238980994744 ===
+global: 0.42397897290739994
+upper body: 0.19015365952284674
+lower body: 0.10998786898503841
+---------------------
+zsl_accuracy increased to 8.63% on cycle  4
+checkpoint saved
+=== total acc: 0.05560048524059846 ===
+global: 0.4512737565709664
+upper body: 0.16144359078042864
+lower body: 0.09057824504650222
+=== total acc: 0.07925596441568944 ===
+global: 0.40719773554387384
+upper body: 0.18257177517185605
+lower body: 0.12191670036393044
+=== total acc: 0.07288718156085726 ===
+global: 0.44793772745653054
+upper body: 0.1734735139506672
+lower body: 0.10897695107157299
+=== total acc: 0.07955923978972908 ===
+global: 0.4386372826526486
+upper body: 0.17226041245450868
+lower body: 0.10533764658309745
+=== total acc: 0.0668216740800647 ===
+global: 0.4520824909017388
+upper body: 0.16417306914678528
+lower body: 0.08067124949454105
+alpha=0.8, alpha_p=0.3, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.07015770319450061 ===
+global: 0.283158107561666
+upper body: 0.09856449656287909
+lower body: 0.11837848766680145
+---------------------
+zsl_accuracy increased to 7.02% on cycle  0
+checkpoint saved
+=== total acc: 0.08896077638495754 ===
+global: 0.3564496562879094
+upper body: 0.20157703194500606
+lower body: 0.12717347351395067
+---------------------
+zsl_accuracy increased to 8.90% on cycle  1
+checkpoint saved
+=== total acc: 0.04751314193287505 ===
+global: 0.36575010109179135
+upper body: 0.1336433481601294
+lower body: 0.08532147189648201
+=== total acc: 0.08188435099069956 ===
+global: 0.40760210270926
+upper body: 0.18813182369591588
+lower body: 0.10816821674080064
+=== total acc: 0.0881520420541852 ===
+global: 0.42397897290739994
+upper body: 0.19015365952284674
+lower body: 0.10998786898503841
+=== total acc: 0.06449656287909422 ===
+global: 0.4512737565709664
+upper body: 0.16144359078042864
+lower body: 0.09057824504650222
+=== total acc: 0.08087343307723413 ===
+global: 0.40719773554387384
+upper body: 0.18257177517185605
+lower body: 0.12191670036393044
+=== total acc: 0.08178325919935302 ===
+global: 0.44793772745653054
+upper body: 0.1734735139506672
+lower body: 0.10897695107157299
+=== total acc: 0.08188435099069956 ===
+global: 0.4386372826526486
+upper body: 0.17226041245450868
+lower body: 0.10533764658309745
+=== total acc: 0.06368782854832188 ===
+global: 0.4520824909017388
+upper body: 0.16417306914678528
+lower body: 0.08067124949454105
+alpha=0.8, alpha_p=0.5, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.06722604124545087 ===
+global: 0.283158107561666
+upper body: 0.09856449656287909
+lower body: 0.11837848766680145
+---------------------
+zsl_accuracy increased to 6.72% on cycle  0
+checkpoint saved
+=== total acc: 0.09654266073594824 ===
+global: 0.3564496562879094
+upper body: 0.20157703194500606
+lower body: 0.12717347351395067
+---------------------
+zsl_accuracy increased to 9.65% on cycle  1
+checkpoint saved
+=== total acc: 0.05357864941366761 ===
+global: 0.36575010109179135
+upper body: 0.1336433481601294
+lower body: 0.08532147189648201
+=== total acc: 0.09563283461382936 ===
+global: 0.40760210270926
+upper body: 0.18813182369591588
+lower body: 0.10816821674080064
+=== total acc: 0.0819854427820461 ===
+global: 0.42397897290739994
+upper body: 0.19015365952284674
+lower body: 0.10998786898503841
+=== total acc: 0.07177517185604529 ===
+global: 0.4512737565709664
+upper body: 0.16144359078042864
+lower body: 0.09057824504650222
+=== total acc: 0.08481601293974929 ===
+global: 0.40719773554387384
+upper body: 0.18257177517185605
+lower body: 0.12191670036393044
+=== total acc: 0.07996360695511524 ===
+global: 0.44793772745653054
+upper body: 0.1734735139506672
+lower body: 0.10897695107157299
+=== total acc: 0.08228871815608572 ===
+global: 0.4386372826526486
+upper body: 0.17226041245450868
+lower body: 0.10533764658309745
+=== total acc: 0.06995551961180752 ===
+global: 0.4520824909017388
+upper body: 0.16417306914678528
+lower body: 0.08067124949454105
+alpha=0.8, alpha_p=0.8, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.09320663162151234 ===
+global: 0.283158107561666
+upper body: 0.09856449656287909
+lower body: 0.11837848766680145
+---------------------
+zsl_accuracy increased to 9.32% on cycle  0
+checkpoint saved
+=== total acc: 0.17013748483623128 ===
+global: 0.3564496562879094
+upper body: 0.20157703194500606
+lower body: 0.12717347351395067
+---------------------
+zsl_accuracy increased to 17.01% on cycle  1
+checkpoint saved
+=== total acc: 0.101900525677315 ===
+global: 0.36575010109179135
+upper body: 0.1336433481601294
+lower body: 0.08532147189648201
+=== total acc: 0.13890012131014962 ===
+global: 0.40760210270926
+upper body: 0.18813182369591588
+lower body: 0.10816821674080064
+=== total acc: 0.13667610190052568 ===
+global: 0.42397897290739994
+upper body: 0.19015365952284674
+lower body: 0.10998786898503841
+=== total acc: 0.14041649818034777 ===
+global: 0.4512737565709664
+upper body: 0.16144359078042864
+lower body: 0.09057824504650222
+=== total acc: 0.14486453699959564 ===
+global: 0.40719773554387384
+upper body: 0.18257177517185605
+lower body: 0.12191670036393044
+=== total acc: 0.1336433481601294 ===
+global: 0.44793772745653054
+upper body: 0.1734735139506672
+lower body: 0.10897695107157299
+=== total acc: 0.13354225636878286 ===
+global: 0.4386372826526486
+upper body: 0.17226041245450868
+lower body: 0.10533764658309745
+=== total acc: 0.12687019813991104 ===
+global: 0.4520824909017388
+upper body: 0.16417306914678528
+lower body: 0.08067124949454105
+alpha=0.8, alpha_p=1.0, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.283158107561666 ===
+global: 0.283158107561666
+upper body: 0.09856449656287909
+lower body: 0.11837848766680145
+---------------------
+zsl_accuracy increased to 28.32% on cycle  0
+checkpoint saved
+=== total acc: 0.3564496562879094 ===
+global: 0.3564496562879094
+upper body: 0.20157703194500606
+lower body: 0.12717347351395067
+---------------------
+zsl_accuracy increased to 35.64% on cycle  1
+checkpoint saved
+=== total acc: 0.36575010109179135 ===
+global: 0.36575010109179135
+upper body: 0.1336433481601294
+lower body: 0.08532147189648201
+---------------------
+zsl_accuracy increased to 36.58% on cycle  2
+checkpoint saved
+=== total acc: 0.40760210270926 ===
+global: 0.40760210270926
+upper body: 0.18813182369591588
+lower body: 0.10816821674080064
+---------------------
+zsl_accuracy increased to 40.76% on cycle  3
+checkpoint saved
+=== total acc: 0.42397897290739994 ===
+global: 0.42397897290739994
+upper body: 0.19015365952284674
+lower body: 0.10998786898503841
+---------------------
+zsl_accuracy increased to 42.40% on cycle  4
+checkpoint saved
+=== total acc: 0.4512737565709664 ===
+global: 0.4512737565709664
+upper body: 0.16144359078042864
+lower body: 0.09057824504650222
+---------------------
+zsl_accuracy increased to 45.13% on cycle  5
+checkpoint saved
+=== total acc: 0.40719773554387384 ===
+global: 0.40719773554387384
+upper body: 0.18257177517185605
+lower body: 0.12191670036393044
+=== total acc: 0.44793772745653054 ===
+global: 0.44793772745653054
+upper body: 0.1734735139506672
+lower body: 0.10897695107157299
+=== total acc: 0.4386372826526486 ===
+global: 0.4386372826526486
+upper body: 0.17226041245450868
+lower body: 0.10533764658309745
+=== total acc: 0.4520824909017388 ===
+global: 0.4520824909017388
+upper body: 0.16417306914678528
+lower body: 0.08067124949454105
+---------------------
+zsl_accuracy increased to 45.21% on cycle  9
+checkpoint saved

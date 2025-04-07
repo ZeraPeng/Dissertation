@@ -1,0 +1,83 @@
+Running on train_2clf_t.py
+data split: 12
+alpha=0.8, alpha_p=0.8, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.23609845031905197 ===
+global: 0.2664843512610149
+part: 0.1771498024916439
+---------------------
+zsl_accuracy increased to 23.61% on cycle  0
+checkpoint saved
+=== total acc: 0.14038286235186873 ===
+global: 0.2835004557885141
+part: 0.1814038286235187
+=== total acc: 0.31267092069279856 ===
+global: 0.4515344879975691
+part: 0.33151017927681553
+---------------------
+zsl_accuracy increased to 31.27% on cycle  2
+checkpoint saved
+=== total acc: 0.2576724399878456 ===
+global: 0.3047705864478882
+part: 0.3205712549377089
+=== total acc: 0.2123974475843209 ===
+global: 0.30780917654208445
+part: 0.32087511394712853
+=== total acc: 0.230325129140079 ===
+global: 0.3889395320571255
+part: 0.2977818292312367
+=== total acc: 0.29109693102400486 ===
+global: 0.39805530233971437
+part: 0.30963233059860223
+=== total acc: 0.2889699179580675 ===
+global: 0.4314797933758736
+part: 0.2838043147979338
+=== total acc: 0.23913704041324826 ===
+global: 0.36250379823761775
+part: 0.2531145548465512
+=== total acc: 0.2209054998480705 ===
+global: 0.3506532968702522
+part: 0.2828927377696749
+alpha=0.8, alpha_p=1.0, body_part=2
+=====  with side info =====
+Loading normal dataset
+=== total acc: 0.2664843512610149 ===
+global: 0.2664843512610149
+part: 0.1771498024916439
+---------------------
+zsl_accuracy increased to 26.65% on cycle  0
+checkpoint saved
+=== total acc: 0.2835004557885141 ===
+global: 0.2835004557885141
+part: 0.1814038286235187
+---------------------
+zsl_accuracy increased to 28.35% on cycle  1
+checkpoint saved
+=== total acc: 0.4515344879975691 ===
+global: 0.4515344879975691
+part: 0.33151017927681553
+---------------------
+zsl_accuracy increased to 45.15% on cycle  2
+checkpoint saved
+=== total acc: 0.3047705864478882 ===
+global: 0.3047705864478882
+part: 0.3205712549377089
+=== total acc: 0.30780917654208445 ===
+global: 0.30780917654208445
+part: 0.32087511394712853
+=== total acc: 0.3889395320571255 ===
+global: 0.3889395320571255
+part: 0.2977818292312367
+=== total acc: 0.39805530233971437 ===
+global: 0.39805530233971437
+part: 0.30963233059860223
+=== total acc: 0.4314797933758736 ===
+global: 0.4314797933758736
+part: 0.2838043147979338
+=== total acc: 0.36250379823761775 ===
+global: 0.36250379823761775
+part: 0.2531145548465512
+=== total acc: 0.3506532968702522 ===
+global: 0.3506532968702522
+part: 0.2828927377696749

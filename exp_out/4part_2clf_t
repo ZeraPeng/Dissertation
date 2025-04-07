@@ -1,0 +1,207 @@
+alpha=0.8, alpha_p=0, body_part=4
+===== ntu60_5 with side info =====
+Loading normal dataset
+=== total acc: 0.6125730994152047 ===
+global: 0.6608187134502924
+part: 0.6125730994152047
+---------------------
+zsl_accuracy increased to 61.26% on cycle  0
+checkpoint saved
+=== total acc: 0.7141812865497076 ===
+global: 0.3932748538011696
+part: 0.7141812865497076
+---------------------
+zsl_accuracy increased to 71.42% on cycle  1
+checkpoint saved
+=== total acc: 0.7054093567251462 ===
+global: 0.7755847953216374
+part: 0.7054093567251462
+=== total acc: 0.716374269005848 ===
+global: 0.7536549707602339
+part: 0.716374269005848
+---------------------
+zsl_accuracy increased to 71.64% on cycle  3
+checkpoint saved
+=== total acc: 0.7127192982456141 ===
+global: 0.5840643274853801
+part: 0.7127192982456141
+=== total acc: 0.7068713450292398 ===
+global: 0.7631578947368421
+part: 0.7068713450292398
+=== total acc: 0.7171052631578947 ===
+global: 0.7587719298245614
+part: 0.7171052631578947
+---------------------
+zsl_accuracy increased to 71.71% on cycle  6
+checkpoint saved
+=== total acc: 0.6425438596491229 ===
+global: 0.7536549707602339
+part: 0.6425438596491229
+=== total acc: 0.672514619883041 ===
+global: 0.77046783625731
+part: 0.672514619883041
+=== total acc: 0.7141812865497076 ===
+global: 0.7719298245614035
+part: 0.7141812865497076
+alpha=0.8, alpha_p=0.3, body_part=4
+===== ntu60_5 with side info =====
+Loading normal dataset
+=== total acc: 0.6081871345029239 ===
+global: 0.6608187134502924
+part: 0.6125730994152047
+---------------------
+zsl_accuracy increased to 60.82% on cycle  0
+checkpoint saved
+=== total acc: 0.4371345029239766 ===
+global: 0.3932748538011696
+part: 0.7141812865497076
+=== total acc: 0.7017543859649122 ===
+global: 0.7755847953216374
+part: 0.7054093567251462
+---------------------
+zsl_accuracy increased to 70.18% on cycle  2
+checkpoint saved
+=== total acc: 0.7002923976608187 ===
+global: 0.7536549707602339
+part: 0.716374269005848
+=== total acc: 0.6235380116959064 ===
+global: 0.5840643274853801
+part: 0.7127192982456141
+=== total acc: 0.695906432748538 ===
+global: 0.7631578947368421
+part: 0.7068713450292398
+=== total acc: 0.7105263157894737 ===
+global: 0.7587719298245614
+part: 0.7171052631578947
+---------------------
+zsl_accuracy increased to 71.05% on cycle  6
+checkpoint saved
+=== total acc: 0.6410818713450293 ===
+global: 0.7536549707602339
+part: 0.6425438596491229
+=== total acc: 0.672514619883041 ===
+global: 0.77046783625731
+part: 0.672514619883041
+=== total acc: 0.7105263157894737 ===
+global: 0.7719298245614035
+part: 0.7141812865497076
+alpha=0.8, alpha_p=0.5, body_part=4
+===== ntu60_5 with side info =====
+Loading normal dataset
+=== total acc: 0.6549707602339181 ===
+global: 0.6608187134502924
+part: 0.6125730994152047
+---------------------
+zsl_accuracy increased to 65.50% on cycle  0
+checkpoint saved
+=== total acc: 0.4444444444444444 ===
+global: 0.3932748538011696
+part: 0.7141812865497076
+=== total acc: 0.7251461988304093 ===
+global: 0.7755847953216374
+part: 0.7054093567251462
+---------------------
+zsl_accuracy increased to 72.51% on cycle  2
+checkpoint saved
+=== total acc: 0.7032163742690059 ===
+global: 0.7536549707602339
+part: 0.716374269005848
+=== total acc: 0.625 ===
+global: 0.5840643274853801
+part: 0.7127192982456141
+=== total acc: 0.7046783625730995 ===
+global: 0.7631578947368421
+part: 0.7068713450292398
+=== total acc: 0.7288011695906432 ===
+global: 0.7587719298245614
+part: 0.7171052631578947
+---------------------
+zsl_accuracy increased to 72.88% on cycle  6
+checkpoint saved
+=== total acc: 0.6878654970760234 ===
+global: 0.7536549707602339
+part: 0.6425438596491229
+=== total acc: 0.6871345029239766 ===
+global: 0.77046783625731
+part: 0.672514619883041
+=== total acc: 0.7192982456140351 ===
+global: 0.7719298245614035
+part: 0.7141812865497076
+alpha=0.8, alpha_p=0.8, body_part=4
+===== ntu60_5 with side info =====
+Loading normal dataset
+=== total acc: 0.6922514619883041 ===
+global: 0.6608187134502924
+part: 0.6125730994152047
+---------------------
+zsl_accuracy increased to 69.23% on cycle  0
+checkpoint saved
+=== total acc: 0.3815789473684211 ===
+global: 0.3932748538011696
+part: 0.7141812865497076
+=== total acc: 0.7646198830409356 ===
+global: 0.7755847953216374
+part: 0.7054093567251462
+---------------------
+zsl_accuracy increased to 76.46% on cycle  2
+checkpoint saved
+=== total acc: 0.7485380116959064 ===
+global: 0.7536549707602339
+part: 0.716374269005848
+=== total acc: 0.5789473684210527 ===
+global: 0.5840643274853801
+part: 0.7127192982456141
+=== total acc: 0.7529239766081871 ===
+global: 0.7631578947368421
+part: 0.7068713450292398
+=== total acc: 0.7543859649122807 ===
+global: 0.7587719298245614
+part: 0.7171052631578947
+=== total acc: 0.7368421052631579 ===
+global: 0.7536549707602339
+part: 0.6425438596491229
+=== total acc: 0.7470760233918129 ===
+global: 0.77046783625731
+part: 0.672514619883041
+=== total acc: 0.7536549707602339 ===
+global: 0.7719298245614035
+part: 0.7141812865497076
+alpha=0.8, alpha_p=1.0, body_part=4
+===== ntu60_5 with side info =====
+Loading normal dataset
+=== total acc: 0.6608187134502924 ===
+global: 0.6608187134502924
+part: 0.6125730994152047
+---------------------
+zsl_accuracy increased to 66.08% on cycle  0
+checkpoint saved
+=== total acc: 0.3932748538011696 ===
+global: 0.3932748538011696
+part: 0.7141812865497076
+=== total acc: 0.7755847953216374 ===
+global: 0.7755847953216374
+part: 0.7054093567251462
+---------------------
+zsl_accuracy increased to 77.56% on cycle  2
+checkpoint saved
+=== total acc: 0.7536549707602339 ===
+global: 0.7536549707602339
+part: 0.716374269005848
+=== total acc: 0.5840643274853801 ===
+global: 0.5840643274853801
+part: 0.7127192982456141
+=== total acc: 0.7631578947368421 ===
+global: 0.7631578947368421
+part: 0.7068713450292398
+=== total acc: 0.7587719298245614 ===
+global: 0.7587719298245614
+part: 0.7171052631578947
+=== total acc: 0.7536549707602339 ===
+global: 0.7536549707602339
+part: 0.6425438596491229
+=== total acc: 0.77046783625731 ===
+global: 0.77046783625731
+part: 0.672514619883041
+=== total acc: 0.7719298245614035 ===
+global: 0.7719298245614035
+part: 0.7141812865497076

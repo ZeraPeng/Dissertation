@@ -51,7 +51,7 @@ class Encoder(nn.Module):
 
         layers = []
         for i in range(len(layer_sizes)-2):
-            layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))
+            layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))  # layer_sizes: vis_emb_input_size, semantic_latent_size + style_latent_size
             layers.append(nn.Dropout1d())
             layers.append(nn.ReLU())
 
@@ -115,7 +115,7 @@ class MLP(nn.Module):
 
         layers = []
         for i in range(len(layer_sizes)-1):
-            layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))
+            layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))  # layer_sizes: [semantic_latent_size, ss]
             layers.append(nn.ReLU())
 
         self.model = nn.Sequential(*layers)
@@ -124,6 +124,26 @@ class MLP(nn.Module):
     def forward(self, x):
         return self.model(x)
 
+class MLP2(nn.Module):
+    def __init__(self, layer_sizes):
+        super(MLP2, self).__init__()
+
+        layers = []
+        for i in range(len(layer_sizes)-1):
+            layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))  # layer_sizes: [semantic_latent_size, ss]
+            layers.append(nn.ReLU())
+
+        self.model = nn.Sequential(*layers)
+        self.apply(weights_init)
+
+    def forward(self, x):
+        batch_size, seq_len, feat_dim = x.shape  # (2500, 7, 96)
+        x = x.view(-1, feat_dim)  # (2500 * 7, 96)
+        x = self.model(x)  # (2500 * 7, 5)
+        x = x.view(batch_size, seq_len, -1)  # (2500, 7, 5)
+        # x, _ = x.max(dim=1)  #  maxpool, (2500, 5)
+        x = x.mean(dim=1)  #  maxpool, (2500, 5)
+        return x
 
 class Discriminator(nn.Module):
     def __init__(self, input_size) -> None:

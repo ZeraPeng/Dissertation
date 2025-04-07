@@ -1,0 +1,181 @@
+===== ntu60_5 with side info =====
+alpha=0.8, alpha_p=0.3
+2 clf trained separately.
+Loading normal dataset
+=== total acc: 0.6593567251461988 ===
+global: 0.5701754385964912
+part: 0.6849415204678363
+---------------------
+zsl_accuracy increased to 65.94% on cycle  0
+checkpoint saved
+=== total acc: 0.6966374269005848 ===
+global: 0.7083333333333334
+part: 0.7017543859649122
+---------------------
+zsl_accuracy increased to 69.66% on cycle  1
+checkpoint saved
+=== total acc: 0.6812865497076024 ===
+global: 0.7324561403508771
+part: 0.7068713450292398
+=== total acc: 0.6608187134502924 ===
+global: 0.6301169590643275
+part: 0.7090643274853801
+=== total acc: 0.7273391812865497 ===
+global: 0.7653508771929824
+part: 0.7331871345029239
+---------------------
+zsl_accuracy increased to 72.73% on cycle  4
+checkpoint saved
+=== total acc: 0.6769005847953217 ===
+global: 0.7602339181286549
+part: 0.6885964912280702
+=== total acc: 0.7046783625730995 ===
+global: 0.5614035087719298
+part: 0.7192982456140351
+=== total acc: 0.6388888888888888 ===
+global: 0.5789473684210527
+part: 0.7054093567251462
+=== total acc: 0.7141812865497076 ===
+global: 0.7653508771929824
+part: 0.7214912280701754
+=== total acc: 0.6652046783625731 ===
+global: 0.7419590643274854
+part: 0.672514619883041
+===== ntu60_5 with side info =====
+alpha=0.8, alpha_p=0.5
+2 clf trained separately.
+Loading normal dataset
+=== total acc: 0.6337719298245614 ===
+global: 0.5701754385964912
+part: 0.6849415204678363
+---------------------
+zsl_accuracy increased to 63.38% on cycle  0
+checkpoint saved
+=== total acc: 0.7236842105263158 ===
+global: 0.7083333333333334
+part: 0.7017543859649122
+---------------------
+zsl_accuracy increased to 72.37% on cycle  1
+checkpoint saved
+=== total acc: 0.6878654970760234 ===
+global: 0.7324561403508771
+part: 0.7068713450292398
+=== total acc: 0.6228070175438597 ===
+global: 0.6301169590643275
+part: 0.7090643274853801
+=== total acc: 0.7288011695906432 ===
+global: 0.7653508771929824
+part: 0.7331871345029239
+---------------------
+zsl_accuracy increased to 72.88% on cycle  4
+checkpoint saved
+=== total acc: 0.7236842105263158 ===
+global: 0.7602339181286549
+part: 0.6885964912280702
+=== total acc: 0.5219298245614035 ===
+global: 0.5614035087719298
+part: 0.7192982456140351
+=== total acc: 0.64546783625731 ===
+global: 0.5789473684210527
+part: 0.7054093567251462
+=== total acc: 0.7258771929824561 ===
+global: 0.7653508771929824
+part: 0.7214912280701754
+=== total acc: 0.6834795321637427 ===
+global: 0.7419590643274854
+part: 0.672514619883041
+===== ntu60_5 with side info =====
+alpha=0.8, alpha_p=0.8
+2 clf trained separately.
+Loading normal dataset
+=== total acc: 0.5694444444444444 ===
+global: 0.5701754385964912
+part: 0.6849415204678363
+---------------------
+zsl_accuracy increased to 56.94% on cycle  0
+checkpoint saved
+=== total acc: 0.706140350877193 ===
+global: 0.7083333333333334
+part: 0.7017543859649122
+---------------------
+zsl_accuracy increased to 70.61% on cycle  1
+checkpoint saved
+=== total acc: 0.7010233918128655 ===
+global: 0.7324561403508771
+part: 0.7068713450292398
+=== total acc: 0.6308479532163743 ===
+global: 0.6301169590643275
+part: 0.7090643274853801
+=== total acc: 0.7346491228070176 ===
+global: 0.7653508771929824
+part: 0.7331871345029239
+---------------------
+zsl_accuracy increased to 73.46% on cycle  4
+checkpoint saved
+=== total acc: 0.7397660818713451 ===
+global: 0.7602339181286549
+part: 0.6885964912280702
+---------------------
+zsl_accuracy increased to 73.98% on cycle  5
+checkpoint saved
+=== total acc: 0.5409356725146199 ===
+global: 0.5614035087719298
+part: 0.7192982456140351
+=== total acc: 0.5723684210526315 ===
+global: 0.5789473684210527
+part: 0.7054093567251462
+=== total acc: 0.7470760233918129 ===
+global: 0.7653508771929824
+part: 0.7214912280701754
+---------------------
+zsl_accuracy increased to 74.71% on cycle  8
+checkpoint saved
+=== total acc: 0.6988304093567251 ===
+global: 0.7419590643274854
+part: 0.672514619883041
+===== ntu60_5 with side info =====
+alpha=0.8, alpha_p=1.0
+2 clf trained separately.
+Loading normal dataset
+=== total acc: 0.5701754385964912 ===
+global: 0.5701754385964912
+part: 0.6849415204678363
+---------------------
+zsl_accuracy increased to 57.02% on cycle  0
+checkpoint saved
+=== total acc: 0.7083333333333334 ===
+global: 0.7083333333333334
+part: 0.7017543859649122
+---------------------
+zsl_accuracy increased to 70.83% on cycle  1
+checkpoint saved
+=== total acc: 0.7324561403508771 ===
+global: 0.7324561403508771
+part: 0.7068713450292398
+---------------------
+zsl_accuracy increased to 73.25% on cycle  2
+checkpoint saved
+=== total acc: 0.6301169590643275 ===
+global: 0.6301169590643275
+part: 0.7090643274853801
+=== total acc: 0.7653508771929824 ===
+global: 0.7653508771929824
+part: 0.7331871345029239
+---------------------
+zsl_accuracy increased to 76.54% on cycle  4
+checkpoint saved
+=== total acc: 0.7602339181286549 ===
+global: 0.7602339181286549
+part: 0.6885964912280702
+=== total acc: 0.5614035087719298 ===
+global: 0.5614035087719298
+part: 0.7192982456140351
+=== total acc: 0.5789473684210527 ===
+global: 0.5789473684210527
+part: 0.7054093567251462
+=== total acc: 0.7653508771929824 ===
+global: 0.7653508771929824
+part: 0.7214912280701754
+=== total acc: 0.7419590643274854 ===
+global: 0.7419590643274854
+part: 0.672514619883041

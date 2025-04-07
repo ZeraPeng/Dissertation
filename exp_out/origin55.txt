@@ -1,0 +1,12 @@
+===== ntu60_5 origin =====
+Loading normal dataset
+language embeddings loaded.
+---------------------
+zsl_accuracy increased to 50.80% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 58.33% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 77.49% on cycle  2
+checkpoint saved

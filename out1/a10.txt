@@ -1,0 +1,34 @@
+alpha=1.0
+===== ntu60_5 with side info =====
+Loading normal dataset
+global language embeddings loaded.
+part language embeddings loaded.
+---------------------
+zsl_accuracy increased to 22.37% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 55.70% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 76.32% on cycle  2
+checkpoint saved
+===== ntu60_12 with side info =====
+Loading normal dataset
+---------------------
+zsl_accuracy increased to 21.39% on cycle  0
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.40% on cycle  1
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.82% on cycle  3
+checkpoint saved
+---------------------
+zsl_accuracy increased to 34.94% on cycle  6
+checkpoint saved
+---------------------
+zsl_accuracy increased to 38.77% on cycle  7
+checkpoint saved
+---------------------
+zsl_accuracy increased to 39.38% on cycle  8
+checkpoint saved

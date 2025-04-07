@@ -1,0 +1,3 @@
+===== ntu60_5 with side info =====
+alpha=0.8, alpha_p=0.8
+2 clf trained together.
