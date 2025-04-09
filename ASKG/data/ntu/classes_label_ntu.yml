@@ -1,3 +1,4 @@
+classes:
 - drink water
 - eat meal
 - brush teeth
@@ -118,3 +119,9 @@
 - exchange things
 - support somebody
 - rock-paper-scissors
+templates:
+- a human action of {}.
+- someone is {}.
+- a person performing {}.
+- the action of {}.
+- a close-up of someone {}.

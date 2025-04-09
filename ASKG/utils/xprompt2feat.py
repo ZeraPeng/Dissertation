@@ -13,9 +13,6 @@ def get_templates(dataset_name):
     label_file = f"ASKG/data/{dataset_name}/classes_label_{dataset_name}.yml"
     with open(label_file, 'r') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
-    # classes = data['classes']  # list: ['brush hair', ...]
-    # templates = data['templates']  # list: ['a video of a person {}.', ...]
-    # obj_templates = data['obj_templates']
     return data
 
 def get_xprompt(dataset_name):
@@ -76,7 +73,7 @@ def expand_cls_text(cls_text_list):
 
 def text_prompt_old(data):
     # text_aug = ['{}']
-    text_aug = ['a video of a person {}.']
+    text_aug = ['a action of a person {}.']
 
     text_dict = {}
     num_text_aug = len(text_aug)
@@ -90,8 +87,8 @@ def text_prompt_old(data):
 
 def text_prompt(data, dataset: str, num_templates: int, cls_prompt_type: str):
     text = get_xprompt(dataset)
-    templates = get_templates(dataset) # k: classes, templates, obj_templates
-    classes = [i[1] for i in data.classes] # ["c1", "c2", ...]
+    templates = get_templates(dataset)['templates'] # k: classes, templates, obj_templates
+    classes = data # ["c1", "c2", ...]
     num_classes = len(classes)
     n_prompts = [0, 0]
 
@@ -229,23 +226,25 @@ if __name__ == '__main__':
         def __init__(self):
             self.data = type('', (), {})()
             self.data.dataset = 'ntu'
+            self.data.num_templates = 1
 
-    # Create a mock dataset class
-    class TrainData:
-        def __init__(self):
-            self.classes = [(i, f"class_{i}") for i in range(120)]  # Assuming NTU120 has 120 classes
-    
-    # Initialize necessary objects
     config = Config()
-    train_data = TrainData()
-    
+    # Load dataset
+    dataset_name = config.data.dataset
+    data = get_templates(dataset_name)["classes"]
+
     # Load CLIP model
     device = "cuda" if torch.cuda.is_available() else "cpu"
     clip_model, _ = clip.load("ViT-B/32", device=device)
     
     # Process text features
     classes_feats_file = "ASKG/data/classes_feats_askg_ntu.tar"
-    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = text_prompt(train_data, config.data.dataset, num_templates=120, cls_prompt_type='xmix')
+    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = text_prompt(data, config.data.dataset, num_templates=config.data.num_templates, cls_prompt_type='xmix')
+    ipdb.set_trace()
+    # Save cls_text_dict to a YAML file
+    cls_text_dict_file = "ASKG/data/cls_text_dict.yml"
+    with open(cls_text_dict_file, 'w') as f:
+        yaml.dump(cls_text_dict, f)
     
     # Calculate number of classes and text augmentations
     n_classes = int(cls_tokenized.size(0) / (n_templates * n_prompts[1]))
