@@ -6,7 +6,6 @@
     xprompt_ao:
     - where water is consumed
     - where a glass contains water
-    idx: 0
 - eat meal:
     label: eat meal
     xprompt_aa:
@@ -15,7 +14,6 @@
     xprompt_ao:
     - where a meal is consumed
     - where utensils are used
-    idx: 1
 - brush teeth:
     label: brush teeth
     xprompt_aa:
@@ -25,7 +23,6 @@
     xprompt_ao:
     - involving a toothbrush
     - where toothpaste is applied to the toothbrush
-    idx: 2
 - brush hair:
     label: brush hair
     xprompt_aa:
@@ -35,7 +32,6 @@
     xprompt_ao:
     - where a hairbrush is used for this action
     - where hair is styled by this action
-    idx: 3
 - drop:
     label: drop
     xprompt_aa:
@@ -43,7 +39,6 @@
     xprompt_ao:
     - where an item drops on it
     - where it falls onto the ground
-    idx: 4
 - pick up:
     label: pick up
     xprompt_aa:
@@ -52,7 +47,6 @@
     xprompt_ao:
     - what is picked up from the object
     - what is the source of pick up
-    idx: 5
 - throw:
     label: throw
     xprompt_aa:
@@ -61,7 +55,6 @@
     xprompt_ao:
     - where a ball is thrown
     - where an object is thrown
-    idx: 6
 - sit down:
     label: sit down
     xprompt_aa:
@@ -70,7 +63,6 @@
     xprompt_ao:
     - that involves using a chair
     - that involves using the floor
-    idx: 7
 - stand up:
     label: stand up
     xprompt_aa:
@@ -79,7 +71,6 @@
     xprompt_ao:
     - where a chair is used for standing up
     - where the floor supports standing up
-    idx: 8
 - clapping:
     label: clapping
     xprompt_aa:
@@ -88,7 +79,6 @@
     xprompt_ao:
     - how hands perform clapping
     - how the audience responds to clapping
-    idx: 9
 - reading:
     label: reading
     xprompt_aa:
@@ -97,7 +87,6 @@
     xprompt_ao:
     - involving a book
     - involving an article
-    idx: 10
 - writing:
     label: writing
     xprompt_aa:
@@ -107,7 +96,6 @@
     xprompt_ao:
     - using a pen for writing
     - where paper receives writing
-    idx: 11
 - tear up paper:
     label: tear up paper
     xprompt_aa:
@@ -117,7 +105,6 @@
     - where discarding follows ripping
     xprompt_ao:
     - involves tearing paper
-    idx: 12
 - put on jacket:
     label: put on jacket
     xprompt_aa:
@@ -125,28 +112,24 @@
     - where opening precedes wearing
     xprompt_ao:
     - where a jacket is worn
-    idx: 13
 - take off jacket:
     label: take off jacket
     xprompt_aa:
     - where removing precedes discarding
     xprompt_ao:
     - involving a jacket
-    idx: 14
 - put on a shoe:
     label: put on a shoe
     xprompt_aa:
     - where picking precedes placing
     xprompt_ao:
     - which is worn
-    idx: 15
 - take off a shoe:
     label: take off a shoe
     xprompt_aa:
     - where unfastening precedes removing
     xprompt_ao:
     - which is taken off by taking off a shoe
-    idx: 16
 - put on glasses:
     label: put on glasses
     xprompt_aa:
@@ -155,14 +138,12 @@
     - where adjusting follows positioning
     xprompt_ao:
     - where glasses are used in putting on glasses
-    idx: 17
 - take off glasses:
     label: take off glasses
     xprompt_aa:
     - where removing precedes lowering
     xprompt_ao:
     - how glasses are taken off
-    idx: 18
 - put on a hat/cap:
     label: put on a hat/cap
     xprompt_aa:
@@ -170,7 +151,6 @@
     xprompt_ao:
     - where a hat is worn on
     - where the head has a hat
-    idx: 19
 - take off a hat/cap:
     label: take off a hat/cap
     xprompt_aa:
@@ -178,7 +158,6 @@
     xprompt_ao:
     - worn by hat
     - worn by cap
-    idx: 20
 - cheer up:
     label: cheer up
     xprompt_aa:
@@ -187,7 +166,6 @@
     xprompt_ao:
     - where a friend encourages to cheer up
     - where a joke lightens to cheer up
-    idx: 21
 - hand waving:
     label: hand waving
     xprompt_aa:
@@ -196,7 +174,6 @@
     - using the hand for waving
     - how the hand moves during hand waving
     - how the air is affected by hand waving
-    idx: 22
 - kicking something:
     label: kicking something
     xprompt_aa:
@@ -205,7 +182,6 @@
     xprompt_ao:
     - kicking a ball
     - targeting a goal
-    idx: 23
 - reach into pocket:
     label: reach into pocket
     xprompt_aa:
@@ -214,7 +190,6 @@
     xprompt_ao:
     - containing the pocket
     - performed by the hand
-    idx: 24
 - hopping:
     label: hopping
     xprompt_aa:
@@ -222,7 +197,6 @@
     xprompt_ao:
     - where the ground supports hopping
     - where the surface facilitates hopping
-    idx: 25
 - jump up:
     label: jump up
     xprompt_aa:
@@ -231,7 +205,6 @@
     xprompt_ao:
     - where ground supports the action
     - which reaches the air
-    idx: 26
 - phone call:
     label: phone call
     xprompt_aa:
@@ -240,7 +213,6 @@
     xprompt_ao:
     - involving the use of a phone
     - where the ear receives sound from the phone call
-    idx: 27
 - play with phone/tablet:
     label: play with phone/tablet
     xprompt_aa:
@@ -250,14 +222,12 @@
     xprompt_ao:
     - involving the use of a phone
     - involving the use of a tablet
-    idx: 28
 - type on a keyboard:
     label: type on a keyboard
     xprompt_aa:
     - where pressing precedes releasing
     xprompt_ao:
     - using a keyboard for typing
-    idx: 29
 - point to something:
     label: point to something
     xprompt_aa:
@@ -266,7 +236,6 @@
     xprompt_ao:
     - where a finger is used to point to something
     - where an object being pointed at is pointed at
-    idx: 30
 - taking a selfie:
     label: taking a selfie
     xprompt_aa:
@@ -275,35 +244,30 @@
     xprompt_ao:
     - using a smartphone for taking a selfie
     - using a camera for taking a selfie
-    idx: 31
 - check time (from watch):
     label: check time (from watch)
     xprompt_aa:
     - where looking precedes interpreting
     xprompt_ao:
     - which involves using a watch to check time
-    idx: 32
 - rub two hands:
     label: rub two hands
     xprompt_aa:
     - where moving precedes applying
     xprompt_ao:
     - where hands are used in the action
-    idx: 33
 - nod head/bow:
     label: nod head/bow
     xprompt_aa:
     - where nodding precedes bowing
     xprompt_ao:
     - involving the head
-    idx: 34
 - shake head:
     label: shake head
     xprompt_aa:
     - where shaking precedes moving
     xprompt_ao:
     - where the head is involved in shaking head
-    idx: 35
 - wipe face:
     label: wipe face
     xprompt_aa:
@@ -311,7 +275,6 @@
     xprompt_ao:
     - using a towel to wipe face
     - where water assists in wiping face
-    idx: 36
 - salute:
     label: salute
     xprompt_aa:
@@ -319,7 +282,6 @@
     xprompt_ao:
     - where hand raises to salute
     - where head nods during salute
-    idx: 37
 - put palms together:
     label: put palms together
     xprompt_aa:
@@ -327,14 +289,12 @@
     xprompt_ao:
     - how palms are involved
     - what prayer position represents
-    idx: 38
 - cross hands in front:
     label: cross hands in front
     xprompt_aa:
     - where crossing precedes positioning
     xprompt_ao:
     - where hands are used to cross hands in front
-    idx: 39
 - sneeze/cough:
     label: sneeze/cough
     xprompt_aa:
@@ -343,7 +303,6 @@
     xprompt_ao:
     - where tissue is used for sneeze/cough
     - where hand covers sneeze/cough
-    idx: 40
 - staggering:
     label: staggering
     xprompt_aa:
@@ -352,7 +311,6 @@
     xprompt_ao:
     - where the ground supports staggering
     - how balance affects staggering
-    idx: 41
 - falling down:
     label: falling down
     xprompt_aa:
@@ -361,7 +319,6 @@
     xprompt_ao:
     - where the ground receives falling down
     - where the surface supports falling down
-    idx: 42
 - headache:
     label: headache
     xprompt_aa:
@@ -370,7 +327,6 @@
     xprompt_ao:
     - what alleviates headache
     - what provides comfort for headache
-    idx: 43
 - chest pain:
     label: chest pain
     xprompt_aa:
@@ -379,7 +335,6 @@
     xprompt_ao:
     - where the chest experiences chest pain
     - where the heart is affected by chest pain
-    idx: 44
 - back pain:
     label: back pain
     xprompt_aa:
@@ -388,14 +343,12 @@
     xprompt_ao:
     - where the back experiences back pain
     - where the spine supports back pain
-    idx: 45
 - neck pain:
     label: neck pain
     xprompt_aa:
     - where stretching precedes relaxation
     xprompt_ao:
     - where neck experiences neck pain
-    idx: 46
 - nausea/vomiting:
     label: nausea/vomiting
     xprompt_aa:
@@ -403,7 +356,6 @@
     xprompt_ao:
     - caused by food
     - caused by liquid
-    idx: 47
 - fan self:
     label: fan self
     xprompt_aa:
@@ -411,7 +363,6 @@
     xprompt_ao:
     - using a fan
     - where air provides the fan
-    idx: 48
 - punch/slap:
     label: punch/slap
     xprompt_aa:
@@ -420,7 +371,6 @@
     xprompt_ao:
     - which uses a fist
     - where the target receives the punch/slap
-    idx: 49
 - kicking:
     label: kicking
     xprompt_aa:
@@ -429,7 +379,6 @@
     xprompt_ao:
     - how a ball interacts with kicking
     - what is targeted in kicking
-    idx: 50
 - pushing:
     label: pushing
     xprompt_aa:
@@ -438,7 +387,6 @@
     xprompt_ao:
     - how a door interacts with pushing
     - how a box interacts with pushing
-    idx: 51
 - pat on back:
     label: pat on back
     xprompt_aa:
@@ -446,7 +394,6 @@
     xprompt_ao:
     - where the back receives a pat on the back
     - where the hand performs the pat on back
-    idx: 52
 - point finger:
     label: point finger
     xprompt_aa:
@@ -454,7 +401,6 @@
     xprompt_ao:
     - using the finger to point
     - where a target is pointed at by the finger
-    idx: 53
 - hugging:
     label: hugging
     xprompt_aa:
@@ -464,7 +410,6 @@
     xprompt_ao:
     - where arms are used for hugging
     - involving a person
-    idx: 54
 - giving object:
     label: giving object
     xprompt_aa:
@@ -472,7 +417,6 @@
     xprompt_ao:
     - where a gift is given to the giving object
     - where the recipient receives the giving object
-    idx: 55
 - thumb down:
     label: thumb down
     xprompt_aa:
@@ -480,14 +424,12 @@
     xprompt_ao:
     - how thumb performs thumb down
     - how gesture represents thumb down
-    idx: 69
 - touch pocket:
     label: touch pocket
     xprompt_aa:
     - where reaching precedes pressing
     xprompt_ao:
     - where a pocket is touched
-    idx: 56
 - shaking hands:
     label: shaking hands
     xprompt_aa:
@@ -497,7 +439,6 @@
     xprompt_ao:
     - involving the use of hands
     - performed by a person
-    idx: 57
 - walking towards:
     label: walking towards
     xprompt_aa:
@@ -506,7 +447,6 @@
     xprompt_ao:
     - where a path facilitates this action
     - where a destination is targeted for walking towards
-    idx: 58
 - walking apart:
     label: walking apart
     xprompt_aa:
@@ -514,21 +454,18 @@
     xprompt_ao:
     - where space occupies walking apart
     - where distance increases with walking apart
-    idx: 59
 - put on headphone:
     label: put on headphone
     xprompt_aa:
     - where grabbing precedes adjusting
     xprompt_ao:
     - used in put on headphone
-    idx: 60
 - take off headphone:
     label: take off headphone
     xprompt_aa:
     - where grasping precedes pulling
     xprompt_ao:
     - where headphone is removed
-    idx: 61
 - shoot at basket:
     label: shoot at basket
     xprompt_aa:
@@ -538,14 +475,12 @@
     xprompt_ao:
     - where a basketball is shot at
     - where a hoop is targeted by the action
-    idx: 62
 - bounce ball:
     label: bounce ball
     xprompt_aa:
     - where throwing precedes hitting
     xprompt_ao:
     - involving a ball
-    idx: 63
 - tennis bat swing:
     label: tennis bat swing
     xprompt_aa:
@@ -554,7 +489,6 @@
     xprompt_ao:
     - using a tennis bat for the swing
     - targeting the tennis bat swing with a tennis ball
-    idx: 64
 - juggle table tennis ball:
     label: juggle table tennis ball
     xprompt_aa:
@@ -564,7 +498,6 @@
     - where repeating follows catching
     xprompt_ao:
     - involving a table tennis ball
-    idx: 65
 - hush:
     label: hush
     xprompt_aa:
@@ -572,14 +505,12 @@
     xprompt_ao:
     - that dampens sound
     - that is influenced by the environment
-    idx: 66
 - flick hair:
     label: flick hair
     xprompt_aa:
     - where flick precedes flicking hair
     xprompt_ao:
     - how hair is flicked
-    idx: 67
 - thumb up:
     label: thumb up
     xprompt_aa:
@@ -587,7 +518,6 @@
     xprompt_ao:
     - involving the thumb
     - supported by the hand
-    idx: 68
 - make OK sign:
     label: make OK sign
     xprompt_aa:
@@ -595,7 +525,6 @@
     xprompt_ao:
     - using the hand to make the OK sign
     - where the fingers form the OK sign
-    idx: 70
 - make victory sign:
     label: make victory sign
     xprompt_aa:
@@ -603,7 +532,6 @@
     xprompt_ao:
     - using hand to make the victory sign
     - forming the victory sign with fingers
-    idx: 71
 - staple book:
     label: staple book
     xprompt_aa:
@@ -612,7 +540,6 @@
     xprompt_ao:
     - using a staple book
     - where a book is stapled by a staple book
-    idx: 72
 - counting money:
     label: counting money
     xprompt_aa:
@@ -620,7 +547,6 @@
     xprompt_ao:
     - involving money
     - where a table supports counting money
-    idx: 73
 - cutting nails:
     label: cutting nails
     xprompt_aa:
@@ -630,7 +556,6 @@
     xprompt_ao:
     - using a nail clipper
     - where nails are acted upon
-    idx: 74
 - cutting paper:
     label: cutting paper
     xprompt_aa:
@@ -638,7 +563,6 @@
     xprompt_ao:
     - where paper is cut by cutting paper
     - which involves scissors
-    idx: 75
 - snap fingers:
     label: snap fingers
     xprompt_aa:
@@ -647,14 +571,12 @@
     xprompt_ao:
     - involving fingers
     - resulting in a sound
-    idx: 76
 - open bottle:
     label: open bottle
     xprompt_aa:
     - where twisting precedes pulling
     xprompt_ao:
     - where a bottle undergoes opening
-    idx: 77
 - sniff/smell:
     label: sniff/smell
     xprompt_aa:
@@ -662,7 +584,6 @@
     xprompt_ao:
     - involving air
     - detecting scent
-    idx: 78
 - squat down:
     label: squat down
     xprompt_aa:
@@ -671,7 +592,6 @@
     xprompt_ao:
     - where the ground supports squatting down
     - weight is held during squatting down
-    idx: 79
 - toss a coin:
     label: toss a coin
     xprompt_aa:
@@ -679,14 +599,12 @@
     - where flipping precedes releasing
     xprompt_ao:
     - involving a coin
-    idx: 80
 - fold paper:
     label: fold paper
     xprompt_aa:
     - where crease precedes bend
     xprompt_ao:
     - where paper is folded in
-    idx: 81
 - ball up paper:
     label: ball up paper
     xprompt_aa:
@@ -694,7 +612,6 @@
     xprompt_ao:
     - how paper is manipulated
     - what is used for balling up paper
-    idx: 82
 - play magic cube:
     label: play magic cube
     xprompt_aa:
@@ -703,7 +620,6 @@
     xprompt_ao:
     - involving the use of a magic cube
     - involving manipulation by hands
-    idx: 83
 - apply cream on face:
     label: apply cream on face
     xprompt_aa:
@@ -712,7 +628,6 @@
     xprompt_ao:
     - where cream is applied on the face
     - where the face receives cream
-    idx: 84
 - apply cream on hand:
     label: apply cream on hand
     xprompt_aa:
@@ -720,21 +635,18 @@
     xprompt_ao:
     - where cream is applied on
     - where the hand receives the application
-    idx: 85
 - put on bag:
     label: put on bag
     xprompt_aa:
     - where picking precedes adjusting
     xprompt_ao:
     - using a bag to put on
-    idx: 86
 - take off bag:
     label: take off bag
     xprompt_aa:
     - where unfastening precedes lifting
     xprompt_ao:
     - where a bag is taken off
-    idx: 87
 - put object into bag:
     label: put object into bag
     xprompt_aa:
@@ -742,7 +654,6 @@
     xprompt_ao:
     - how an object is put into a bag
     - where a bag receives the put object
-    idx: 88
 - take object out of bag:
     label: take object out of bag
     xprompt_aa:
@@ -750,7 +661,6 @@
     xprompt_ao:
     - where an object is taken out of
     - that a bag contains
-    idx: 89
 - open a box:
     label: open a box
     xprompt_aa:
@@ -759,7 +669,6 @@
     xprompt_ao:
     - containing the action of opening a box
     - where the lid is part of the box
-    idx: 90
 - move heavy objects:
     label: move heavy objects
     xprompt_aa:
@@ -769,14 +678,12 @@
     xprompt_ao:
     - furniture that moves heavy objects
     - box that moves heavy objects
-    idx: 91
 - shake fist:
     label: shake fist
     xprompt_aa:
     - where raising precedes moving
     xprompt_ao:
     - fist performs shake fist
-    idx: 92
 - throw up cap/hat:
     label: throw up cap/hat
     xprompt_aa:
@@ -784,7 +691,6 @@
     xprompt_ao:
     - how a cap is thrown up
     - how a hat is thrown up
-    idx: 93
 - capitulate:
     label: capitulate
     xprompt_aa:
@@ -793,14 +699,12 @@
     xprompt_ao:
     - when opponent yields to it
     - when terms dictate it
-    idx: 94
 - cross arms:
     label: cross arms
     xprompt_aa:
     - where crossing precedes holding
     xprompt_ao:
     - arms are manipulated during this action
-    idx: 95
 - arm circles:
     label: arm circles
     xprompt_aa:
@@ -808,7 +712,6 @@
     xprompt_ao:
     - performing arm circles with arms
     - requiring space for arm circles
-    idx: 96
 - arm swings:
     label: arm swings
     xprompt_aa:
@@ -817,7 +720,6 @@
     xprompt_ao:
     - how the arm performs arm swings
     - how air interacts with arm swings
-    idx: 97
 - run on the spot:
     label: run on the spot
     xprompt_aa:
@@ -827,7 +729,6 @@
     xprompt_ao:
     - where ground is used for running on the spot
     - where shoes are worn during running on the spot
-    idx: 98
 - butt kicks:
     label: butt kicks
     xprompt_aa:
@@ -835,7 +736,6 @@
     xprompt_ao:
     - where the floor supports butt kicks
     - where legs perform butt kicks
-    idx: 99
 - cross toe touch:
     label: cross toe touch
     xprompt_aa:
@@ -844,7 +744,6 @@
     xprompt_ao:
     - where toes are involved
     - where the floor supports the action
-    idx: 100
 - side kick:
     label: side kick
     xprompt_aa:
@@ -853,7 +752,6 @@
     xprompt_ao:
     - where the leg performs the side kick
     - where the foot strikes during a side kick
-    idx: 101
 - yawn:
     label: yawn
     xprompt_aa:
@@ -862,7 +760,6 @@
     xprompt_ao:
     - involving air
     - producing a sound
-    idx: 102
 - stretch oneself:
     label: stretch oneself
     xprompt_aa:
@@ -871,7 +768,6 @@
     xprompt_ao:
     - involving the body
     - engaging muscles
-    idx: 103
 - blow nose:
     label: blow nose
     xprompt_aa:
@@ -879,7 +775,6 @@
     xprompt_ao:
     - using tissue for blowing nose
     - how hand assists in blowing nose
-    idx: 104
 - hit with object:
     label: hit with object
     xprompt_aa:
@@ -888,14 +783,12 @@
     xprompt_ao:
     - hitting a ball with an object
     - using a bat in hitting with an object
-    idx: 105
 - wield knife:
     label: wield knife
     xprompt_aa:
     - where grasping precedes swinging
     xprompt_ao:
     - involving the use of a knife
-    idx: 106
 - knock over:
     label: knock over
     xprompt_aa:
@@ -904,28 +797,24 @@
     xprompt_ao:
     - how a glass is knocked over
     - what is involved in knocking over
-    idx: 107
 - grab stuff:
     label: grab stuff
     xprompt_aa:
     - where reaching precedes holding
     xprompt_ao:
     - how stuff is grabbed
-    idx: 108
 - shoot with gun:
     label: shoot with gun
     xprompt_aa:
     - where aiming precedes pulling
     xprompt_ao:
     - involving the use of a gun
-    idx: 109
 - step on foot:
     label: step on foot
     xprompt_aa:
     - where lifting precedes placing
     xprompt_ao:
     - involving stepping on a foot
-    idx: 110
 - high-five:
     label: high-five
     xprompt_aa:
@@ -934,7 +823,6 @@
     xprompt_ao:
     - where a hand performs a high-five
     - where a palm touches during a high-five
-    idx: 111
 - cheers and drink:
     label: cheers and drink
     xprompt_aa:
@@ -942,7 +830,6 @@
     xprompt_ao:
     - where drink consumes cheers and drink
     - where glass holds cheers and drink
-    idx: 112
 - carry object:
     label: carry object
     xprompt_aa:
@@ -951,7 +838,6 @@
     xprompt_ao:
     - how a box carries the object
     - how a bag carries the object
-    idx: 113
 - take a photo:
     label: take a photo
     xprompt_aa:
@@ -961,7 +847,6 @@
     xprompt_ao:
     - where a camera is used for taking a photo
     - where a subject is captured in the photo
-    idx: 114
 - follow:
     label: follow
     xprompt_aa:
@@ -969,7 +854,6 @@
     xprompt_ao:
     - where a path is followed
     - where a leader guides the follower
-    idx: 115
 - whisper:
     label: whisper
     xprompt_aa:
@@ -977,7 +861,6 @@
     xprompt_ao:
     - where the ear receives a whisper
     - which is produced by the voice
-    idx: 116
 - exchange things:
     label: exchange things
     xprompt_aa:
@@ -985,7 +868,6 @@
     xprompt_ao:
     - where things are exchanged
     - where items are exchanged
-    idx: 117
 - support somebody:
     label: support somebody
     xprompt_aa:
@@ -994,7 +876,6 @@
     xprompt_ao:
     - supporting a person
     - using an object for support
-    idx: 118
 - rock-paper-scissors:
     label: rock-paper-scissors
     xprompt_aa:
@@ -1004,4 +885,3 @@
     - where rock is played in rock-paper-scissors
     - where paper is played in rock-paper-scissors
     - where scissors are played in rock-paper-scissors
-    idx: 119

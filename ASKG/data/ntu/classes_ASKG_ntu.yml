@@ -12,6 +12,8 @@ drink water:
   sub_act_rel_triples:
   - <pour, precedes, lift>
   - <lift, precedes, sip>
+  label: drink water
+  idx: 0
 eat meal:
   obj_li:
   - meal
@@ -26,6 +28,8 @@ eat meal:
   sub_act_rel_triples:
   - <prepare, precedes, chew>
   - <chew, precedes, swallow>
+  label: eat meal
+  idx: 1
 brush teeth:
   obj_li:
   - toothbrush
@@ -41,6 +45,8 @@ brush teeth:
   - <apply, precedes, brush>
   - <brush, follows, apply>
   - <brush, precedes, rinse>
+  label: brush teeth
+  idx: 2
 brush hair:
   obj_li:
   - hairbrush
@@ -56,6 +62,8 @@ brush hair:
   - <hold, precedes, brush>
   - <brush, follows, hold>
   - <brush, precedes, style>
+  label: brush hair
+  idx: 3
 drop:
   label: drop
   obj_li:
@@ -69,6 +77,7 @@ drop:
   - fall
   sub_act_rel_triples:
   - <let go, precedes, fall>
+  idx: 4
 pick up:
   obj_li:
   - object: object
@@ -83,6 +92,8 @@ pick up:
   sub_act_rel_triples:
   - <bend, "precedes", grasp>
   - <grasp, "precedes", lift>
+  label: pick up
+  idx: 5
 throw:
   label: throw
   obj_li:
@@ -98,6 +109,7 @@ throw:
   sub_act_rel_triples:
   - <lift, precedes, aim>
   - <aim, precedes, release>
+  idx: 6
 sit down:
   obj_li:
   - chair
@@ -112,6 +124,8 @@ sit down:
   sub_act_rel_triples:
   - <approach, precedes, lower>
   - <lower, precedes, rest>
+  label: sit down
+  idx: 7
 stand up:
   obj_li:
   - chair
@@ -125,6 +139,8 @@ stand up:
   sub_act_rel_triples:
   - <push, precedes, lift>
   - <lift, follows, push>
+  label: stand up
+  idx: 8
 clapping:
   obj_li:
   - hands
@@ -139,6 +155,8 @@ clapping:
   sub_act_rel_triples:
   - <raise, precedes, bring together>
   - <bring together, follows, create sound>
+  label: clapping
+  idx: 9
 reading:
   obj_li:
   - book
@@ -153,6 +171,8 @@ reading:
   sub_act_rel_triples:
   - <scan, precedes, comprehend>
   - <comprehend, precedes, analyze>
+  label: reading
+  idx: 10
 writing:
   label: writing
   obj_li:
@@ -169,6 +189,7 @@ writing:
   - <hold, precedes, write>
   - <write, follows, hold>
   - <revise, follows, write>
+  idx: 11
 tear up paper:
   obj_li:
   - paper
@@ -183,6 +204,8 @@ tear up paper:
   - <rip, follows, grab>
   - <rip, precedes, discard>
   - <discard, follows, rip>
+  label: tear up paper
+  idx: 12
 put on jacket:
   obj_li:
   - jacket
@@ -195,6 +218,8 @@ put on jacket:
   sub_act_rel_triples:
   - <pick, precedes, open>
   - <open, precedes, wear>
+  label: put on jacket
+  idx: 13
 take off jacket:
   obj_li:
   - jacket
@@ -205,6 +230,8 @@ take off jacket:
   - discard
   sub_act_rel_triples:
   - <remove, precedes, discard>
+  label: take off jacket
+  idx: 14
 put on a shoe:
   obj_li:
   - shoe
@@ -215,6 +242,8 @@ put on a shoe:
   - place
   sub_act_rel_triples:
   - <pick, precedes, place>
+  label: put on a shoe
+  idx: 15
 take off a shoe:
   obj_li:
   - shoe
@@ -225,6 +254,8 @@ take off a shoe:
   - remove
   sub_act_rel_triples:
   - <unfasten, precedes, remove>
+  label: take off a shoe
+  idx: 16
 put on glasses:
   obj_li:
   - glasses
@@ -238,6 +269,8 @@ put on glasses:
   - <pick, precedes, position>
   - <position, follows, pick>
   - <adjust, follows, position>
+  label: put on glasses
+  idx: 17
 take off glasses:
   obj_li:
   - glasses
@@ -248,6 +281,8 @@ take off glasses:
   - lower
   sub_act_rel_triples:
   - <remove, precedes, lower>
+  label: take off glasses
+  idx: 18
 put on a hat/cap:
   obj_li:
   - hat
@@ -260,6 +295,8 @@ put on a hat/cap:
   - place
   sub_act_rel_triples:
   - <pick, precedes, place>
+  label: put on a hat/cap
+  idx: 19
 take off a hat/cap:
   obj_li:
   - hat
@@ -272,6 +309,8 @@ take off a hat/cap:
   - lower
   sub_act_rel_triples:
   - <remove, precedes, lower>
+  label: take off a hat/cap
+  idx: 20
 cheer up:
   obj_li:
   - friend
@@ -286,6 +325,8 @@ cheer up:
   sub_act_rel_triples:
   - <tell, precedes, smile>
   - <smile, follows, listen>
+  label: cheer up
+  idx: 21
 hand waving:
   label: hand waving
   obj_li:
@@ -300,6 +341,7 @@ hand waving:
   - move
   sub_act_rel_triples:
   - <wave, precedes, move>
+  idx: 22
 kicking something:
   obj_li:
   - ball
@@ -314,6 +356,8 @@ kicking something:
   sub_act_rel_triples:
   - <approach, precedes, swing>
   - <swing, precedes, strike>
+  label: kicking something
+  idx: 23
 reach into pocket:
   obj_li:
   - pocket
@@ -328,6 +372,8 @@ reach into pocket:
   sub_act_rel_triples:
   - <reach, precedes, grasp>
   - <grasp, precedes, retrieve>
+  label: reach into pocket
+  idx: 24
 hopping:
   label: hopping
   obj_li:
@@ -341,6 +387,7 @@ hopping:
   - land
   sub_act_rel_triples:
   - <jump, precedes, land>
+  idx: 25
 jump up:
   obj_li:
   - ground
@@ -355,6 +402,8 @@ jump up:
   sub_act_rel_triples:
   - <bend, precedes, propel>
   - <propel, precedes, elevate>
+  label: jump up
+  idx: 26
 phone call:
   obj_li:
   - phone
@@ -369,6 +418,8 @@ phone call:
   sub_act_rel_triples:
   - <dial, precedes, talk>
   - <talk, follows, listen>
+  label: phone call
+  idx: 27
 play with phone/tablet:
   obj_li:
   - phone
@@ -384,6 +435,8 @@ play with phone/tablet:
   - <swipe, "precedes", "tap">
   - <tap, "follows", "swipe">
   - <tap, "precedes", "scroll">
+  label: play with phone/tablet
+  idx: 28
 type on a keyboard:
   obj_li:
   - keyboard
@@ -394,6 +447,8 @@ type on a keyboard:
   - release
   sub_act_rel_triples:
   - <press, precedes, release>
+  label: type on a keyboard
+  idx: 29
 point to something:
   obj_li:
   - object: finger
@@ -407,6 +462,8 @@ point to something:
   sub_act_rel_triples:
   - <extend, precedes, indicate>
   - <indicate, follows, extend>
+  label: point to something
+  idx: 30
 taking a selfie:
   obj_li:
   - smartphone
@@ -421,6 +478,8 @@ taking a selfie:
   sub_act_rel_triples:
   - <hold, precedes, capture>
   - <capture, follows, smile>
+  label: taking a selfie
+  idx: 31
 check time (from watch):
   obj_li:
   - watch
@@ -431,6 +490,8 @@ check time (from watch):
   - interpret
   sub_act_rel_triples:
   - <look, precedes, interpret>
+  label: check time (from watch)
+  idx: 32
 rub two hands:
   label: rub two hands
   obj_li:
@@ -442,6 +503,7 @@ rub two hands:
   - apply
   sub_act_rel_triples:
   - <move, precedes, apply>
+  idx: 33
 nod head/bow:
   obj_li:
   - head
@@ -452,6 +514,8 @@ nod head/bow:
   - bow
   sub_act_rel_triples:
   - <nod, precedes, bow>
+  label: nod head/bow
+  idx: 34
 shake head:
   obj_li:
   - head
@@ -462,6 +526,8 @@ shake head:
   - move
   sub_act_rel_triples:
   - <shake, precedes, move>
+  label: shake head
+  idx: 35
 wipe face:
   obj_li:
   - towel
@@ -474,6 +540,8 @@ wipe face:
   - wipe
   sub_act_rel_triples:
   - <wet, precedes, wipe>
+  label: wipe face
+  idx: 36
 salute:
   obj_li:
   - hand
@@ -486,6 +554,8 @@ salute:
   - nod
   sub_act_rel_triples:
   - <raise, precedes, nod>
+  label: salute
+  idx: 37
 put palms together:
   obj_li:
   - palms
@@ -498,6 +568,8 @@ put palms together:
   - press
   sub_act_rel_triples:
   - <bring, precedes, press>
+  label: put palms together
+  idx: 38
 cross hands in front:
   label: cross hands in front
   obj_li:
@@ -509,6 +581,7 @@ cross hands in front:
   - position
   sub_act_rel_triples:
   - <cross, precedes, position>
+  idx: 39
 sneeze/cough:
   label: sneeze/cough
   obj_li:
@@ -524,6 +597,7 @@ sneeze/cough:
   sub_act_rel_triples:
   - <inhale, precedes, expel>
   - <expel, follows, cover>
+  idx: 40
 staggering:
   label: staggering
   obj_li:
@@ -539,6 +613,7 @@ staggering:
   sub_act_rel_triples:
   - <lose, precedes, regain>
   - <regain, follows, wobble>
+  idx: 41
 falling down:
   label: falling down
   obj_li:
@@ -554,6 +629,7 @@ falling down:
   sub_act_rel_triples:
   - <lose balance, precedes, descend>
   - <descend, follows, impact>
+  idx: 42
 headache:
   label: headache
   obj_li:
@@ -569,6 +645,7 @@ headache:
   sub_act_rel_triples:
   - <rest, precedes, take>
   - <take, follows, avoid>
+  idx: 43
 chest pain:
   label: chest pain
   obj_li:
@@ -584,6 +661,7 @@ chest pain:
   sub_act_rel_triples:
   - <feel, precedes, react>
   - <react, precedes, assess>
+  idx: 44
 back pain:
   label: back pain
   obj_li:
@@ -599,6 +677,7 @@ back pain:
   sub_act_rel_triples:
   - <lift, precedes, bend>
   - <bend, follows, stretch>
+  idx: 45
 neck pain:
   label: neck pain
   obj_li:
@@ -610,6 +689,7 @@ neck pain:
   - relax
   sub_act_rel_triples:
   - <stretch, precedes, relax>
+  idx: 46
 nausea/vomiting:
   obj_li:
   - food
@@ -622,6 +702,8 @@ nausea/vomiting:
   - retch
   sub_act_rel_triples:
   - <expel, follows, retch>
+  label: nausea/vomiting
+  idx: 47
 fan self:
   label: fan self
   obj_li:
@@ -635,6 +717,7 @@ fan self:
   - direct
   sub_act_rel_triples:
   - <wave, precedes, direct>
+  idx: 48
 punch/slap:
   obj_li:
   - fist
@@ -649,6 +732,8 @@ punch/slap:
   sub_act_rel_triples:
   - <raise, precedes, strike>
   - <strike, follows, retract>
+  label: punch/slap
+  idx: 49
 kicking:
   label: kicking
   obj_li:
@@ -664,6 +749,7 @@ kicking:
   sub_act_rel_triples:
   - <approach, precedes, swing>
   - <swing, follows, follow-through>
+  idx: 50
 pushing:
   obj_li:
   - object: door
@@ -678,6 +764,8 @@ pushing:
   sub_act_rel_triples:
   - <apply force, precedes, move>
   - <move, follows, maintain pressure>
+  label: pushing
+  idx: 51
 pat on back:
   obj_li:
   - back
@@ -690,6 +778,8 @@ pat on back:
   - apply
   sub_act_rel_triples:
   - <touch, precedes, apply>
+  label: pat on back
+  idx: 52
 point finger:
   obj_li:
   - finger
@@ -702,6 +792,8 @@ point finger:
   - aim
   sub_act_rel_triples:
   - <extend, precedes, aim>
+  label: point finger
+  idx: 53
 hugging:
   label: hugging
   obj_li:
@@ -718,6 +810,7 @@ hugging:
   - <embrace, precedes, squeeze>
   - <squeeze, follows, embrace>
   - <squeeze, precedes, release>
+  idx: 54
 giving object:
   label: giving object
   obj_li:
@@ -731,6 +824,7 @@ giving object:
   - receive
   sub_act_rel_triples:
   - <hand over, precedes, receive>
+  idx: 55
 thumb down:
   label: thumb down
   obj_li:
@@ -744,6 +838,7 @@ thumb down:
   - tilt
   sub_act_rel_triples:
   - <lower, precedes, tilt>
+  idx: 69
 touch pocket:
   label: touch pocket
   obj_li:
@@ -755,6 +850,7 @@ touch pocket:
   - press
   sub_act_rel_triples:
   - <reach, precedes, press>
+  idx: 56
 shaking hands:
   label: shaking hands
   obj_li:
@@ -772,6 +868,7 @@ shaking hands:
   - <approach, precedes, grasp>
   - <grasp, precedes, shake>
   - <shake, precedes, release>
+  idx: 57
 walking towards:
   obj_li:
   - path
@@ -785,6 +882,8 @@ walking towards:
   sub_act_rel_triples:
   - <move, precedes, navigate>
   - <navigate, follows, move>
+  label: walking towards
+  idx: 58
 walking apart:
   obj_li:
   - space
@@ -797,6 +896,8 @@ walking apart:
   - separate
   sub_act_rel_triples:
   - <move, precedes, separate>
+  label: walking apart
+  idx: 59
 put on headphone:
   obj_li:
   - headphone
@@ -807,6 +908,8 @@ put on headphone:
   - adjust
   sub_act_rel_triples:
   - <grab, precedes, adjust>
+  label: put on headphone
+  idx: 60
 take off headphone:
   obj_li:
   - headphone
@@ -817,6 +920,8 @@ take off headphone:
   - pull
   sub_act_rel_triples:
   - <grasp, precedes, pull>
+  label: take off headphone
+  idx: 61
 shoot at basket:
   label: shoot at basket
   obj_li:
@@ -833,6 +938,7 @@ shoot at basket:
   - <aim, precedes, throw>
   - <throw, follows, aim>
   - <throw, precedes, score>
+  idx: 62
 bounce ball:
   label: bounce ball
   obj_li:
@@ -844,6 +950,7 @@ bounce ball:
   - hit
   sub_act_rel_triples:
   - <throw, precedes, hit>
+  idx: 63
 tennis bat swing:
   label: tennis bat swing
   obj_li:
@@ -859,6 +966,7 @@ tennis bat swing:
   sub_act_rel_triples:
   - <grip, precedes, swing>
   - <swing, precedes, hit>
+  idx: 64
 juggle table tennis ball:
   label: juggle table tennis ball
   obj_li:
@@ -874,6 +982,7 @@ juggle table tennis ball:
   - <catch, follows, toss>
   - <catch, precedes, repeat>
   - <repeat, follows, catch>
+  idx: 65
 hush:
   label: hush
   obj_li:
@@ -887,6 +996,7 @@ hush:
   - listen
   sub_act_rel_triples:
   - <quiet, precedes, listen>
+  idx: 66
 flick hair:
   obj_li:
   - hair
@@ -896,6 +1006,8 @@ flick hair:
   - flick
   sub_act_rel_triples:
   - <flick, precedes, flick hair>
+  label: flick hair
+  idx: 67
 thumb up:
   obj_li:
   - thumb
@@ -908,6 +1020,8 @@ thumb up:
   - position
   sub_act_rel_triples:
   - <raise, precedes, position>
+  label: thumb up
+  idx: 68
 make OK sign:
   obj_li:
   - hand
@@ -920,6 +1034,8 @@ make OK sign:
   - curve
   sub_act_rel_triples:
   - <raise, precedes, curve>
+  label: make OK sign
+  idx: 70
 make victory sign:
   obj_li:
   - hand
@@ -932,6 +1048,8 @@ make victory sign:
   - position
   sub_act_rel_triples:
   - <raise, precedes, position>
+  label: make victory sign
+  idx: 71
 staple book:
   label: staple book
   obj_li:
@@ -947,6 +1065,7 @@ staple book:
   sub_act_rel_triples:
   - <insert, precedes, press>
   - <press, precedes, release>
+  idx: 72
 counting money:
   label: counting money
   obj_li:
@@ -960,6 +1079,7 @@ counting money:
   - count
   sub_act_rel_triples:
   - <organize, precedes, count>
+  idx: 73
 cutting nails:
   label: cutting nails
   obj_li:
@@ -976,6 +1096,7 @@ cutting nails:
   - <position, precedes, clip>
   - <clip, follows, position>
   - <clip, precedes, file>
+  idx: 74
 cutting paper:
   label: cutting paper
   obj_li:
@@ -989,6 +1110,7 @@ cutting paper:
   - cut
   sub_act_rel_triples:
   - <hold, precedes, cut>
+  idx: 75
 snap fingers:
   obj_li:
   - fingers
@@ -1003,6 +1125,8 @@ snap fingers:
   sub_act_rel_triples:
   - <position, precedes, press>
   - <press, precedes, release>
+  label: snap fingers
+  idx: 76
 open bottle:
   label: open bottle
   obj_li:
@@ -1014,6 +1138,7 @@ open bottle:
   - pull
   sub_act_rel_triples:
   - <twist, precedes, pull>
+  idx: 77
 sniff/smell:
   obj_li:
   - air
@@ -1026,6 +1151,8 @@ sniff/smell:
   - perceive
   sub_act_rel_triples:
   - <inhale, precedes, perceive>
+  label: sniff/smell
+  idx: 78
 squat down:
   obj_li:
   - ground
@@ -1040,6 +1167,8 @@ squat down:
   sub_act_rel_triples:
   - <bend, precedes, lower>
   - <lower, follows, hold>
+  label: squat down
+  idx: 79
 toss a coin:
   obj_li:
   - coin
@@ -1052,6 +1181,8 @@ toss a coin:
   sub_act_rel_triples:
   - <grab, precedes, flip>
   - <flip, precedes, release>
+  label: toss a coin
+  idx: 80
 fold paper:
   obj_li:
   - paper
@@ -1062,6 +1193,8 @@ fold paper:
   - bend
   sub_act_rel_triples:
   - <crease, precedes, bend>
+  label: fold paper
+  idx: 81
 ball up paper:
   label: ball up paper
   obj_li:
@@ -1075,6 +1208,7 @@ ball up paper:
   - squeeze
   sub_act_rel_triples:
   - <crumple, precedes, squeeze>
+  idx: 82
 play magic cube:
   label: play magic cube
   obj_li:
@@ -1090,6 +1224,7 @@ play magic cube:
   sub_act_rel_triples:
   - <rotate, precedes, twist>
   - <twist, precedes, match>
+  idx: 83
 apply cream on face:
   obj_li:
   - cream
@@ -1104,6 +1239,8 @@ apply cream on face:
   sub_act_rel_triples:
   - <cleanse, precedes, apply>
   - <apply, follows, massage>
+  label: apply cream on face
+  idx: 84
 apply cream on hand:
   obj_li:
   - cream
@@ -1116,6 +1253,8 @@ apply cream on hand:
   - spread
   sub_act_rel_triples:
   - <apply, precedes, spread>
+  label: apply cream on hand
+  idx: 85
 put on bag:
   obj_li:
   - bag
@@ -1126,6 +1265,8 @@ put on bag:
   - adjust
   sub_act_rel_triples:
   - <pick, precedes, adjust>
+  label: put on bag
+  idx: 86
 take off bag:
   obj_li:
   - bag
@@ -1136,6 +1277,8 @@ take off bag:
   - lift
   sub_act_rel_triples:
   - <unfasten, precedes, lift>
+  label: take off bag
+  idx: 87
 put object into bag:
   obj_li:
   - object
@@ -1148,6 +1291,8 @@ put object into bag:
   - place
   sub_act_rel_triples:
   - <pick, precedes, place>
+  label: put object into bag
+  idx: 88
 take object out of bag:
   obj_li:
   - object: object
@@ -1160,6 +1305,8 @@ take object out of bag:
   - remove
   sub_act_rel_triples:
   - <open, precedes, remove>
+  label: take object out of bag
+  idx: 89
 open a box:
   label: open a box
   obj_li:
@@ -1175,6 +1322,7 @@ open a box:
   sub_act_rel_triples:
   - <grasp, precedes, lift>
   - <lift, precedes, pull>
+  idx: 90
 move heavy objects:
   obj_li:
   - furniture
@@ -1190,6 +1338,8 @@ move heavy objects:
   - <lift, precedes, carry>
   - <carry, follows, lift>
   - <carry, precedes, place>
+  label: move heavy objects
+  idx: 91
 shake fist:
   obj_li:
   - fist
@@ -1200,6 +1350,8 @@ shake fist:
   - move
   sub_act_rel_triples:
   - <raise, precedes, move>
+  label: shake fist
+  idx: 92
 throw up cap/hat:
   obj_li:
   - cap
@@ -1212,6 +1364,8 @@ throw up cap/hat:
   - up
   sub_act_rel_triples:
   - <throw, precedes, up>
+  label: throw up cap/hat
+  idx: 93
 capitulate:
   label: capitulate
   obj_li:
@@ -1227,6 +1381,7 @@ capitulate:
   sub_act_rel_triples:
   - <surrender, precedes, negotiate>
   - <negotiate, precedes, agree>
+  idx: 94
 cross arms:
   obj_li:
   - arms
@@ -1237,6 +1392,8 @@ cross arms:
   - hold
   sub_act_rel_triples:
   - <cross, precedes, hold>
+  label: cross arms
+  idx: 95
 arm circles:
   label: arm circles
   obj_li:
@@ -1250,6 +1407,7 @@ arm circles:
   - extend
   sub_act_rel_triples:
   - <rotate, precedes, extend>
+  idx: 96
 arm swings:
   label: arm swings
   obj_li:
@@ -1265,6 +1423,7 @@ arm swings:
   sub_act_rel_triples:
   - <swing, precedes, move>
   - <move, follows, stretch>
+  idx: 97
 run on the spot:
   obj_li:
   - ground
@@ -1279,6 +1438,8 @@ run on the spot:
   sub_act_rel_triples:
   - <start, precedes, move>
   - <move, follows, maintain>
+  label: run on the spot
+  idx: 98
 butt kicks:
   label: butt kicks
   obj_li:
@@ -1292,6 +1453,7 @@ butt kicks:
   - lift
   sub_act_rel_triples:
   - <kick, precedes, lift>
+  idx: 99
 cross toe touch:
   label: cross toe touch
   obj_li:
@@ -1307,6 +1469,7 @@ cross toe touch:
   sub_act_rel_triples:
   - <bend, precedes, reach>
   - <reach, follows, stretch>
+  idx: 100
 side kick:
   obj_li:
   - leg
@@ -1321,6 +1484,8 @@ side kick:
   sub_act_rel_triples:
   - <lift, precedes, extend>
   - <extend, precedes, strike>
+  label: side kick
+  idx: 101
 yawn:
   obj_li:
   - air
@@ -1335,6 +1500,8 @@ yawn:
   sub_act_rel_triples:
   - <inhale, precedes, exhale>
   - <exhale, follows, stretch>
+  label: yawn
+  idx: 102
 stretch oneself:
   label: stretch oneself
   obj_li:
@@ -1350,6 +1517,7 @@ stretch oneself:
   sub_act_rel_triples:
   - <extend, precedes, relax>
   - <relax, precedes, hold>
+  idx: 103
 blow nose:
   obj_li:
   - tissue
@@ -1362,6 +1530,8 @@ blow nose:
   - exhale
   sub_act_rel_triples:
   - <pinch, precedes, exhale>
+  label: blow nose
+  idx: 104
 hit with object:
   obj_li:
   - object: ball
@@ -1376,6 +1546,8 @@ hit with object:
   sub_act_rel_triples:
   - <swing, precedes, connect>
   - <connect, precedes, impact>
+  label: hit with object
+  idx: 105
 wield knife:
   label: wield knife
   obj_li:
@@ -1387,6 +1559,7 @@ wield knife:
   - swing
   sub_act_rel_triples:
   - <grasp, precedes, swing>
+  idx: 106
 knock over:
   obj_li:
   - object: glass
@@ -1401,6 +1574,8 @@ knock over:
   sub_act_rel_triples:
   - <apply force, "precedes", tilt>
   - <tilt, "precedes", release>
+  label: knock over
+  idx: 107
 grab stuff:
   obj_li:
   - stuff
@@ -1411,6 +1586,8 @@ grab stuff:
   - hold
   sub_act_rel_triples:
   - <reach, precedes, hold>
+  label: grab stuff
+  idx: 108
 shoot with gun:
   obj_li:
   - gun
@@ -1421,6 +1598,8 @@ shoot with gun:
   - pull
   sub_act_rel_triples:
   - <aim, precedes, pull>
+  label: shoot with gun
+  idx: 109
 step on foot:
   label: step on foot
   obj_li:
@@ -1432,6 +1611,7 @@ step on foot:
   - place
   sub_act_rel_triples:
   - <lift, precedes, place>
+  idx: 110
 high-five:
   label: high-five
   obj_li:
@@ -1447,6 +1627,7 @@ high-five:
   sub_act_rel_triples:
   - <raise, precedes, swing>
   - <swing, precedes, connect>
+  idx: 111
 cheers and drink:
   obj_li:
   - drink
@@ -1459,6 +1640,8 @@ cheers and drink:
   - drink
   sub_act_rel_triples:
   - <cheers, precedes, drink>
+  label: cheers and drink
+  idx: 112
 carry object:
   label: carry object
   obj_li:
@@ -1474,6 +1657,7 @@ carry object:
   sub_act_rel_triples:
   - <lift, precedes, hold>
   - <hold, precedes, transport>
+  idx: 113
 take a photo:
   obj_li:
   - camera
@@ -1489,6 +1673,8 @@ take a photo:
   - <aim, precedes, click>
   - <click, follows, aim>
   - <click, comes before, review>
+  label: take a photo
+  idx: 114
 follow:
   label: follow
   obj_li:
@@ -1502,6 +1688,7 @@ follow:
   - observe
   sub_act_rel_triples:
   - <walk, precedes, observe>
+  idx: 115
 whisper:
   label: whisper
   obj_li:
@@ -1515,6 +1702,7 @@ whisper:
   - speak
   sub_act_rel_triples:
   - <lower, precedes, speak>
+  idx: 116
 exchange things:
   label: exchange things
   obj_li:
@@ -1528,6 +1716,7 @@ exchange things:
   - receive
   sub_act_rel_triples:
   - <give, precedes, receive>
+  idx: 117
 support somebody:
   label: support somebody
   obj_li:
@@ -1543,6 +1732,7 @@ support somebody:
   sub_act_rel_triples:
   - <assist, precedes, encourage>
   - <encourage, follows, provide>
+  idx: 118
 rock-paper-scissors:
   label: rock-paper-scissors
   obj_li:
@@ -1560,3 +1750,4 @@ rock-paper-scissors:
   sub_act_rel_triples:
   - <choose, precedes, reveal>
   - <reveal, precedes, compare>
+  idx: 119
