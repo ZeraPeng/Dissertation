@@ -1,0 +1,481 @@
+0:
+- - where pouring precedes lifting
+  - where lifting precedes sipping
+  - where pouring precedes lifting
+  - where lifting precedes sipping
+- - where preparation precedes chewing
+  - where chewing precedes swallowing
+  - where preparation precedes chewing
+  - where chewing precedes swallowing
+- - applying precedes brushing
+  - brushing follows applying
+  - brushing precedes rinsing
+  - applying precedes brushing
+- - where holding precedes brushing
+  - where brushing follows holding
+  - where brushing precedes styling
+  - where holding precedes brushing
+- - where letting go precedes the fall
+  - where letting go precedes the fall
+  - where letting go precedes the fall
+  - where letting go precedes the fall
+- - where bending precedes grasping
+  - where grasping precedes lifting
+  - where bending precedes grasping
+  - where grasping precedes lifting
+- - where lifting precedes aiming
+  - where aiming precedes releasing
+  - where lifting precedes aiming
+  - where aiming precedes releasing
+- - where approaching precedes lowering
+  - where lowering precedes resting
+  - where approaching precedes lowering
+  - where lowering precedes resting
+- - where pushing precedes lifting
+  - where lifting follows pushing
+  - where pushing precedes lifting
+  - where lifting follows pushing
+- - where raising precedes bringing together
+  - where bringing together follows creating sound
+  - where raising precedes bringing together
+  - where bringing together follows creating sound
+- - where scanning precedes comprehending
+  - where comprehending precedes analyzing
+  - where scanning precedes comprehending
+  - where comprehending precedes analyzing
+- - holding precedes writing
+  - where writing is followed by holding
+  - where writing is followed by revising
+  - holding precedes writing
+- - where grabbing precedes ripping
+  - where ripping follows grabbing
+  - where ripping precedes discarding
+  - where discarding follows ripping
+- - where picking precedes opening
+  - where opening precedes wearing
+  - where picking precedes opening
+  - where opening precedes wearing
+- - where removing precedes discarding
+  - where removing precedes discarding
+  - where removing precedes discarding
+  - where removing precedes discarding
+- - where picking precedes placing
+  - where picking precedes placing
+  - where picking precedes placing
+  - where picking precedes placing
+- - where unfastening precedes removing
+  - where unfastening precedes removing
+  - where unfastening precedes removing
+  - where unfastening precedes removing
+- - where picking precedes positioning
+  - where positioning follows picking
+  - where adjusting follows positioning
+  - where picking precedes positioning
+- - where removing precedes lowering
+  - where removing precedes lowering
+  - where removing precedes lowering
+  - where removing precedes lowering
+- - where picking precedes placing
+  - where picking precedes placing
+  - where picking precedes placing
+  - where picking precedes placing
+- - where removing precedes lowering
+  - where removing precedes lowering
+  - where removing precedes lowering
+  - where removing precedes lowering
+- - where telling precedes smiling
+  - where smiling follows listening
+  - where telling precedes smiling
+  - where smiling follows listening
+- - where waving precedes moving
+  - where waving precedes moving
+  - where waving precedes moving
+  - where waving precedes moving
+- - approaching before swinging
+  - swinging before striking
+  - approaching before swinging
+  - swinging before striking
+- - where reaching precedes grasping
+  - where grasping precedes retrieving
+  - where reaching precedes grasping
+  - where grasping precedes retrieving
+- - where jumping precedes landing
+  - where jumping precedes landing
+  - where jumping precedes landing
+  - where jumping precedes landing
+- - where bending precedes propelling
+  - where propelling precedes elevating
+  - where bending precedes propelling
+  - where propelling precedes elevating
+- - dialing precedes talking
+  - talking follows listening
+  - dialing precedes talking
+  - talking follows listening
+- - where swiping precedes tapping
+  - where tapping follows swiping
+  - where tapping precedes scrolling
+  - where swiping precedes tapping
+- - where pressing precedes releasing
+  - where pressing precedes releasing
+  - where pressing precedes releasing
+  - where pressing precedes releasing
+- - extending precedes indicating
+  - indicating follows extending
+  - extending precedes indicating
+  - indicating follows extending
+- - where holding precedes capturing
+  - where capturing follows smiling
+  - where holding precedes capturing
+  - where capturing follows smiling
+- - where looking precedes interpreting
+  - where looking precedes interpreting
+  - where looking precedes interpreting
+  - where looking precedes interpreting
+- - where moving precedes applying
+  - where moving precedes applying
+  - where moving precedes applying
+  - where moving precedes applying
+- - where nodding precedes bowing
+  - where nodding precedes bowing
+  - where nodding precedes bowing
+  - where nodding precedes bowing
+- - where shaking precedes moving
+  - where shaking precedes moving
+  - where shaking precedes moving
+  - where shaking precedes moving
+- - wetting before wiping
+  - wetting before wiping
+  - wetting before wiping
+  - wetting before wiping
+- - where raising precedes nodding
+  - where raising precedes nodding
+  - where raising precedes nodding
+  - where raising precedes nodding
+- - where bringing precedes pressing
+  - where bringing precedes pressing
+  - where bringing precedes pressing
+  - where bringing precedes pressing
+- - where crossing precedes positioning
+  - where crossing precedes positioning
+  - where crossing precedes positioning
+  - where crossing precedes positioning
+- - where inhale precedes expel
+  - where expel follows cover
+  - where inhale precedes expel
+  - where expel follows cover
+- - where losing precedes regaining
+  - where regaining follows wobbling
+  - where losing precedes regaining
+  - where regaining follows wobbling
+- - where losing balance precedes descending
+  - where descending follows impact
+  - where losing balance precedes descending
+  - where descending follows impact
+- - where resting precedes taking action
+  - where taking action follows avoiding something
+  - where resting precedes taking action
+  - where taking action follows avoiding something
+- - where feeling precedes reacting
+  - where reacting precedes assessing
+  - where feeling precedes reacting
+  - where reacting precedes assessing
+- - where lifting precedes bending
+  - where bending follows stretching
+  - where lifting precedes bending
+  - where bending follows stretching
+- - where stretching precedes relaxation
+  - where stretching precedes relaxation
+  - where stretching precedes relaxation
+  - where stretching precedes relaxation
+- - where expelling follows retching
+  - where expelling follows retching
+  - where expelling follows retching
+  - where expelling follows retching
+- - where waving precedes directing
+  - where waving precedes directing
+  - where waving precedes directing
+  - where waving precedes directing
+- - where raising precedes striking
+  - where striking follows retracting
+  - where raising precedes striking
+  - where striking follows retracting
+- - where approach precedes swing
+  - where swing follows follow-through
+  - where approach precedes swing
+  - where swing follows follow-through
+- - applying force precedes moving
+  - moving follows maintaining pressure
+  - applying force precedes moving
+  - moving follows maintaining pressure
+- - where touching precedes applying
+  - where touching precedes applying
+  - where touching precedes applying
+  - where touching precedes applying
+- - where extending precedes aiming
+  - where extending precedes aiming
+  - where extending precedes aiming
+  - where extending precedes aiming
+- - where embrace precedes squeeze
+  - where squeeze follows embrace
+  - where squeeze precedes release
+  - where embrace precedes squeeze
+- - where handing over precedes receiving
+  - where handing over precedes receiving
+  - where handing over precedes receiving
+  - where handing over precedes receiving
+- - where reaching precedes pressing
+  - where reaching precedes pressing
+  - where reaching precedes pressing
+  - where reaching precedes pressing
+- - where approaching precedes grasping
+  - where grasping precedes shaking
+  - where shaking precedes releasing
+  - where approaching precedes grasping
+- - where moving precedes navigating
+  - where navigating follows moving
+  - where moving precedes navigating
+  - where navigating follows moving
+- - where moving precedes separating
+  - where moving precedes separating
+  - where moving precedes separating
+  - where moving precedes separating
+- - where grabbing precedes adjusting
+  - where grabbing precedes adjusting
+  - where grabbing precedes adjusting
+  - where grabbing precedes adjusting
+- - where grasping precedes pulling
+  - where grasping precedes pulling
+  - where grasping precedes pulling
+  - where grasping precedes pulling
+- - where aiming precedes throwing
+  - where throwing follows aiming
+  - where throwing precedes scoring
+  - where aiming precedes throwing
+- - where throwing precedes hitting
+  - where throwing precedes hitting
+  - where throwing precedes hitting
+  - where throwing precedes hitting
+- - where gripping precedes swinging
+  - where swinging precedes hitting
+  - where gripping precedes swinging
+  - where swinging precedes hitting
+- - where tossing precedes catching
+  - where catching is followed by tossing
+  - where catching precedes repeating
+  - where repeating follows catching
+- - where quiet precedes listening
+  - where quiet precedes listening
+  - where quiet precedes listening
+  - where quiet precedes listening
+- - where flick precedes flicking hair
+  - where flick precedes flicking hair
+  - where flick precedes flicking hair
+  - where flick precedes flicking hair
+- - raising precedes positioning
+  - raising precedes positioning
+  - raising precedes positioning
+  - raising precedes positioning
+- - where lowering precedes tilting
+  - where lowering precedes tilting
+  - where lowering precedes tilting
+  - where lowering precedes tilting
+- - where raising precedes curving
+  - where raising precedes curving
+  - where raising precedes curving
+  - where raising precedes curving
+- - where raising precedes positioning
+  - where raising precedes positioning
+  - where raising precedes positioning
+  - where raising precedes positioning
+- - where inserting precedes pressing
+  - where pressing precedes releasing
+  - where inserting precedes pressing
+  - where pressing precedes releasing
+- - where organizing precedes counting
+  - where organizing precedes counting
+  - where organizing precedes counting
+  - where organizing precedes counting
+- - where positioning precedes clipping
+  - where clipping follows positioning
+  - where clipping precedes filing
+  - where positioning precedes clipping
+- - where holding precedes cutting
+  - where holding precedes cutting
+  - where holding precedes cutting
+  - where holding precedes cutting
+- - where positioning precedes pressing
+  - where pressing precedes releasing
+  - where positioning precedes pressing
+  - where pressing precedes releasing
+- - where twisting precedes pulling
+  - where twisting precedes pulling
+  - where twisting precedes pulling
+  - where twisting precedes pulling
+- - where inhaling precedes perceiving
+  - where inhaling precedes perceiving
+  - where inhaling precedes perceiving
+  - where inhaling precedes perceiving
+- - bending precedes lowering
+  - where lowering follows holding
+  - bending precedes lowering
+  - where lowering follows holding
+- - where grabbing precedes flipping
+  - where flipping precedes releasing
+  - where grabbing precedes flipping
+  - where flipping precedes releasing
+- - where crease precedes bend
+  - where crease precedes bend
+  - where crease precedes bend
+  - where crease precedes bend
+- - where crumpling precedes squeezing
+  - where crumpling precedes squeezing
+  - where crumpling precedes squeezing
+  - where crumpling precedes squeezing
+- - where rotating precedes twisting
+  - where twisting precedes matching
+  - where rotating precedes twisting
+  - where twisting precedes matching
+- - where cleansing precedes applying
+  - where applying follows massaging
+  - where cleansing precedes applying
+  - where applying follows massaging
+- - where applying precedes spreading
+  - where applying precedes spreading
+  - where applying precedes spreading
+  - where applying precedes spreading
+- - where picking precedes adjusting
+  - where picking precedes adjusting
+  - where picking precedes adjusting
+  - where picking precedes adjusting
+- - where unfastening precedes lifting
+  - where unfastening precedes lifting
+  - where unfastening precedes lifting
+  - where unfastening precedes lifting
+- - where picking precedes placing
+  - where picking precedes placing
+  - where picking precedes placing
+  - where picking precedes placing
+- - where opening precedes removing
+  - where opening precedes removing
+  - where opening precedes removing
+  - where opening precedes removing
+- - where grasping precedes lifting
+  - where lifting precedes pulling
+  - where grasping precedes lifting
+  - where lifting precedes pulling
+- - where lifting precedes carrying
+  - where carrying follows lifting
+  - where carrying precedes placing
+  - where lifting precedes carrying
+- - where raising precedes moving
+  - where raising precedes moving
+  - where raising precedes moving
+  - where raising precedes moving
+- - where throwing precedes up
+  - where throwing precedes up
+  - where throwing precedes up
+  - where throwing precedes up
+- - where surrender precedes negotiation
+  - where negotiation precedes agreement
+  - where surrender precedes negotiation
+  - where negotiation precedes agreement
+- - where crossing precedes holding
+  - where crossing precedes holding
+  - where crossing precedes holding
+  - where crossing precedes holding
+- - rotating before extending
+  - rotating before extending
+  - rotating before extending
+  - rotating before extending
+- - where swinging precedes moving
+  - where moving follows stretching
+  - where swinging precedes moving
+  - where moving follows stretching
+- - starting with start
+  - where start precedes move
+  - where move follows maintaining
+  - starting with start
+- - where kicking precedes lifting
+  - where kicking precedes lifting
+  - where kicking precedes lifting
+  - where kicking precedes lifting
+- - where bending precedes reaching
+  - where reaching follows stretching
+  - where bending precedes reaching
+  - where reaching follows stretching
+- - where lifting precedes extending
+  - where extending precedes striking
+  - where lifting precedes extending
+  - where extending precedes striking
+- - where inhaling precedes exhaling
+  - where exhaling follows stretching
+  - where inhaling precedes exhaling
+  - where exhaling follows stretching
+- - extending before relaxing
+  - relaxing before holding
+  - extending before relaxing
+  - relaxing before holding
+- - where pinching precedes exhaling
+  - where pinching precedes exhaling
+  - where pinching precedes exhaling
+  - where pinching precedes exhaling
+- - where swinging precedes connecting
+  - where connecting precedes impacting
+  - where swinging precedes connecting
+  - where connecting precedes impacting
+- - where grasping precedes swinging
+  - where grasping precedes swinging
+  - where grasping precedes swinging
+  - where grasping precedes swinging
+- - where applying force precedes tilting
+  - where tilting precedes releasing
+  - where applying force precedes tilting
+  - where tilting precedes releasing
+- - where reaching precedes holding
+  - where reaching precedes holding
+  - where reaching precedes holding
+  - where reaching precedes holding
+- - where aiming precedes pulling
+  - where aiming precedes pulling
+  - where aiming precedes pulling
+  - where aiming precedes pulling
+- - where lifting precedes placing
+  - where lifting precedes placing
+  - where lifting precedes placing
+  - where lifting precedes placing
+- - where raising precedes swinging
+  - where swinging precedes connecting
+  - where raising precedes swinging
+  - where swinging precedes connecting
+- - where cheers precedes drink
+  - where cheers precedes drink
+  - where cheers precedes drink
+  - where cheers precedes drink
+- - where lifting precedes holding
+  - where holding precedes transporting
+  - where lifting precedes holding
+  - where holding precedes transporting
+- - where aiming precedes clicking
+  - where clicking follows aiming
+  - where clicking comes before reviewing
+  - where aiming precedes clicking
+- - where walking precedes observing
+  - where walking precedes observing
+  - where walking precedes observing
+  - where walking precedes observing
+- - where lowering precedes speaking
+  - where lowering precedes speaking
+  - where lowering precedes speaking
+  - where lowering precedes speaking
+- - where giving precedes receiving
+  - where giving precedes receiving
+  - where giving precedes receiving
+  - where giving precedes receiving
+- - where assisting precedes encouraging
+  - where encouraging follows providing
+  - where assisting precedes encouraging
+  - where encouraging follows providing
+- - where choosing precedes revealing
+  - where revealing precedes comparing
+  - where choosing precedes revealing
+  - where revealing precedes comparing

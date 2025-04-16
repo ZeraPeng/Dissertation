@@ -1,0 +1,361 @@
+0:
+- - where water is consumed
+  - where a glass contains water
+  - where water is consumed
+- - where a meal is consumed
+  - where utensils are used
+  - where a meal is consumed
+- - involving a toothbrush
+  - where toothpaste is applied to the toothbrush
+  - involving a toothbrush
+- - where a hairbrush is used for this action
+  - where hair is styled by this action
+  - where a hairbrush is used for this action
+- - where an item drops on it
+  - where it falls onto the ground
+  - where an item drops on it
+- - what is picked up from the object
+  - what is the source of pick up
+  - what is picked up from the object
+- - where a ball is thrown
+  - where an object is thrown
+  - where a ball is thrown
+- - that involves using a chair
+  - that involves using the floor
+  - that involves using a chair
+- - where a chair is used for standing up
+  - where the floor supports standing up
+  - where a chair is used for standing up
+- - how hands perform clapping
+  - how the audience responds to clapping
+  - how hands perform clapping
+- - involving a book
+  - involving an article
+  - involving a book
+- - using a pen for writing
+  - where paper receives writing
+  - using a pen for writing
+- - involves tearing paper
+  - involves tearing paper
+  - involves tearing paper
+- - where a jacket is worn
+  - where a jacket is worn
+  - where a jacket is worn
+- - involving a jacket
+  - involving a jacket
+  - involving a jacket
+- - which is worn
+  - which is worn
+  - which is worn
+- - which is taken off by taking off a shoe
+  - which is taken off by taking off a shoe
+  - which is taken off by taking off a shoe
+- - where glasses are used in putting on glasses
+  - where glasses are used in putting on glasses
+  - where glasses are used in putting on glasses
+- - how glasses are taken off
+  - how glasses are taken off
+  - how glasses are taken off
+- - where a hat is worn on
+  - where the head has a hat
+  - where a hat is worn on
+- - worn by hat
+  - worn by cap
+  - worn by hat
+- - where a friend encourages to cheer up
+  - where a joke lightens to cheer up
+  - where a friend encourages to cheer up
+- - using the hand for waving
+  - how the hand moves during hand waving
+  - how the air is affected by hand waving
+- - kicking a ball
+  - targeting a goal
+  - kicking a ball
+- - containing the pocket
+  - performed by the hand
+  - containing the pocket
+- - where the ground supports hopping
+  - where the surface facilitates hopping
+  - where the ground supports hopping
+- - where ground supports the action
+  - which reaches the air
+  - where ground supports the action
+- - involving the use of a phone
+  - where the ear receives sound from the phone call
+  - involving the use of a phone
+- - involving the use of a phone
+  - involving the use of a tablet
+  - involving the use of a phone
+- - using a keyboard for typing
+  - using a keyboard for typing
+  - using a keyboard for typing
+- - where a finger is used to point to something
+  - where an object being pointed at is pointed at
+  - where a finger is used to point to something
+- - using a smartphone for taking a selfie
+  - using a camera for taking a selfie
+  - using a smartphone for taking a selfie
+- - which involves using a watch to check time
+  - which involves using a watch to check time
+  - which involves using a watch to check time
+- - where hands are used in the action
+  - where hands are used in the action
+  - where hands are used in the action
+- - involving the head
+  - involving the head
+  - involving the head
+- - where the head is involved in shaking head
+  - where the head is involved in shaking head
+  - where the head is involved in shaking head
+- - using a towel to wipe face
+  - where water assists in wiping face
+  - using a towel to wipe face
+- - where hand raises to salute
+  - where head nods during salute
+  - where hand raises to salute
+- - how palms are involved
+  - what prayer position represents
+  - how palms are involved
+- - where hands are used to cross hands in front
+  - where hands are used to cross hands in front
+  - where hands are used to cross hands in front
+- - where tissue is used for sneeze/cough
+  - where hand covers sneeze/cough
+  - where tissue is used for sneeze/cough
+- - where the ground supports staggering
+  - how balance affects staggering
+  - where the ground supports staggering
+- - where the ground receives falling down
+  - where the surface supports falling down
+  - where the ground receives falling down
+- - what alleviates headache
+  - what provides comfort for headache
+  - what alleviates headache
+- - where the chest experiences chest pain
+  - where the heart is affected by chest pain
+  - where the chest experiences chest pain
+- - where the back experiences back pain
+  - where the spine supports back pain
+  - where the back experiences back pain
+- - where neck experiences neck pain
+  - where neck experiences neck pain
+  - where neck experiences neck pain
+- - caused by food
+  - caused by liquid
+  - caused by food
+- - using a fan
+  - where air provides the fan
+  - using a fan
+- - which uses a fist
+  - where the target receives the punch/slap
+  - which uses a fist
+- - how a ball interacts with kicking
+  - what is targeted in kicking
+  - how a ball interacts with kicking
+- - how a door interacts with pushing
+  - how a box interacts with pushing
+  - how a door interacts with pushing
+- - where the back receives a pat on the back
+  - where the hand performs the pat on back
+  - where the back receives a pat on the back
+- - using the finger to point
+  - where a target is pointed at by the finger
+  - using the finger to point
+- - where arms are used for hugging
+  - involving a person
+  - where arms are used for hugging
+- - where a gift is given to the giving object
+  - where the recipient receives the giving object
+  - where a gift is given to the giving object
+- - where a pocket is touched
+  - where a pocket is touched
+  - where a pocket is touched
+- - involving the use of hands
+  - performed by a person
+  - involving the use of hands
+- - where a path facilitates this action
+  - where a destination is targeted for walking towards
+  - where a path facilitates this action
+- - where space occupies walking apart
+  - where distance increases with walking apart
+  - where space occupies walking apart
+- - used in put on headphone
+  - used in put on headphone
+  - used in put on headphone
+- - where headphone is removed
+  - where headphone is removed
+  - where headphone is removed
+- - where a basketball is shot at
+  - where a hoop is targeted by the action
+  - where a basketball is shot at
+- - involving a ball
+  - involving a ball
+  - involving a ball
+- - using a tennis bat for the swing
+  - targeting the tennis bat swing with a tennis ball
+  - using a tennis bat for the swing
+- - involving a table tennis ball
+  - involving a table tennis ball
+  - involving a table tennis ball
+- - that dampens sound
+  - that is influenced by the environment
+  - that dampens sound
+- - how hair is flicked
+  - how hair is flicked
+  - how hair is flicked
+- - involving the thumb
+  - supported by the hand
+  - involving the thumb
+- - how thumb performs thumb down
+  - how gesture represents thumb down
+  - how thumb performs thumb down
+- - using the hand to make the OK sign
+  - where the fingers form the OK sign
+  - using the hand to make the OK sign
+- - using hand to make the victory sign
+  - forming the victory sign with fingers
+  - using hand to make the victory sign
+- - using a staple book
+  - where a book is stapled by a staple book
+  - using a staple book
+- - involving money
+  - where a table supports counting money
+  - involving money
+- - using a nail clipper
+  - where nails are acted upon
+  - using a nail clipper
+- - where paper is cut by cutting paper
+  - which involves scissors
+  - where paper is cut by cutting paper
+- - involving fingers
+  - resulting in a sound
+  - involving fingers
+- - where a bottle undergoes opening
+  - where a bottle undergoes opening
+  - where a bottle undergoes opening
+- - involving air
+  - detecting scent
+  - involving air
+- - where the ground supports squatting down
+  - weight is held during squatting down
+  - where the ground supports squatting down
+- - involving a coin
+  - involving a coin
+  - involving a coin
+- - where paper is folded in
+  - where paper is folded in
+  - where paper is folded in
+- - how paper is manipulated
+  - what is used for balling up paper
+  - how paper is manipulated
+- - involving the use of a magic cube
+  - involving manipulation by hands
+  - involving the use of a magic cube
+- - where cream is applied on the face
+  - where the face receives cream
+  - where cream is applied on the face
+- - where cream is applied on
+  - where the hand receives the application
+  - where cream is applied on
+- - using a bag to put on
+  - using a bag to put on
+  - using a bag to put on
+- - where a bag is taken off
+  - where a bag is taken off
+  - where a bag is taken off
+- - how an object is put into a bag
+  - where a bag receives the put object
+  - how an object is put into a bag
+- - where an object is taken out of
+  - that a bag contains
+  - where an object is taken out of
+- - containing the action of opening a box
+  - where the lid is part of the box
+  - containing the action of opening a box
+- - furniture that moves heavy objects
+  - box that moves heavy objects
+  - furniture that moves heavy objects
+- - fist performs shake fist
+  - fist performs shake fist
+  - fist performs shake fist
+- - how a cap is thrown up
+  - how a hat is thrown up
+  - how a cap is thrown up
+- - when opponent yields to it
+  - when terms dictate it
+  - when opponent yields to it
+- - arms are manipulated during this action
+  - arms are manipulated during this action
+  - arms are manipulated during this action
+- - performing arm circles with arms
+  - requiring space for arm circles
+  - performing arm circles with arms
+- - how the arm performs arm swings
+  - how air interacts with arm swings
+  - how the arm performs arm swings
+- - where ground is used for running on the spot
+  - where shoes are worn during running on the spot
+  - where ground is used for running on the spot
+- - where the floor supports butt kicks
+  - where legs perform butt kicks
+  - where the floor supports butt kicks
+- - where toes are involved
+  - where the floor supports the action
+  - where toes are involved
+- - where the leg performs the side kick
+  - where the foot strikes during a side kick
+  - where the leg performs the side kick
+- - involving air
+  - producing a sound
+  - involving air
+- - involving the body
+  - engaging muscles
+  - involving the body
+- - using tissue for blowing nose
+  - how hand assists in blowing nose
+  - using tissue for blowing nose
+- - hitting a ball with an object
+  - using a bat in hitting with an object
+  - hitting a ball with an object
+- - involving the use of a knife
+  - involving the use of a knife
+  - involving the use of a knife
+- - how a glass is knocked over
+  - what is involved in knocking over
+  - how a glass is knocked over
+- - how stuff is grabbed
+  - how stuff is grabbed
+  - how stuff is grabbed
+- - involving the use of a gun
+  - involving the use of a gun
+  - involving the use of a gun
+- - involving stepping on a foot
+  - involving stepping on a foot
+  - involving stepping on a foot
+- - where a hand performs a high-five
+  - where a palm touches during a high-five
+  - where a hand performs a high-five
+- - where drink consumes cheers and drink
+  - where glass holds cheers and drink
+  - where drink consumes cheers and drink
+- - how a box carries the object
+  - how a bag carries the object
+  - how a box carries the object
+- - where a camera is used for taking a photo
+  - where a subject is captured in the photo
+  - where a camera is used for taking a photo
+- - where a path is followed
+  - where a leader guides the follower
+  - where a path is followed
+- - where the ear receives a whisper
+  - which is produced by the voice
+  - where the ear receives a whisper
+- - where things are exchanged
+  - where items are exchanged
+  - where things are exchanged
+- - supporting a person
+  - using an object for support
+  - supporting a person
+- - where rock is played in rock-paper-scissors
+  - where paper is played in rock-paper-scissors
+  - where scissors are played in rock-paper-scissors

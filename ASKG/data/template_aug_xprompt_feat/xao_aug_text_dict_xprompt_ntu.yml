@@ -1,0 +1,371 @@
+0:
+- - a human action of drink water, where water is consumed
+  - a human action of drink water, where a glass contains water
+  - a human action of drink water, where water is consumed
+- - a human action of eat meal, where a meal is consumed
+  - a human action of eat meal, where utensils are used
+  - a human action of eat meal, where a meal is consumed
+- - a human action of brush teeth, involving a toothbrush
+  - a human action of brush teeth, where toothpaste is applied to the toothbrush
+  - a human action of brush teeth, involving a toothbrush
+- - a human action of brush hair, where a hairbrush is used for this action
+  - a human action of brush hair, where hair is styled by this action
+  - a human action of brush hair, where a hairbrush is used for this action
+- - a human action of drop, where an item drops on it
+  - a human action of drop, where it falls onto the ground
+  - a human action of drop, where an item drops on it
+- - a human action of pick up, what is picked up from the object
+  - a human action of pick up, what is the source of pick up
+  - a human action of pick up, what is picked up from the object
+- - a human action of throw, where a ball is thrown
+  - a human action of throw, where an object is thrown
+  - a human action of throw, where a ball is thrown
+- - a human action of sit down, that involves using a chair
+  - a human action of sit down, that involves using the floor
+  - a human action of sit down, that involves using a chair
+- - a human action of stand up, where a chair is used for standing up
+  - a human action of stand up, where the floor supports standing up
+  - a human action of stand up, where a chair is used for standing up
+- - a human action of clapping, how hands perform clapping
+  - a human action of clapping, how the audience responds to clapping
+  - a human action of clapping, how hands perform clapping
+- - a human action of reading, involving a book
+  - a human action of reading, involving an article
+  - a human action of reading, involving a book
+- - a human action of writing, using a pen for writing
+  - a human action of writing, where paper receives writing
+  - a human action of writing, using a pen for writing
+- - a human action of tear up paper, involves tearing paper
+  - a human action of tear up paper, involves tearing paper
+  - a human action of tear up paper, involves tearing paper
+- - a human action of put on jacket, where a jacket is worn
+  - a human action of put on jacket, where a jacket is worn
+  - a human action of put on jacket, where a jacket is worn
+- - a human action of take off jacket, involving a jacket
+  - a human action of take off jacket, involving a jacket
+  - a human action of take off jacket, involving a jacket
+- - a human action of put on a shoe, which is worn
+  - a human action of put on a shoe, which is worn
+  - a human action of put on a shoe, which is worn
+- - a human action of take off a shoe, which is taken off by taking off a shoe
+  - a human action of take off a shoe, which is taken off by taking off a shoe
+  - a human action of take off a shoe, which is taken off by taking off a shoe
+- - a human action of put on glasses, where glasses are used in putting on glasses
+  - a human action of put on glasses, where glasses are used in putting on glasses
+  - a human action of put on glasses, where glasses are used in putting on glasses
+- - a human action of take off glasses, how glasses are taken off
+  - a human action of take off glasses, how glasses are taken off
+  - a human action of take off glasses, how glasses are taken off
+- - a human action of put on a hat/cap, where a hat is worn on
+  - a human action of put on a hat/cap, where the head has a hat
+  - a human action of put on a hat/cap, where a hat is worn on
+- - a human action of take off a hat/cap, worn by hat
+  - a human action of take off a hat/cap, worn by cap
+  - a human action of take off a hat/cap, worn by hat
+- - a human action of cheer up, where a friend encourages to cheer up
+  - a human action of cheer up, where a joke lightens to cheer up
+  - a human action of cheer up, where a friend encourages to cheer up
+- - a human action of hand waving, using the hand for waving
+  - a human action of hand waving, how the hand moves during hand waving
+  - a human action of hand waving, how the air is affected by hand waving
+- - a human action of kicking something, kicking a ball
+  - a human action of kicking something, targeting a goal
+  - a human action of kicking something, kicking a ball
+- - a human action of reach into pocket, containing the pocket
+  - a human action of reach into pocket, performed by the hand
+  - a human action of reach into pocket, containing the pocket
+- - a human action of hopping, where the ground supports hopping
+  - a human action of hopping, where the surface facilitates hopping
+  - a human action of hopping, where the ground supports hopping
+- - a human action of jump up, where ground supports the action
+  - a human action of jump up, which reaches the air
+  - a human action of jump up, where ground supports the action
+- - a human action of phone call, involving the use of a phone
+  - a human action of phone call, where the ear receives sound from the phone call
+  - a human action of phone call, involving the use of a phone
+- - a human action of play with phone/tablet, involving the use of a phone
+  - a human action of play with phone/tablet, involving the use of a tablet
+  - a human action of play with phone/tablet, involving the use of a phone
+- - a human action of type on a keyboard, using a keyboard for typing
+  - a human action of type on a keyboard, using a keyboard for typing
+  - a human action of type on a keyboard, using a keyboard for typing
+- - a human action of point to something, where a finger is used to point to something
+  - a human action of point to something, where an object being pointed at is pointed
+    at
+  - a human action of point to something, where a finger is used to point to something
+- - a human action of taking a selfie, using a smartphone for taking a selfie
+  - a human action of taking a selfie, using a camera for taking a selfie
+  - a human action of taking a selfie, using a smartphone for taking a selfie
+- - a human action of check time (from watch), which involves using a watch to check
+    time
+  - a human action of check time (from watch), which involves using a watch to check
+    time
+  - a human action of check time (from watch), which involves using a watch to check
+    time
+- - a human action of rub two hands, where hands are used in the action
+  - a human action of rub two hands, where hands are used in the action
+  - a human action of rub two hands, where hands are used in the action
+- - a human action of nod head/bow, involving the head
+  - a human action of nod head/bow, involving the head
+  - a human action of nod head/bow, involving the head
+- - a human action of shake head, where the head is involved in shaking head
+  - a human action of shake head, where the head is involved in shaking head
+  - a human action of shake head, where the head is involved in shaking head
+- - a human action of wipe face, using a towel to wipe face
+  - a human action of wipe face, where water assists in wiping face
+  - a human action of wipe face, using a towel to wipe face
+- - a human action of salute, where hand raises to salute
+  - a human action of salute, where head nods during salute
+  - a human action of salute, where hand raises to salute
+- - a human action of put palms together, how palms are involved
+  - a human action of put palms together, what prayer position represents
+  - a human action of put palms together, how palms are involved
+- - a human action of cross hands in front, where hands are used to cross hands in
+    front
+  - a human action of cross hands in front, where hands are used to cross hands in
+    front
+  - a human action of cross hands in front, where hands are used to cross hands in
+    front
+- - a human action of sneeze/cough, where tissue is used for sneeze/cough
+  - a human action of sneeze/cough, where hand covers sneeze/cough
+  - a human action of sneeze/cough, where tissue is used for sneeze/cough
+- - a human action of staggering, where the ground supports staggering
+  - a human action of staggering, how balance affects staggering
+  - a human action of staggering, where the ground supports staggering
+- - a human action of falling down, where the ground receives falling down
+  - a human action of falling down, where the surface supports falling down
+  - a human action of falling down, where the ground receives falling down
+- - a human action of headache, what alleviates headache
+  - a human action of headache, what provides comfort for headache
+  - a human action of headache, what alleviates headache
+- - a human action of chest pain, where the chest experiences chest pain
+  - a human action of chest pain, where the heart is affected by chest pain
+  - a human action of chest pain, where the chest experiences chest pain
+- - a human action of back pain, where the back experiences back pain
+  - a human action of back pain, where the spine supports back pain
+  - a human action of back pain, where the back experiences back pain
+- - a human action of neck pain, where neck experiences neck pain
+  - a human action of neck pain, where neck experiences neck pain
+  - a human action of neck pain, where neck experiences neck pain
+- - a human action of nausea/vomiting, caused by food
+  - a human action of nausea/vomiting, caused by liquid
+  - a human action of nausea/vomiting, caused by food
+- - a human action of fan self, using a fan
+  - a human action of fan self, where air provides the fan
+  - a human action of fan self, using a fan
+- - a human action of punch/slap, which uses a fist
+  - a human action of punch/slap, where the target receives the punch/slap
+  - a human action of punch/slap, which uses a fist
+- - a human action of kicking, how a ball interacts with kicking
+  - a human action of kicking, what is targeted in kicking
+  - a human action of kicking, how a ball interacts with kicking
+- - a human action of pushing, how a door interacts with pushing
+  - a human action of pushing, how a box interacts with pushing
+  - a human action of pushing, how a door interacts with pushing
+- - a human action of pat on back, where the back receives a pat on the back
+  - a human action of pat on back, where the hand performs the pat on back
+  - a human action of pat on back, where the back receives a pat on the back
+- - a human action of point finger, using the finger to point
+  - a human action of point finger, where a target is pointed at by the finger
+  - a human action of point finger, using the finger to point
+- - a human action of hugging, where arms are used for hugging
+  - a human action of hugging, involving a person
+  - a human action of hugging, where arms are used for hugging
+- - a human action of giving object, where a gift is given to the giving object
+  - a human action of giving object, where the recipient receives the giving object
+  - a human action of giving object, where a gift is given to the giving object
+- - a human action of touch pocket, where a pocket is touched
+  - a human action of touch pocket, where a pocket is touched
+  - a human action of touch pocket, where a pocket is touched
+- - a human action of shaking hands, involving the use of hands
+  - a human action of shaking hands, performed by a person
+  - a human action of shaking hands, involving the use of hands
+- - a human action of walking towards, where a path facilitates this action
+  - a human action of walking towards, where a destination is targeted for walking
+    towards
+  - a human action of walking towards, where a path facilitates this action
+- - a human action of walking apart, where space occupies walking apart
+  - a human action of walking apart, where distance increases with walking apart
+  - a human action of walking apart, where space occupies walking apart
+- - a human action of put on headphone, used in put on headphone
+  - a human action of put on headphone, used in put on headphone
+  - a human action of put on headphone, used in put on headphone
+- - a human action of take off headphone, where headphone is removed
+  - a human action of take off headphone, where headphone is removed
+  - a human action of take off headphone, where headphone is removed
+- - a human action of shoot at basket, where a basketball is shot at
+  - a human action of shoot at basket, where a hoop is targeted by the action
+  - a human action of shoot at basket, where a basketball is shot at
+- - a human action of bounce ball, involving a ball
+  - a human action of bounce ball, involving a ball
+  - a human action of bounce ball, involving a ball
+- - a human action of tennis bat swing, using a tennis bat for the swing
+  - a human action of tennis bat swing, targeting the tennis bat swing with a tennis
+    ball
+  - a human action of tennis bat swing, using a tennis bat for the swing
+- - a human action of juggle table tennis ball, involving a table tennis ball
+  - a human action of juggle table tennis ball, involving a table tennis ball
+  - a human action of juggle table tennis ball, involving a table tennis ball
+- - a human action of hush, that dampens sound
+  - a human action of hush, that is influenced by the environment
+  - a human action of hush, that dampens sound
+- - a human action of flick hair, how hair is flicked
+  - a human action of flick hair, how hair is flicked
+  - a human action of flick hair, how hair is flicked
+- - a human action of thumb up, involving the thumb
+  - a human action of thumb up, supported by the hand
+  - a human action of thumb up, involving the thumb
+- - a human action of thumb down, how thumb performs thumb down
+  - a human action of thumb down, how gesture represents thumb down
+  - a human action of thumb down, how thumb performs thumb down
+- - a human action of make OK sign, using the hand to make the OK sign
+  - a human action of make OK sign, where the fingers form the OK sign
+  - a human action of make OK sign, using the hand to make the OK sign
+- - a human action of make victory sign, using hand to make the victory sign
+  - a human action of make victory sign, forming the victory sign with fingers
+  - a human action of make victory sign, using hand to make the victory sign
+- - a human action of staple book, using a staple book
+  - a human action of staple book, where a book is stapled by a staple book
+  - a human action of staple book, using a staple book
+- - a human action of counting money, involving money
+  - a human action of counting money, where a table supports counting money
+  - a human action of counting money, involving money
+- - a human action of cutting nails, using a nail clipper
+  - a human action of cutting nails, where nails are acted upon
+  - a human action of cutting nails, using a nail clipper
+- - a human action of cutting paper, where paper is cut by cutting paper
+  - a human action of cutting paper, which involves scissors
+  - a human action of cutting paper, where paper is cut by cutting paper
+- - a human action of snap fingers, involving fingers
+  - a human action of snap fingers, resulting in a sound
+  - a human action of snap fingers, involving fingers
+- - a human action of open bottle, where a bottle undergoes opening
+  - a human action of open bottle, where a bottle undergoes opening
+  - a human action of open bottle, where a bottle undergoes opening
+- - a human action of sniff/smell, involving air
+  - a human action of sniff/smell, detecting scent
+  - a human action of sniff/smell, involving air
+- - a human action of squat down, where the ground supports squatting down
+  - a human action of squat down, weight is held during squatting down
+  - a human action of squat down, where the ground supports squatting down
+- - a human action of toss a coin, involving a coin
+  - a human action of toss a coin, involving a coin
+  - a human action of toss a coin, involving a coin
+- - a human action of fold paper, where paper is folded in
+  - a human action of fold paper, where paper is folded in
+  - a human action of fold paper, where paper is folded in
+- - a human action of ball up paper, how paper is manipulated
+  - a human action of ball up paper, what is used for balling up paper
+  - a human action of ball up paper, how paper is manipulated
+- - a human action of play magic cube, involving the use of a magic cube
+  - a human action of play magic cube, involving manipulation by hands
+  - a human action of play magic cube, involving the use of a magic cube
+- - a human action of apply cream on face, where cream is applied on the face
+  - a human action of apply cream on face, where the face receives cream
+  - a human action of apply cream on face, where cream is applied on the face
+- - a human action of apply cream on hand, where cream is applied on
+  - a human action of apply cream on hand, where the hand receives the application
+  - a human action of apply cream on hand, where cream is applied on
+- - a human action of put on bag, using a bag to put on
+  - a human action of put on bag, using a bag to put on
+  - a human action of put on bag, using a bag to put on
+- - a human action of take off bag, where a bag is taken off
+  - a human action of take off bag, where a bag is taken off
+  - a human action of take off bag, where a bag is taken off
+- - a human action of put object into bag, how an object is put into a bag
+  - a human action of put object into bag, where a bag receives the put object
+  - a human action of put object into bag, how an object is put into a bag
+- - a human action of take object out of bag, where an object is taken out of
+  - a human action of take object out of bag, that a bag contains
+  - a human action of take object out of bag, where an object is taken out of
+- - a human action of open a box, containing the action of opening a box
+  - a human action of open a box, where the lid is part of the box
+  - a human action of open a box, containing the action of opening a box
+- - a human action of move heavy objects, furniture that moves heavy objects
+  - a human action of move heavy objects, box that moves heavy objects
+  - a human action of move heavy objects, furniture that moves heavy objects
+- - a human action of shake fist, fist performs shake fist
+  - a human action of shake fist, fist performs shake fist
+  - a human action of shake fist, fist performs shake fist
+- - a human action of throw up cap/hat, how a cap is thrown up
+  - a human action of throw up cap/hat, how a hat is thrown up
+  - a human action of throw up cap/hat, how a cap is thrown up
+- - a human action of capitulate, when opponent yields to it
+  - a human action of capitulate, when terms dictate it
+  - a human action of capitulate, when opponent yields to it
+- - a human action of cross arms, arms are manipulated during this action
+  - a human action of cross arms, arms are manipulated during this action
+  - a human action of cross arms, arms are manipulated during this action
+- - a human action of arm circles, performing arm circles with arms
+  - a human action of arm circles, requiring space for arm circles
+  - a human action of arm circles, performing arm circles with arms
+- - a human action of arm swings, how the arm performs arm swings
+  - a human action of arm swings, how air interacts with arm swings
+  - a human action of arm swings, how the arm performs arm swings
+- - a human action of run on the spot, where ground is used for running on the spot
+  - a human action of run on the spot, where shoes are worn during running on the
+    spot
+  - a human action of run on the spot, where ground is used for running on the spot
+- - a human action of butt kicks, where the floor supports butt kicks
+  - a human action of butt kicks, where legs perform butt kicks
+  - a human action of butt kicks, where the floor supports butt kicks
+- - a human action of cross toe touch, where toes are involved
+  - a human action of cross toe touch, where the floor supports the action
+  - a human action of cross toe touch, where toes are involved
+- - a human action of side kick, where the leg performs the side kick
+  - a human action of side kick, where the foot strikes during a side kick
+  - a human action of side kick, where the leg performs the side kick
+- - a human action of yawn, involving air
+  - a human action of yawn, producing a sound
+  - a human action of yawn, involving air
+- - a human action of stretch oneself, involving the body
+  - a human action of stretch oneself, engaging muscles
+  - a human action of stretch oneself, involving the body
+- - a human action of blow nose, using tissue for blowing nose
+  - a human action of blow nose, how hand assists in blowing nose
+  - a human action of blow nose, using tissue for blowing nose
+- - a human action of hit with object, hitting a ball with an object
+  - a human action of hit with object, using a bat in hitting with an object
+  - a human action of hit with object, hitting a ball with an object
+- - a human action of wield knife, involving the use of a knife
+  - a human action of wield knife, involving the use of a knife
+  - a human action of wield knife, involving the use of a knife
+- - a human action of knock over, how a glass is knocked over
+  - a human action of knock over, what is involved in knocking over
+  - a human action of knock over, how a glass is knocked over
+- - a human action of grab stuff, how stuff is grabbed
+  - a human action of grab stuff, how stuff is grabbed
+  - a human action of grab stuff, how stuff is grabbed
+- - a human action of shoot with gun, involving the use of a gun
+  - a human action of shoot with gun, involving the use of a gun
+  - a human action of shoot with gun, involving the use of a gun
+- - a human action of step on foot, involving stepping on a foot
+  - a human action of step on foot, involving stepping on a foot
+  - a human action of step on foot, involving stepping on a foot
+- - a human action of high-five, where a hand performs a high-five
+  - a human action of high-five, where a palm touches during a high-five
+  - a human action of high-five, where a hand performs a high-five
+- - a human action of cheers and drink, where drink consumes cheers and drink
+  - a human action of cheers and drink, where glass holds cheers and drink
+  - a human action of cheers and drink, where drink consumes cheers and drink
+- - a human action of carry object, how a box carries the object
+  - a human action of carry object, how a bag carries the object
+  - a human action of carry object, how a box carries the object
+- - a human action of take a photo, where a camera is used for taking a photo
+  - a human action of take a photo, where a subject is captured in the photo
+  - a human action of take a photo, where a camera is used for taking a photo
+- - a human action of follow, where a path is followed
+  - a human action of follow, where a leader guides the follower
+  - a human action of follow, where a path is followed
+- - a human action of whisper, where the ear receives a whisper
+  - a human action of whisper, which is produced by the voice
+  - a human action of whisper, where the ear receives a whisper
+- - a human action of exchange things, where things are exchanged
+  - a human action of exchange things, where items are exchanged
+  - a human action of exchange things, where things are exchanged
+- - a human action of support somebody, supporting a person
+  - a human action of support somebody, using an object for support
+  - a human action of support somebody, supporting a person
+- - a human action of rock-paper-scissors, where rock is played in rock-paper-scissors
+  - a human action of rock-paper-scissors, where paper is played in rock-paper-scissors
+  - a human action of rock-paper-scissors, where scissors are played in rock-paper-scissors

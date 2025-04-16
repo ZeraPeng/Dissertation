@@ -16,7 +16,7 @@ def get_templates(dataset_name):
     return data
 
 def get_xprompt(dataset_name):
-    xprompt_file = f"ASKG/data/{dataset_name}/classes_xprompt_{dataset_name}.yml"
+    xprompt_file = f"ASKG/data/{dataset_name}/classes_xprompt_{dataset_name}_formatted.yml"
     with open(xprompt_file, 'r') as f:
         text = yaml.load(f, Loader=yaml.FullLoader)
     return text
@@ -87,56 +87,52 @@ def text_prompt_old(data):
 
 def text_prompt(data, dataset: str, num_templates: int, cls_prompt_type: str):
     text = get_xprompt(dataset)
-    templates = get_templates(dataset)['templates'] # k: classes, templates, obj_templates
     classes = data # ["c1", "c2", ...]
     num_classes = len(classes)
     n_prompts = [0, 0]
-
+    
+    templates = ["a human action of"]
     total_templates = len(templates)
     num_templates = min(num_templates, total_templates)
-    templates = templates[:num_templates] # a video of a person {}.
 
     tokenized_dict = {}
     cls_text_dict = {}
     text_dict = {}
-    xoo_dict = {} # {0: [xprompt_oo,...], 1: [xprompt_oo], ...}
     xao_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
     xaa_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
-    for i, t in enumerate(text.values()):
-        xoo_dict[i] = t['xprompt_oo']
+    for i, t in enumerate(text):
         xao_dict[i] = t['xprompt_ao']
         xaa_dict[i] = t['xprompt_aa']
     for ii, txt in enumerate(templates):
         text_dict[ii] = {
-            'a': [[txt.format(c)] for i, c in enumerate(classes)],
-            'xoo': [],
+            'aug': txt,
             'xao': [],
             'xaa': []
         }
         tokenized_dict[ii] = []
         for i, c in enumerate(classes):
-            ci_xoo_list = text_dict[ii]['a'][i][:] # ["a {ci}."]
-            ci_xao_list = text_dict[ii]['a'][i][:]
-            ci_xaa_list = text_dict[ii]['a'][i][:]
-            for j, t in enumerate(xoo_dict[i]):
-                ci_xoo_list.append(txt.format(f"{c}, {t}")) # ["a video of a person brush hair, where hair..."]
-            text_dict[ii]['xoo'].append(ci_xoo_list)
+            # ci_xao_list = text_dict[ii]['a'][i][:]
+            # ci_xaa_list = text_dict[ii]['a'][i][:]
+            ci_xao_list = []
+            ci_xaa_list = []
             for j, t in enumerate(xao_dict[i]):
-                ci_xao_list.append(txt.format(f"{c}, {t}"))
+                ci_xao_list.append(f"{txt.format(c)} {c}, {t}")
             text_dict[ii]['xao'].append(ci_xao_list)
             for j, t in enumerate(xaa_dict[i]):
-                ci_xaa_list.append(txt.format(f"{c}, {t}"))
+                ci_xaa_list.append(f"{txt.format(c)} {c}, {t}")
             text_dict[ii]['xaa'].append(ci_xaa_list)
-        if cls_prompt_type == 'xoo':
-            cls_text_dict[ii] = text_dict[ii]['xoo']
-        elif cls_prompt_type == 'xao':
+        if cls_prompt_type == 'xao':
             cls_text_dict[ii] = text_dict[ii]['xao']
         elif cls_prompt_type == 'xaa':
             cls_text_dict[ii] = text_dict[ii]['xaa']
         elif cls_prompt_type == 'xmix':
             cls_text_dict[ii] = []
             for i in range(len(classes)):
-                cls_text_dict[ii].append(list(set(text_dict[ii]['xoo'][i] + text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+        elif cls_prompt_type == 'xpair':
+            cls_text_dict[ii] = []
+            for i in range(len(classes)):
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
         else:
             cls_text_dict[ii] = text_dict[ii]['a']
 
@@ -294,8 +290,151 @@ def get_en_labels(en_list, en_dict):
         en_label_list.append(en_labels)
     return en_label_dict, en_label_list
 
-if __name__ == '__main__':
-    # Create a class for dataset configuration
+
+
+def aug_text_prepare(data, dataset: str, num_templates: int, cls_prompt_type: str):
+    text = get_xprompt(dataset)
+    classes = data # ["c1", "c2", ...]
+    num_classes = len(classes)
+    n_prompts = [0, 0]
+    
+    templates = ["a human action of"]
+    total_templates = len(templates)
+    num_templates = min(num_templates, total_templates)
+
+    tokenized_dict = {}
+    cls_text_dict = {}
+    text_dict = {}
+    xao_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
+    xaa_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
+    for i, t in enumerate(text):
+        xao_dict[i] = t['xprompt_ao']
+        xaa_dict[i] = t['xprompt_aa']
+    for ii, txt in enumerate(templates):
+        text_dict[ii] = {
+            'aug': txt,
+            'xao': [],
+            'xaa': []
+        }
+        tokenized_dict[ii] = []
+        for i, c in enumerate(classes):
+            # ci_xao_list = text_dict[ii]['a'][i][:]
+            # ci_xaa_list = text_dict[ii]['a'][i][:]
+            ci_xao_list = []
+            ci_xaa_list = []
+            for j, t in enumerate(xao_dict[i]):
+                ci_xao_list.append(f"{txt.format(c)} {c}, {t}")
+            text_dict[ii]['xao'].append(ci_xao_list)
+            for j, t in enumerate(xaa_dict[i]):
+                ci_xaa_list.append(f"{txt.format(c)} {c}, {t}")
+            text_dict[ii]['xaa'].append(ci_xaa_list)
+        if cls_prompt_type == 'xao':
+            cls_text_dict[ii] = text_dict[ii]['xao']
+        elif cls_prompt_type == 'xaa':
+            cls_text_dict[ii] = text_dict[ii]['xaa']
+        elif cls_prompt_type == 'xmix':
+            cls_text_dict[ii] = []
+            for i in range(len(classes)):
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+        elif cls_prompt_type == 'xpair':
+            cls_text_dict[ii] = []
+            for i in range(len(classes)):
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+        else:
+            cls_text_dict[ii] = text_dict[ii]['a']
+
+
+        cls_text_dict[ii], n_prompts[0], n_prompts[1] = expand_cls_text(cls_text_dict[ii])
+
+        for n in range(n_prompts[1]):
+            tokenized_dict[ii].append(torch.cat([clip.tokenize(t[n]) for t in cls_text_dict[ii]])) # [c 77, c 77,...]
+        # tokenized_dict[0] shape: (3, 120, 77) -> (number of prompts, classes, token)
+
+        tokenized_dict[ii] = torch.cat(tokenized_dict[ii])  # (360, 77)
+        # for i in range(len(cls_text_dict[ii])):
+        #     tokenized_dict[ii].append(torch.cat([clip.tokenize(t) for t in cls_text_dict[ii][i]]))
+
+
+    # cls_tokenized = [torch.cat([tokenized_dict[i][j] for i in range(num_templates)], dim=0) for j in range(num_classes)]
+
+    cls_tokenized = torch.cat([v for v in tokenized_dict.values()]) # (num_templates max_prompt num_cls) 77
+
+
+    # expand and repeat cls_tokenized dim to max
+    # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
+    return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
+
+
+def text_prepare(data, dataset: str, num_templates: 0, cls_prompt_type: str):
+    text = get_xprompt(dataset)
+    classes = data # ["c1", "c2", ...]
+    num_classes = len(classes)
+    n_prompts = [0, 0]
+    
+
+    tokenized_dict = {}
+    cls_text_dict = {}
+    text_dict = {}
+    xao_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
+    xaa_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
+    for i, t in enumerate(text):
+        xao_dict[i] = t['xprompt_ao']
+        xaa_dict[i] = t['xprompt_aa']
+    ii = 0
+    text_dict[ii] = {
+        'xao': [],
+        'xaa': []
+    }
+    tokenized_dict[ii] = []
+    for i, c in enumerate(classes):
+        # ci_xao_list = text_dict[ii]['a'][i][:]
+        # ci_xaa_list = text_dict[ii]['a'][i][:]
+        ci_xao_list = []
+        ci_xaa_list = []
+        for j, t in enumerate(xao_dict[i]):
+            ci_xao_list.append(f"{t}")
+        text_dict[ii]['xao'].append(ci_xao_list)
+        for j, t in enumerate(xaa_dict[i]):
+            ci_xaa_list.append(f"{t}")
+        text_dict[ii]['xaa'].append(ci_xaa_list)
+    if cls_prompt_type == 'xao':
+        cls_text_dict[ii] = text_dict[ii]['xao']
+    elif cls_prompt_type == 'xaa':
+        cls_text_dict[ii] = text_dict[ii]['xaa']
+    elif cls_prompt_type == 'xmix':
+        cls_text_dict[ii] = []
+        for i in range(len(classes)):
+            cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+    elif cls_prompt_type == 'xpair':
+        cls_text_dict[ii] = []
+        for i in range(len(classes)):
+            cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+    else:
+        cls_text_dict[ii] = text_dict[ii]['a']
+
+
+    cls_text_dict[ii], n_prompts[0], n_prompts[1] = expand_cls_text(cls_text_dict[ii])
+
+    for n in range(n_prompts[1]):
+        tokenized_dict[ii].append(torch.cat([clip.tokenize(t[n]) for t in cls_text_dict[ii]])) # [c 77, c 77,...]
+    # tokenized_dict[0] shape: (3, 120, 77) -> (number of prompts, classes, token)
+
+    tokenized_dict[ii] = torch.cat(tokenized_dict[ii])  # (360, 77)
+    # for i in range(len(cls_text_dict[ii])):
+    #     tokenized_dict[ii].append(torch.cat([clip.tokenize(t) for t in cls_text_dict[ii][i]]))
+
+
+    # cls_tokenized = [torch.cat([tokenized_dict[i][j] for i in range(num_templates)], dim=0) for j in range(num_classes)]
+
+    cls_tokenized = torch.cat([v for v in tokenized_dict.values()]) # (num_templates max_prompt num_cls) 77
+
+
+    # expand and repeat cls_tokenized dim to max
+    # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
+    return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
+
+
+def aug_feat_processor(cls_prompt_type='xao'):    # Create a class for dataset configuration
     class Config:
         def __init__(self):
             self.data = type('', (), {})()
@@ -305,16 +444,116 @@ if __name__ == '__main__':
     config = Config()
     # Load dataset
     dataset_name = config.data.dataset
-    data = get_templates(dataset_name)["classes"]
+    data = get_templates(dataset_name)
 
     # Load CLIP model
     device = "cuda" if torch.cuda.is_available() else "cpu"
     clip_model, _ = clip.load("ViT-B/32", device=device)
     
     # Process text features
-    classes_feats_file = "ASKG/data/classes_feats_askg_ntu.tar"
-    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = text_prompt(data, config.data.dataset, num_templates=config.data.num_templates, cls_prompt_type='xmix')
-    ipdb.set_trace()
+    classes_feats_file = f"ASKG/data/{cls_prompt_type}_text_feats_askg_ntu.tar"
+    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = aug_text_prepare(data, config.data.dataset, num_templates=config.data.num_templates, cls_prompt_type=cls_prompt_type)
+    # Save cls_text_dict to a YAML file
+    cls_text_dict_file = f"ASKG/data/{cls_prompt_type}_text_dict_askg_ntu.yml"
+    with open(cls_text_dict_file, 'w') as f:
+        yaml.dump(cls_text_dict, f)
+    
+    # Calculate number of classes and text augmentations
+    n_classes = int(cls_tokenized.size(0) / (n_templates * n_prompts[1]))
+    num_text_aug = n_prompts[1] * n_templates
+    
+    # Rearrange tensor dimensions for processing
+    cls_tokenized = rearrange(cls_tokenized, '(x a) d -> x a d', a=n_classes)      # [3, 120, 77]
+    x, a, d = cls_tokenized.size()
+    
+    # Encode text features with CLIP
+    clip_model.eval()
+    with torch.no_grad():
+        # Process each batch and ensure it's on the correct device
+        classes_features = []
+        for i in range(x):
+            # Make sure the tensor is on the right device before passing to encode_text
+            text_batch = cls_tokenized[i].squeeze().to(device)
+            feature = clip_model.encode_text(text_batch)
+            classes_features.append(feature)
+        
+        classes_features = torch.stack(classes_features)
+        # Rearrange features for storage
+        classes_features = classes_features.permute(1, 0, 2)  # a x d
+        # Move to CPU for saving
+        classes_features = classes_features.to('cpu')       # [120, 3, 512]
+        torch.save(classes_features, classes_feats_file)
+
+def xprompt_feat_processor(cls_prompt_type='xao'):    # Create a class for dataset configuration
+    class Config:
+        def __init__(self):
+            self.data = type('', (), {})()
+            self.data.dataset = 'ntu'
+            self.data.num_templates = 0
+
+    config = Config()
+    # Load dataset
+    dataset_name = config.data.dataset
+    data = get_templates(dataset_name)
+
+    # Load CLIP model
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    clip_model, _ = clip.load("ViT-B/32", device=device)
+    
+    # Process text features
+    classes_feats_file = f"ASKG/data/xprompt_feat/{cls_prompt_type}_text_feats_xprompt_ntu.tar"
+    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = text_prepare(data, config.data.dataset, num_templates=config.data.num_templates, cls_prompt_type=cls_prompt_type)
+    # Save cls_text_dict to a YAML file
+    cls_text_dict_file = f"ASKG/data/xprompt_feat/{cls_prompt_type}_text_dict_xprompt_ntu.yml"
+    with open(cls_text_dict_file, 'w') as f:
+        yaml.dump(cls_text_dict, f)
+    
+    # Calculate number of classes and text augmentations
+    if n_templates == 0:
+        n_classes = int(cls_tokenized.size(0) / (n_prompts[1]))
+    num_text_aug = n_prompts[1] * n_templates
+    
+    # Rearrange tensor dimensions for processing
+    cls_tokenized = rearrange(cls_tokenized, '(x a) d -> x a d', a=n_classes)      # [3, 120, 77]
+    x, a, d = cls_tokenized.size()
+    
+    # Encode text features with CLIP
+    clip_model.eval()
+    with torch.no_grad():
+        # Process each batch and ensure it's on the correct device
+        classes_features = []
+        for i in range(x):
+            # Make sure the tensor is on the right device before passing to encode_text
+            text_batch = cls_tokenized[i].squeeze().to(device)
+            feature = clip_model.encode_text(text_batch)
+            classes_features.append(feature)
+        
+        classes_features = torch.stack(classes_features)
+        # Rearrange features for storage
+        classes_features = classes_features.permute(1, 0, 2)  # a x d
+        # Move to CPU for saving
+        classes_features = classes_features.to('cpu')       # [120, 3, 512]
+        torch.save(classes_features, classes_feats_file)
+
+def entity_only_processor():    # Create a class for dataset configuration
+    class Config:
+        def __init__(self):
+            self.data = type('', (), {})()
+            self.data.dataset = 'ntu'
+            self.data.num_templates = 0
+
+    config = Config()
+    # Load dataset
+    dataset_name = config.data.dataset
+    data = get_templates(dataset_name)
+
+    # Load CLIP model
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    clip_model, _ = clip.load("ViT-B/32", device=device)
+    
+    # Process text features
+    classes_feats_file = "ASKG/data/object_feats_ntu.tar"
+    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = entity_prompt(data, config.data.dataset, num_templates=config.data.num_templates, entity_type='o')
     # Save cls_text_dict to a YAML file
     cls_text_dict_file = "ASKG/data/cls_text_dict.yml"
     with open(cls_text_dict_file, 'w') as f:
@@ -346,3 +585,6 @@ if __name__ == '__main__':
         classes_features = classes_features.to('cpu')
         classes_features
         torch.save(classes_features, classes_feats_file)
+
+if __name__ == '__main__':
+    xprompt_feat_processor('xaa')

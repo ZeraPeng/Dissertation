@@ -76,9 +76,9 @@ def process_xprompt_data(xprompt_data, output_file, device='cuda'):
     
     for action_dict in xprompt_data:
         encoded_action_dict = {}
-        
+
         for action_name, action_info in action_dict.items():
-            encoded_action_info = {'label': action_info.get('label', action_name)}
+            encoded_action_info = {'label': action_info.get('label', action_name), 'idx': action_info.get('idx', action_name)}
             
             # Process xprompt_ao
             if 'xprompt_ao' in action_info:
@@ -99,10 +99,8 @@ def process_xprompt_data(xprompt_data, output_file, device='cuda'):
                         'text': prompt,
                         'embedding': all_embeddings[prompt_idx]
                     })
-            
-            encoded_action_dict[action_name] = encoded_action_info
-        
-        encoded_data.append(encoded_action_dict)
+        encoded_data.append(encoded_action_info)
+    encoded_data = sorted(encoded_data, key=lambda x: x['idx'], reverse=False)
     ipdb.set_trace()
     # Save the encoded data and metadata
     print(f"Saving encoded data to {output_file}")

@@ -45,5 +45,20 @@ def xprompt_check():
     with open(output_file, 'w', encoding='utf-8') as f:
         yaml.dump(xprompt, f, allow_unicode=True, sort_keys=False, default_flow_style=False)
 
+def xprompt_format(dataset_name='ntu'):
+    xprompt_file = f"ASKG/data/{dataset_name}/classes_xprompt_{dataset_name}.yml"
+    output_file = f"ASKG/data/{dataset_name}/classes_xprompt_{dataset_name}_formatted.yml"
+    with open(xprompt_file, 'r') as f:
+        text = yaml.load(f, Loader=yaml.FullLoader)
+    data = []
+    for action_dict in text:
+        for action_name, item in action_dict.items():
+            data.append({'label': item.get('label', action_name), 'idx': item.get('idx', action_name), 'xprompt_ao': item.get('xprompt_ao', action_name), 'xprompt_aa': item.get('xprompt_aa', action_name)})
+    data = sorted(data, key=lambda x: x['idx'], reverse=False)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        yaml.dump(data, f, allow_unicode=True, sort_keys=False, default_flow_style=False)
+    return data
+
 if __name__ == "__main__":
-    xprompt_check()
+    xprompt_format()
