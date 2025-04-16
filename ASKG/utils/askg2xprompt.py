@@ -23,9 +23,9 @@ openai.api_base = os.getenv("OPENAI_API_BASE")
 def chat_completion_with_backoff(**kwargs):
     return openai.ChatCompletion.create(**kwargs)
 
-data_path = 'ASKG_utils/'
+data_path = 'ASKG_utils/data/ntu'
 # read file path
-label_ASKG_path = data_path+'ntu120_KG.yml'
+label_ASKG_path = os.path.join(data_path, 'classes_ASKG_ntu.yml')
 # write file path
 xprompt_path = data_path+'ntu120_xprompt.yml'
 

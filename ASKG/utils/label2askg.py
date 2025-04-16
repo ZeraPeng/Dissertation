@@ -44,14 +44,19 @@ def generate_kg_for_action(label: str) -> Dict[str, Any]:
     prompt = f"""You are a commonsense knowledge base, especially for human actions. You will be provided with an action label below, which is delimited with square brackets. Use the following step-by-step instructions to respond to user inputs:
 
 Conditions
-1 - Return the object entity list contained Top K most relevant objects involved in the given action (0<=K<=3).
-2 - What are the relations among these object entities? Find the proper predicate names that concisely describing the relationship between each object pair chosen from the object entity list.
-3 - What are the relations between the given action entity and these object entities? Choose the proper predicate names that concisely describing the relationship between the given action entity and each object entity listed above.
-4 - What sub-actions does the given action entity involve? The sub-action name should contain as less object name as possible. Return each sub-action name in the right processing order.
+1 - Return the object entity list containing Top K most relevant objects involved in the given action (0<=K<=2). Avoid including human body parts unless absolutely essential.
+2 - What are the relations between the given action label and these object entities? Choose the proper predicate names that concisely describe the relationship between the given action entity and each object entity listed above.
+3 - What sub-actions does the given action entity involve? Figure out Top Q relevant sub-actions involved in the given action (2<=Q<=4). The sub-action name should be verb, do not contain noun. Return each sub-action name in the right processing order.
+4 - What are the relations between these sub-actions? Find the proper relationship between sub-actions (such as "precedes", "follows", "comes before", etc.)
 5 - Generate the action category info based on the instructions above in YAML format, reduce other prose.
 
 Questions
-Should include these fields: [label (i.e., the given action name), obj_li (i.e., object list), obj_rel_triples (i.e., object-object relation triples), act_obj_triples (i.e., action-object relation triples), sub_act_li (i.e., sub-action entity list), sub_act_rel_triples (i.e., subaction-subaction relation triples)], under the root "given action name". The triples should be in this format: <...,...,...>.
+Should include these fields: [label (i.e., the given action name), obj_li (i.e., object list), act_obj_triples (i.e., action-object relation triples), sub_act_li (i.e., sub-action entity list), sub_act_rel_triples (i.e., subaction-subaction relation triples)], under the root "given action name". 
+The act_obj_triple should be in this format: <object, relation, action label>.
+The sub_act_rel_triple should be in this format: <subaction 1, relation, subaction 2>.
+
+IMPORTANT: Do not include backticks (```) or yaml tags in your response. Just return the YAML content directly. 
+IMPORTANT: Only include human body parts (like mouth, hand, leg) if they are actively used or manipulated in the action, not if they're just present as part of a human body.
 
 [{label}]
 """
@@ -91,9 +96,9 @@ Should include these fields: [label (i.e., the given action name), obj_li (i.e.,
 
 def main():
     # File path configuration
-    root_path = "/usr1/home/s124mdg53_04/Dissertation/ASKG_utils"  # Set your root directory path here
-    input_file = os.path.join(root_path, "test.txt")
-    output_file = os.path.join(root_path, "action_knowledge_graph.yaml")
+    root_path = "/usr1/home/s124mdg53_04/Dissertation/ASKG"  # Set your root directory path here
+    input_file = os.path.join(root_path, 'data/ntu', 'test.yml')
+    output_file = os.path.join(root_path, 'data/ntu', "classes_ASKG_ntu.yml")
     
     # Read labels
     print(f"Reading action labels from {input_file}...")
