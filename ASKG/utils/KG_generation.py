@@ -59,7 +59,7 @@ Should include these fields: [label (i.e., the given action name), obj_li (i.e.,
     start_time = time.time()
     try:
         response = chat_completion_with_backoff(
-            model="gpt-4",  # Can be adjusted based on needs
+            model="gpt-4o-mini",  # Can be adjusted based on needs
             messages=[
                 {"role": "system", "content": "You are a commonsense knowledge base specialized in creating knowledge graphs for human actions."},
                 {"role": "user", "content": prompt}
@@ -71,7 +71,8 @@ Should include these fields: [label (i.e., the given action name), obj_li (i.e.,
             presence_penalty=0
         )
         content = response.choices[0]["message"]["content"].strip()
-        
+        content = content.replace('```yaml', '').replace('```', '').strip()
+
         # Try to parse YAML
         try:
             # Parse the returned YAML

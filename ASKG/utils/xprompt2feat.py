@@ -160,6 +160,80 @@ def text_prompt(data, dataset: str, num_templates: int, cls_prompt_type: str):
     # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
     return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
 
+def text_prompt_noun_verb_only(data, dataset: str, num_templates: int, cls_prompt_type: str):
+    text = get_xprompt(dataset)
+    templates = get_templates(dataset)['templates'] # k: classes, templates, obj_templates
+    classes = data # ["c1", "c2", ...]
+    num_classes = len(classes)
+    n_prompts = [0, 0]
+
+    total_templates = len(templates)
+    num_templates = min(num_templates, total_templates)
+    templates = templates[:num_templates] # a video of a person {}.
+
+    tokenized_dict = {}
+    cls_text_dict = {}
+    text_dict = {}
+    xoo_dict = {} # {0: [xprompt_oo,...], 1: [xprompt_oo], ...}
+    xao_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
+    xaa_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
+    for i, t in enumerate(text.values()):
+        xoo_dict[i] = t['xprompt_oo']
+        xao_dict[i] = t['xprompt_ao']
+        xaa_dict[i] = t['xprompt_aa']
+    for ii, txt in enumerate(templates):
+        text_dict[ii] = {
+            'a': [[txt.format(c)] for i, c in enumerate(classes)],
+            'xoo': [],
+            'xao': [],
+            'xaa': []
+        }
+        tokenized_dict[ii] = []
+        for i, c in enumerate(classes):
+            ci_xoo_list = text_dict[ii]['a'][i][:] # ["a {ci}."]
+            ci_xao_list = text_dict[ii]['a'][i][:]
+            ci_xaa_list = text_dict[ii]['a'][i][:]
+            for j, t in enumerate(xoo_dict[i]):
+                ci_xoo_list.append(txt.format(f"{c}, {t}")) # ["a video of a person brush hair, where hair..."]
+            text_dict[ii]['xoo'].append(ci_xoo_list)
+            for j, t in enumerate(xao_dict[i]):
+                ci_xao_list.append(txt.format(f"{c}, {t}"))
+            text_dict[ii]['xao'].append(ci_xao_list)
+            for j, t in enumerate(xaa_dict[i]):
+                ci_xaa_list.append(txt.format(f"{c}, {t}"))
+            text_dict[ii]['xaa'].append(ci_xaa_list)
+        if cls_prompt_type == 'xoo':
+            cls_text_dict[ii] = text_dict[ii]['xoo']
+        elif cls_prompt_type == 'xao':
+            cls_text_dict[ii] = text_dict[ii]['xao']
+        elif cls_prompt_type == 'xaa':
+            cls_text_dict[ii] = text_dict[ii]['xaa']
+        elif cls_prompt_type == 'xmix':
+            cls_text_dict[ii] = []
+            for i in range(len(classes)):
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xoo'][i] + text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+        else:
+            cls_text_dict[ii] = text_dict[ii]['a']
+
+
+        cls_text_dict[ii], n_prompts[0], n_prompts[1] = expand_cls_text(cls_text_dict[ii])
+
+        for n in range(n_prompts[1]):
+            tokenized_dict[ii].append(torch.cat([clip.tokenize(t[n]) for t in cls_text_dict[ii]])) # [c 77, c 77,...]
+
+        tokenized_dict[ii] = torch.cat(tokenized_dict[ii])
+        # for i in range(len(cls_text_dict[ii])):
+        #     tokenized_dict[ii].append(torch.cat([clip.tokenize(t) for t in cls_text_dict[ii][i]]))
+
+
+    # cls_tokenized = [torch.cat([tokenized_dict[i][j] for i in range(num_templates)], dim=0) for j in range(num_classes)]
+
+    cls_tokenized = torch.cat([v for v in tokenized_dict.values()]) # (num_templates max_prompt num_cls) 77
+
+
+    # expand and repeat cls_tokenized dim to max
+    # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
+    return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
 
 def entity_prompt(data, dataset: str, num_templates: int, entity_type: str):
     classes = [i[1] for i in data.classes] # ["c1", "c2", ...]
