@@ -1,7 +1,4 @@
-data_split = ntu60_5
-alpha=0.8
-body_part=2
-n=2part
-dataset_path = "/usr1/home/s124mdg53_04/STAR/packed_features/shift_${data_split}_r"
-
-echo ${dataset_path}
+python train_char.py \
+    --num_classes 60 --ss 5 --st r --ve shift --le clip-vit-b-32 --tm chat --num_cycles 10 --num_epoch_per_cycle 1700 \
+    --latent_size 96 --i_latent_size 8 --lr 4.9372938499672305e-05 --phase train --mode train --dataset_path "/usr1/home/s124mdg53_04/STAR/packed_features/shift_ntu60_5_r_2part" --wdir "char_results/shift_ntu60_5_r/" \
+    --dis_step 4 --batch_size 32 --dataset ntu60
