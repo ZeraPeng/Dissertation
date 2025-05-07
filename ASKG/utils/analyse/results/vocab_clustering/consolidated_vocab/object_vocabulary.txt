@@ -1,0 +1,81 @@
+water
+glass
+meal
+utensils
+toothbrush
+toothpaste
+item
+ground
+object
+ball
+floor
+audience
+book
+article
+pen
+paper
+jacket
+shoe
+hat
+cap
+friend
+joke
+goal
+pocket
+phone
+table
+keyboard
+object being pointed at
+smartphone
+camera
+watch
+towel
+prayer position
+tissue
+pain reliever
+dark room
+spine
+food
+liquid
+fan
+fist
+target
+door
+box
+person
+gift
+recipient
+gesture
+path
+destination
+basketball
+hoop
+tennis bat
+table tennis ball
+staple
+money
+nail clipper
+nails
+scissors
+bottle
+scent
+weight
+coin
+magic cube
+cream
+bag
+lid
+furniture
+opponent
+terms
+body
+muscles
+bat
+knife
+stuff
+gun
+drink
+leader
+voice
+things
+rock

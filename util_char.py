@@ -96,3 +96,25 @@ def compute_cross_entropy_loss(alignment_scores, labels):
     loss = F.cross_entropy(alignment_scores, labels)
     
     return loss
+
+def predict_from_alignment_scores(alignment_scores):
+    """
+    Get class predictions from alignment scores.
+    
+    Args:
+        alignment_scores: tensor of shape (batch_size, num_classes)
+            The alignment scores between videos and classes.
+            
+    Returns:
+        predictions: tensor of shape (batch_size)
+            The predicted class indices for each video.
+        confidence_scores: tensor of shape (batch_size)
+            The confidence scores (softmax probabilities) for the predicted classes.
+    """
+    # Apply softmax to get probability distribution over classes
+    probabilities = torch.softmax(alignment_scores, dim=1)
+    
+    # Get the class with highest alignment score for each video
+    confidence_scores, predictions = torch.max(probabilities, dim=1)
+    predictions = predictions.float()
+    return predictions, confidence_scores

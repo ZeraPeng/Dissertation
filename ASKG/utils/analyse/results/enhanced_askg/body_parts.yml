@@ -1,0 +1,582 @@
+apply cream on face:
+  act_body_part_triples:
+  - <cream, applied_on, head>
+  - <face, receives, head>
+  body_part_li:
+  - head
+  label: apply cream on face
+apply cream on hand:
+  act_body_part_triples:
+  - <cream, applied on, upper limbs>
+  - <hand, receives, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: apply cream on hand
+arm circles:
+  act_body_part_triples:
+  - <arms, perform, upper limbs>
+  - <space, requires, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: arm circles
+arm swings:
+  act_body_part_triples:
+  - <arm, performs, upper limbs>
+  - <air, interacts with, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: arm swings
+back pain:
+  act_body_part_triples:
+  - <back, experiences, hip>
+  - <spine, supports, hip>
+  body_part_li:
+  - hip
+  label: back pain
+ball up paper:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: ball up paper
+blow nose:
+  act_body_part_triples:
+  - <tissue, used for, head>
+  - <hand, assists in, head>
+  body_part_li:
+  - upper limbs
+  label: blow nose
+bounce ball:
+  act_body_part_triples: []
+  body_part_li: []
+  label: bounce ball
+brush hair:
+  act_body_part_triples:
+  - <hairbrush, used for, head>
+  - <hair, is styled by, head>
+  body_part_li:
+  - head
+  label: brush hair
+brush teeth:
+  act_body_part_triples: []
+  body_part_li: []
+  label: brush teeth
+butt kicks:
+  act_body_part_triples: []
+  body_part_li:
+  - lower limbs
+  label: butt kicks
+capitulate:
+  act_body_part_triples: []
+  body_part_li: []
+  label: capitulate
+carry object:
+  act_body_part_triples: []
+  body_part_li: []
+  label: carry object
+check time (from watch):
+  act_body_part_triples: []
+  body_part_li: []
+  label: check time (from watch)
+cheer up:
+  act_body_part_triples: []
+  body_part_li: []
+  label: cheer up
+cheers and drink:
+  act_body_part_triples: []
+  body_part_li: []
+  label: cheers and drink
+chest pain:
+  act_body_part_triples:
+  - <chest, experiences, hip>
+  - <heart, is affected by, hip>
+  body_part_li:
+  - hip
+  - head
+  label: chest pain
+clapping:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: clapping
+counting money:
+  act_body_part_triples: []
+  body_part_li: []
+  label: counting money
+cross arms:
+  act_body_part_triples:
+  - <arms, manipulated during, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: cross arms
+cross hands in front:
+  act_body_part_triples:
+  - <hands, are used to, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: cross hands in front
+cross toe touch:
+  act_body_part_triples:
+  - <toes, involved in, lower limbs>
+  - <floor, supports, lower limbs>
+  body_part_li:
+  - lower limbs
+  label: cross toe touch
+cutting nails:
+  act_body_part_triples: []
+  body_part_li: []
+  label: cutting nails
+cutting paper:
+  act_body_part_triples: []
+  body_part_li: []
+  label: cutting paper
+drink water:
+  act_body_part_triples: []
+  body_part_li: []
+  label: drink water
+drop:
+  act_body_part_triples: []
+  body_part_li: []
+  label: drop
+eat meal:
+  act_body_part_triples: []
+  body_part_li: []
+  label: eat meal
+exchange things:
+  act_body_part_triples: []
+  body_part_li: []
+  label: exchange things
+falling down:
+  act_body_part_triples: []
+  body_part_li: []
+  label: falling down
+fan self:
+  act_body_part_triples: []
+  body_part_li: []
+  label: fan self
+flick hair:
+  act_body_part_triples:
+  - <hair, is flicked by, head>
+  body_part_li:
+  - head
+  label: flick hair
+fold paper:
+  act_body_part_triples: []
+  body_part_li: []
+  label: fold paper
+follow:
+  act_body_part_triples: []
+  body_part_li: []
+  label: follow
+giving object:
+  act_body_part_triples: []
+  body_part_li: []
+  label: giving object
+grab stuff:
+  act_body_part_triples: []
+  body_part_li: []
+  label: grab stuff
+hand waving:
+  act_body_part_triples:
+  - <hand, uses, upper limbs>
+  - <hand, moves, upper limbs>
+  - <air, is affected by, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: hand waving
+headache:
+  act_body_part_triples:
+  - <pain reliever, alleviates, head>
+  - <dark room, provides comfort for, head>
+  body_part_li: []
+  label: headache
+high-five:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: high-five
+hit with object:
+  act_body_part_triples: []
+  body_part_li: []
+  label: hit with object
+hopping:
+  act_body_part_triples: []
+  body_part_li: []
+  label: hopping
+hugging:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: hugging
+hush:
+  act_body_part_triples: []
+  body_part_li: []
+  label: hush
+juggle table tennis ball:
+  act_body_part_triples: []
+  body_part_li: []
+  label: juggle table tennis ball
+jump up:
+  act_body_part_triples: []
+  body_part_li: []
+  label: jump up
+kicking:
+  act_body_part_triples: []
+  body_part_li: []
+  label: kicking
+kicking something:
+  act_body_part_triples: []
+  body_part_li: []
+  label: kicking something
+knock over:
+  act_body_part_triples: []
+  body_part_li: []
+  label: knock over
+make OK sign:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: make OK sign
+make victory sign:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: make victory sign
+move heavy objects:
+  act_body_part_triples: []
+  body_part_li: []
+  label: move heavy objects
+nausea/vomiting:
+  act_body_part_triples: []
+  body_part_li: []
+  label: nausea/vomiting
+neck pain:
+  act_body_part_triples:
+  - <neck, experiences, head>
+  body_part_li:
+  - head
+  label: neck pain
+nod head/bow:
+  act_body_part_triples:
+  - <head, is involved in, head>
+  body_part_li:
+  - head
+  label: nod head/bow
+open a box:
+  act_body_part_triples: []
+  body_part_li: []
+  label: open a box
+open bottle:
+  act_body_part_triples: []
+  body_part_li: []
+  label: open bottle
+pat on back:
+  act_body_part_triples:
+  - <back, receives, hip>
+  - <hand, performs, hip>
+  body_part_li:
+  - hip
+  - upper limbs
+  label: pat on back
+phone call:
+  act_body_part_triples: []
+  body_part_li:
+  - head
+  label: phone call
+pick up:
+  act_body_part_triples: []
+  body_part_li: []
+  label: pick up
+play magic cube:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: play magic cube
+play with phone/tablet:
+  act_body_part_triples: []
+  body_part_li: []
+  label: play with phone/tablet
+point finger:
+  act_body_part_triples:
+  - <finger, uses, upper limbs>
+  - <target, is pointed at by, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: point finger
+point to something:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: point to something
+punch/slap:
+  act_body_part_triples: []
+  body_part_li: []
+  label: punch/slap
+pushing:
+  act_body_part_triples: []
+  body_part_li: []
+  label: pushing
+put object into bag:
+  act_body_part_triples: []
+  body_part_li: []
+  label: put object into bag
+put on a hat/cap:
+  act_body_part_triples: []
+  body_part_li:
+  - head
+  label: put on a hat/cap
+put on a shoe:
+  act_body_part_triples: []
+  body_part_li: []
+  label: put on a shoe
+put on bag:
+  act_body_part_triples: []
+  body_part_li: []
+  label: put on bag
+put on glasses:
+  act_body_part_triples:
+  - <glasses, used in, head>
+  body_part_li:
+  - head
+  label: put on glasses
+put on headphone:
+  act_body_part_triples:
+  - <headphone, used in, head>
+  body_part_li:
+  - head
+  label: put on headphone
+put on jacket:
+  act_body_part_triples: []
+  body_part_li: []
+  label: put on jacket
+put palms together:
+  act_body_part_triples:
+  - <palms, involved in, upper limbs>
+  - <prayer position, represents, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: put palms together
+reach into pocket:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: reach into pocket
+reading:
+  act_body_part_triples: []
+  body_part_li: []
+  label: reading
+rock-paper-scissors:
+  act_body_part_triples: []
+  body_part_li: []
+  label: rock-paper-scissors
+rub two hands:
+  act_body_part_triples:
+  - <hands, used in, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: rub two hands
+run on the spot:
+  act_body_part_triples: []
+  body_part_li: []
+  label: run on the spot
+salute:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  - head
+  label: salute
+shake fist:
+  act_body_part_triples: []
+  body_part_li: []
+  label: shake fist
+shake head:
+  act_body_part_triples:
+  - <head, is involved in, head>
+  body_part_li:
+  - head
+  label: shake head
+shaking hands:
+  act_body_part_triples:
+  - <hands, used by, upper limbs>
+  - <person, performs, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: shaking hands
+shoot at basket:
+  act_body_part_triples: []
+  body_part_li: []
+  label: shoot at basket
+shoot with gun:
+  act_body_part_triples: []
+  body_part_li: []
+  label: shoot with gun
+side kick:
+  act_body_part_triples: []
+  body_part_li:
+  - lower limbs
+  label: side kick
+sit down:
+  act_body_part_triples: []
+  body_part_li:
+  - head
+  label: sit down
+snap fingers:
+  act_body_part_triples:
+  - <fingers, perform, upper limbs>
+  - <sound, results from, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: snap fingers
+sneeze/cough:
+  act_body_part_triples: []
+  body_part_li:
+  - upper limbs
+  label: sneeze/cough
+sniff/smell:
+  act_body_part_triples: []
+  body_part_li: []
+  label: sniff/smell
+squat down:
+  act_body_part_triples: []
+  body_part_li: []
+  label: squat down
+staggering:
+  act_body_part_triples: []
+  body_part_li: []
+  label: staggering
+stand up:
+  act_body_part_triples: []
+  body_part_li:
+  - head
+  label: stand up
+staple book:
+  act_body_part_triples: []
+  body_part_li: []
+  label: staple book
+step on foot:
+  act_body_part_triples:
+  - <foot, is stepped on by, lower limbs>
+  body_part_li:
+  - lower limbs
+  label: step on foot
+stretch oneself:
+  act_body_part_triples: []
+  body_part_li: []
+  label: stretch oneself
+support somebody:
+  act_body_part_triples: []
+  body_part_li: []
+  label: support somebody
+take a photo:
+  act_body_part_triples: []
+  body_part_li: []
+  label: take a photo
+take object out of bag:
+  act_body_part_triples: []
+  body_part_li: []
+  label: take object out of bag
+take off a hat/cap:
+  act_body_part_triples: []
+  body_part_li: []
+  label: take off a hat/cap
+take off a shoe:
+  act_body_part_triples: []
+  body_part_li: []
+  label: take off a shoe
+take off bag:
+  act_body_part_triples: []
+  body_part_li: []
+  label: take off bag
+take off glasses:
+  act_body_part_triples:
+  - <glasses, is taken off in, head>
+  body_part_li:
+  - head
+  label: take off glasses
+take off headphone:
+  act_body_part_triples:
+  - <headphone, is removed by, head>
+  body_part_li:
+  - head
+  label: take off headphone
+take off jacket:
+  act_body_part_triples: []
+  body_part_li: []
+  label: take off jacket
+taking a selfie:
+  act_body_part_triples: []
+  body_part_li: []
+  label: taking a selfie
+tear up paper:
+  act_body_part_triples:
+  - <paper, is torn by, head>
+  body_part_li: []
+  label: tear up paper
+tennis bat swing:
+  act_body_part_triples: []
+  body_part_li: []
+  label: tennis bat swing
+throw:
+  act_body_part_triples: []
+  body_part_li: []
+  label: throw
+throw up cap/hat:
+  act_body_part_triples: []
+  body_part_li: []
+  label: throw up cap/hat
+thumb down:
+  act_body_part_triples:
+  - <thumb, performs, upper limbs>
+  - <gesture, represents, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: thumb down
+thumb up:
+  act_body_part_triples:
+  - <thumb, performs, upper limbs>
+  - <hand, supports, upper limbs>
+  body_part_li:
+  - upper limbs
+  label: thumb up
+toss a coin:
+  act_body_part_triples: []
+  body_part_li: []
+  label: toss a coin
+touch pocket:
+  act_body_part_triples: []
+  body_part_li: []
+  label: touch pocket
+type on a keyboard:
+  act_body_part_triples: []
+  body_part_li: []
+  label: type on a keyboard
+walking apart:
+  act_body_part_triples: []
+  body_part_li: []
+  label: walking apart
+walking towards:
+  act_body_part_triples: []
+  body_part_li: []
+  label: walking towards
+whisper:
+  act_body_part_triples: []
+  body_part_li:
+  - head
+  label: whisper
+wield knife:
+  act_body_part_triples: []
+  body_part_li: []
+  label: wield knife
+wipe face:
+  act_body_part_triples:
+  - <towel, uses, head>
+  - <water, assists, head>
+  body_part_li: []
+  label: wipe face
+writing:
+  act_body_part_triples: []
+  body_part_li: []
+  label: writing
+yawn:
+  act_body_part_triples: []
+  body_part_li: []
+  label: yawn

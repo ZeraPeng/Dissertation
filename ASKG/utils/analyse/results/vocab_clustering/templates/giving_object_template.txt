@@ -1,0 +1,264 @@
+Generate a knowledge graph for action "giving object" using ONLY terms from the provided object and subaction vocabularies.
+
+Object vocabulary:
+- water
+- glass
+- meal
+- utensils
+- toothbrush
+- toothpaste
+- item
+- ground
+- object
+- ball
+- floor
+- audience
+- book
+- article
+- pen
+- paper
+- jacket
+- shoe
+- hat
+- cap
+- friend
+- joke
+- goal
+- pocket
+- phone
+- table
+- keyboard
+- object being pointed at
+- smartphone
+- camera
+- watch
+- towel
+- prayer position
+- tissue
+- pain reliever
+- dark room
+- spine
+- food
+- liquid
+- fan
+- fist
+- target
+- door
+- box
+- person
+- gift
+- recipient
+- gesture
+- path
+- destination
+- basketball
+- hoop
+- tennis bat
+- table tennis ball
+- staple
+- money
+- nail clipper
+- nails
+- scissors
+- bottle
+- scent
+- weight
+- coin
+- magic cube
+- cream
+- bag
+- lid
+- furniture
+- opponent
+- terms
+- body
+- muscles
+- bat
+- knife
+- stuff
+- gun
+- drink
+- leader
+- voice
+- things
+- rock
+
+Body part vocabulary:
+- head
+- upper limbs
+- hip
+- lower limbs
+
+Subaction vocabulary:
+- pour
+- lift
+- sip
+- prepare
+- chew
+- swallow
+- apply
+- brush
+- rinse
+- hold
+- style
+- let go
+- fall
+- bend
+- grasp
+- aim
+- release
+- approach
+- lower
+- rest
+- push
+- raise
+- bring together
+- create sound
+- scan
+- comprehend
+- analyze
+- write
+- revise
+- grab
+- rip
+- discard
+- pick
+- open
+- wear
+- move
+- place
+- unfasten
+- position
+- adjust
+- tell
+- smile
+- listen
+- wave
+- swing
+- strike
+- reach
+- retrieve
+- jump
+- land
+- propel
+- elevate
+- dial
+- talk
+- swipe
+- tap
+- scroll
+- press
+- extend
+- indicate
+- capture
+- look
+- interpret
+- nod
+- bow
+- shake
+- wet
+- bring
+- cross
+- inhale
+- expel
+- cover
+- lose
+- regain
+- wobble
+- lose balance
+- descend
+- impact
+- take
+- avoid
+- feel
+- assess
+- stretch
+- relax
+- direct
+- retract
+- follow-through
+- apply force
+- maintain pressure
+- touch
+- embrace
+- squeeze
+- hand over
+- receive
+- tilt
+- navigate
+- separate
+- pull
+- throw
+- score
+- hit
+- toss
+- catch
+- repeat
+- quiet
+- flick
+- curve
+- insert
+- organize
+- count
+- clip
+- file
+- cut
+- twist
+- perceive
+- flip
+- crease
+- crumple
+- rotate
+- cleanse
+- massage
+- spread
+- carry
+- up
+- surrender
+- negotiate
+- agree
+- start
+- maintain
+- kick
+- exhale
+- pinch
+- connect
+- cheers
+- drink
+- transport
+- review
+- walk
+- observe
+- speak
+- give
+- assist
+- encourage
+- provide
+- choose
+- reveal
+- compare
+
+Please generate:
+1. 2-3 relevant objects for this action (select from object vocabulary)
+2. 1-2 most important body parts in this action (select from body part vocabulary)
+3. 2-3 relevant subactions that make up this action (select from subaction vocabulary)
+4. Action-object relation triples describing how the action relates to these objects
+5. Subaction-subaction relation triples describing temporal relationships between subactions
+
+Output format (YAML):
+giving object:
+  label: giving object
+  obj_li:
+  - [object1]
+  - [object2]
+  body_part_li:
+  - [body_part1]
+  - [body_part2]
+  act_body_part_triples:
+  - <{action_label}, [relation], [body_part1]>
+  - <{action_label}, [relation], [body_part2]>
+  sub_act_li:
+  - [subaction1]
+  - [subaction2]
+  sub_act_rel_triples:
+  - <[subaction1], precedes, [subaction2]>

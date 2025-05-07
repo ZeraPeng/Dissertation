@@ -1,0 +1,188 @@
+apply cream on hand:
+  act_body_part_triples:
+  - <apply cream on hand, involves, head>
+  - <apply cream on hand, uses, upper limbs>
+  act_obj_triples:
+  - <apply cream on hand, involves, cream>
+  body_part_li:
+  - head
+  - upper limbs
+  label: apply cream on hand
+  obj_li:
+  - cream
+  sub_act_li:
+  - apply
+  - spread
+  sub_act_rel_triples:
+  - <apply, precedes, spread>
+butt kicks:
+  act_body_part_triples:
+  - <butt kicks, involves, head>
+  - <butt kicks, uses, upper limbs>
+  act_obj_triples:
+  - <butt kicks, involves, floor>
+  body_part_li:
+  - head
+  - upper limbs
+  label: butt kicks
+  obj_li:
+  - floor
+  sub_act_li:
+  - kick
+  - lift
+  sub_act_rel_triples:
+  - <kick, precedes, lift>
+clapping:
+  act_body_part_triples:
+  - <clapping, involves, head>
+  - <clapping, uses, upper limbs>
+  act_obj_triples:
+  - <clapping, involves, audience>
+  body_part_li:
+  - head
+  - upper limbs
+  label: clapping
+  obj_li:
+  - audience
+  sub_act_li:
+  - raise
+  - bring together
+  - create sound
+  sub_act_rel_triples:
+  - <raise, precedes, bring together>
+  - <bring together, precedes, create sound>
+drink water:
+  act_body_part_triples:
+  - <drink water, involves, head>
+  - <drink water, uses, upper limbs>
+  act_obj_triples:
+  - <drink water, consumes, water>
+  - <drink water, consumes, glass>
+  body_part_li:
+  - head
+  - upper limbs
+  label: drink water
+  obj_li:
+  - water
+  - glass
+  sub_act_li:
+  - pour
+  - lift
+  - sip
+  sub_act_rel_triples:
+  - <pour, precedes, lift>
+  - <lift, precedes, sip>
+point to something:
+  act_body_part_triples:
+  - <point to something, involves, head>
+  - <point to something, uses, upper limbs>
+  act_obj_triples:
+  - <point to something, involves, object being pointed at>
+  body_part_li:
+  - head
+  - upper limbs
+  label: point to something
+  obj_li:
+  - object being pointed at
+  sub_act_li:
+  - extend
+  - indicate
+  sub_act_rel_triples:
+  - <extend, precedes, indicate>
+put on headphone:
+  act_body_part_triples:
+  - <put on headphone, involves, head>
+  - <put on headphone, uses, upper limbs>
+  act_obj_triples: []
+  body_part_li:
+  - head
+  - upper limbs
+  label: put on headphone
+  obj_li: []
+  sub_act_li:
+  - grab
+  - adjust
+  sub_act_rel_triples:
+  - <grab, precedes, adjust>
+put palms together:
+  act_body_part_triples:
+  - <put palms together, involves, head>
+  - <put palms together, uses, upper limbs>
+  act_obj_triples:
+  - <put palms together, manipulates, prayer position>
+  body_part_li:
+  - head
+  - upper limbs
+  label: put palms together
+  obj_li:
+  - prayer position
+  sub_act_li:
+  - bring
+  - press
+  sub_act_rel_triples:
+  - <bring, precedes, press>
+rock-paper-scissors:
+  act_body_part_triples:
+  - <rock-paper-scissors, involves, head>
+  - <rock-paper-scissors, uses, upper limbs>
+  act_obj_triples:
+  - <rock-paper-scissors, involves, rock>
+  - <rock-paper-scissors, involves, paper>
+  - <rock-paper-scissors, involves, scissors>
+  body_part_li:
+  - head
+  - upper limbs
+  label: rock-paper-scissors
+  obj_li:
+  - rock
+  - paper
+  - scissors
+  sub_act_li:
+  - choose
+  - reveal
+  - compare
+  sub_act_rel_triples:
+  - <choose, precedes, reveal>
+  - <reveal, precedes, compare>
+throw:
+  act_body_part_triples:
+  - <throw, involves, head>
+  - <throw, requires, upper limbs>
+  act_obj_triples:
+  - <throw, propels, ball>
+  - <throw, propels, object>
+  body_part_li:
+  - head
+  - upper limbs
+  label: throw
+  obj_li:
+  - ball
+  - object
+  sub_act_li:
+  - lift
+  - aim
+  - release
+  sub_act_rel_triples:
+  - <lift, precedes, aim>
+  - <aim, precedes, release>
+writing:
+  act_body_part_triples:
+  - <writing, involves, head>
+  - <writing, uses, upper limbs>
+  act_obj_triples:
+  - <writing, involves, pen>
+  - <writing, involves, paper>
+  body_part_li:
+  - head
+  - upper limbs
+  label: writing
+  obj_li:
+  - pen
+  - paper
+  sub_act_li:
+  - hold
+  - write
+  - revise
+  sub_act_rel_triples:
+  - <hold, precedes, write>
+  - <write, precedes, revise>

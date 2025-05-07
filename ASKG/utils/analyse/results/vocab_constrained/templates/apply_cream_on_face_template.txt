@@ -1,0 +1,268 @@
+Generate a knowledge graph for action "apply cream on face" using ONLY terms from the provided object, body part, and subaction vocabularies.
+
+Object vocabulary:
+- cream
+- spine
+- paper
+- tissue
+- ball
+- toothbrush
+- toothpaste
+- floor
+- opponent
+- terms
+- box
+- bag
+- watch
+- friend
+- joke
+- drink
+- glass
+- audience
+- money
+- table
+- nail clipper
+- nails
+- scissors
+- water
+- item
+- ground
+- meal
+- utensils
+- things
+- fan
+- path
+- leader
+- gift
+- recipient
+- stuff
+- pain reliever
+- dark room
+- bat
+- person
+- table tennis ball
+- goal
+- furniture
+- food
+- liquid
+- lid
+- bottle
+- phone
+- object
+- magic cube
+- target
+- object being pointed at
+- fist
+- door
+- hat
+- shoe
+- jacket
+- prayer position
+- pocket
+- book
+- article
+- rock
+- basketball
+- hoop
+- gun
+- scent
+- weight
+- staple
+- body
+- muscles
+- camera
+- cap
+- smartphone
+- tennis bat
+- gesture
+- coin
+- keyboard
+- destination
+- voice
+- knife
+- towel
+- pen
+
+Body part vocabulary:
+- head
+- upper limbs
+- hip
+- lower limbs
+
+Subaction vocabulary:
+- cleanse
+- apply
+- massage
+- spread
+- rotate
+- extend
+- swing
+- move
+- stretch
+- lift
+- bend
+- crumple
+- squeeze
+- pinch
+- exhale
+- throw
+- hit
+- hold
+- brush
+- style
+- rinse
+- kick
+- surrender
+- negotiate
+- agree
+- transport
+- look
+- interpret
+- tell
+- smile
+- listen
+- cheers
+- drink
+- feel
+- reach
+- assess
+- raise
+- bring together
+- create sound
+- organize
+- count
+- cross
+- position
+- clip
+- file
+- cut
+- pour
+- sip
+- let go
+- fall
+- prepare
+- chew
+- swallow
+- give
+- receive
+- lose balance
+- descend
+- impact
+- wave
+- direct
+- flick
+- crease
+- walk
+- observe
+- hand over
+- rest
+- take
+- avoid
+- connect
+- jump
+- land
+- embrace
+- release
+- quiet
+- toss
+- catch
+- repeat
+- propel
+- elevate
+- approach
+- follow-through
+- strike
+- apply force
+- tilt
+- curve
+- carry
+- place
+- expel
+- relax
+- nod
+- bow
+- grasp
+- pull
+- twist
+- touch
+- dial
+- talk
+- swipe
+- tap
+- scroll
+- aim
+- indicate
+- retract
+- maintain pressure
+- pick
+- adjust
+- grab
+- open
+- wear
+- bring
+- press
+- retrieve
+- scan
+- comprehend
+- analyze
+- choose
+- reveal
+- compare
+- start
+- maintain
+- shake
+- score
+- lower
+- inhale
+- cover
+- perceive
+- lose
+- regain
+- wobble
+- push
+- insert
+- assist
+- encourage
+- provide
+- review
+- unfasten
+- discard
+- capture
+- rip
+- up
+- flip
+- separate
+- navigate
+- speak
+- wet
+- write
+- revise
+
+Please generate:
+1. 2-3 relevant objects for this action (select from object vocabulary)
+2. 1-2 most important body parts in this action (select from body part vocabulary)
+3. 2-3 relevant subactions that make up this action (select from subaction vocabulary)
+4. Action-object relation triples describing how the action relates to these objects
+5. Action-body part relation triples describing how the action relates to body parts
+6. Subaction-subaction relation triples describing temporal relationships between subactions
+
+Output format (YAML):
+apply cream on face:
+  label: apply cream on face
+  obj_li:
+  - [object1]
+  - [object2]
+  body_part_li:
+  - [body_part1]
+  - [body_part2]
+  act_obj_triples:
+  - <apply cream on face, [relation], [object1]>
+  - <apply cream on face, [relation], [object2]>
+  act_body_part_triples:
+  - <apply cream on face, [relation], [body_part1]>
+  - <apply cream on face, [relation], [body_part2]>
+  sub_act_li:
+  - [subaction1]
+  - [subaction2]
+  sub_act_rel_triples:
+  - <[subaction1], precedes, [subaction2]>

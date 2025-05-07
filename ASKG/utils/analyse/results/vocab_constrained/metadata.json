@@ -1,0 +1,11 @@
+{
+  "generation_date": "2025-04-22 22:28:06",
+  "vocabulary_stats": {
+    "objects": 81,
+    "subactions": 147,
+    "body_parts": 4,
+    "similarity_threshold": 0.7
+  },
+  "class_count": 120,
+  "processing_time": "0.17 seconds"
+}

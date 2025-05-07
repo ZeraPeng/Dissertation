@@ -1,0 +1,1158 @@
+apply cream on face:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: apply cream on face
+  obj_li:
+  - cream
+  sub_act_li:
+  - massage
+  - apply
+  - cleanse
+apply cream on hand:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: apply cream on hand
+  obj_li:
+  - cream
+  sub_act_li:
+  - apply
+  - spread
+arm circles:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: arm circles
+  obj_li: []
+  sub_act_li:
+  - extend
+  - rotate
+arm swings:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: arm swings
+  obj_li: []
+  sub_act_li:
+  - move
+  - stretch
+  - swing
+back pain:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: back pain
+  obj_li:
+  - spine
+  sub_act_li:
+  - stretch
+  - bend
+  - lift
+ball up paper:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: ball up paper
+  obj_li:
+  - paper
+  sub_act_li:
+  - squeeze
+  - crumple
+blow nose:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: blow nose
+  obj_li:
+  - tissue
+  sub_act_li:
+  - pinch
+  - exhale
+bounce ball:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: bounce ball
+  obj_li:
+  - ball
+  sub_act_li:
+  - throw
+  - hit
+brush hair:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: brush hair
+  obj_li: []
+  sub_act_li:
+  - hold
+  - style
+  - brush
+brush teeth:
+  act_obj_triples:
+  - <toothpaste, applied to, toothbrush>
+  act_rel_triples: []
+  label: brush teeth
+  obj_li:
+  - toothbrush
+  - toothpaste
+  sub_act_li:
+  - rinse
+  - apply
+  - brush
+butt kicks:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: butt kicks
+  obj_li:
+  - floor
+  sub_act_li:
+  - kick
+  - lift
+capitulate:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: capitulate
+  obj_li:
+  - opponent
+  - terms
+  sub_act_li:
+  - negotiate
+  - agree
+  - surrender
+carry object:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: carry object
+  obj_li:
+  - bag
+  - box
+  sub_act_li:
+  - hold
+  - transport
+  - lift
+check time (from watch):
+  act_obj_triples: []
+  act_rel_triples: []
+  label: check time (from watch)
+  obj_li:
+  - watch
+  sub_act_li:
+  - look
+  - interpret
+cheer up:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cheer up
+  obj_li:
+  - joke
+  - friend
+  sub_act_li:
+  - listen
+  - tell
+  - smile
+cheers and drink:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cheers and drink
+  obj_li:
+  - glass
+  - drink
+  sub_act_li:
+  - cheers
+  - drink
+chest pain:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: chest pain
+  obj_li: []
+  sub_act_li:
+  - reach
+  - feel
+  - assess
+clapping:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: clapping
+  obj_li:
+  - audience
+  sub_act_li:
+  - create sound
+  - raise
+  - bring together
+counting money:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: counting money
+  obj_li:
+  - money
+  - table
+  sub_act_li:
+  - count
+  - organize
+cross arms:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cross arms
+  obj_li: []
+  sub_act_li:
+  - hold
+  - cross
+cross hands in front:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cross hands in front
+  obj_li: []
+  sub_act_li:
+  - cross
+  - position
+cross toe touch:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cross toe touch
+  obj_li:
+  - floor
+  sub_act_li:
+  - stretch
+  - reach
+  - bend
+cutting nails:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cutting nails
+  obj_li:
+  - nail clipper
+  - nails
+  sub_act_li:
+  - clip
+  - file
+  - position
+cutting paper:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: cutting paper
+  obj_li:
+  - scissors
+  - paper
+  sub_act_li:
+  - hold
+  - cut
+drink water:
+  act_obj_triples:
+  - <glass, contains, water>
+  act_rel_triples: []
+  label: drink water
+  obj_li:
+  - glass
+  - water
+  sub_act_li:
+  - sip
+  - pour
+  - lift
+drop:
+  act_obj_triples:
+  - <drop, falls onto, ground>
+  act_rel_triples: []
+  label: drop
+  obj_li:
+  - ground
+  - item
+  sub_act_li:
+  - fall
+  - let go
+eat meal:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: eat meal
+  obj_li:
+  - meal
+  - utensils
+  sub_act_li:
+  - chew
+  - swallow
+  - prepare
+exchange things:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: exchange things
+  obj_li:
+  - things
+  - item
+  sub_act_li:
+  - receive
+  - give
+falling down:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: falling down
+  obj_li:
+  - ground
+  sub_act_li:
+  - descend
+  - impact
+  - lose balance
+fan self:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: fan self
+  obj_li:
+  - fan
+  sub_act_li:
+  - wave
+  - direct
+flick hair:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: flick hair
+  obj_li: []
+  sub_act_li:
+  - flick
+fold paper:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: fold paper
+  obj_li:
+  - paper
+  sub_act_li:
+  - crease
+  - bend
+follow:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: follow
+  obj_li:
+  - leader
+  - path
+  sub_act_li:
+  - walk
+  - observe
+giving object:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: giving object
+  obj_li:
+  - gift
+  - recipient
+  sub_act_li:
+  - hand over
+  - receive
+grab stuff:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: grab stuff
+  obj_li:
+  - stuff
+  sub_act_li:
+  - hold
+  - reach
+hand waving:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: hand waving
+  obj_li: []
+  sub_act_li:
+  - move
+  - wave
+headache:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: headache
+  obj_li:
+  - pain reliever
+  - dark room
+  sub_act_li:
+  - avoid
+  - take
+  - rest
+high-five:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: high-five
+  obj_li: []
+  sub_act_li:
+  - connect
+  - raise
+  - swing
+hit with object:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: hit with object
+  obj_li:
+  - bat
+  - ball
+  sub_act_li:
+  - connect
+  - impact
+  - swing
+hopping:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: hopping
+  obj_li:
+  - ground
+  sub_act_li:
+  - jump
+  - land
+hugging:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: hugging
+  obj_li:
+  - person
+  sub_act_li:
+  - squeeze
+  - embrace
+  - release
+hush:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: hush
+  obj_li: []
+  sub_act_li:
+  - listen
+  - quiet
+juggle table tennis ball:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: juggle table tennis ball
+  obj_li:
+  - table tennis ball
+  sub_act_li:
+  - catch
+  - toss
+  - repeat
+jump up:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: jump up
+  obj_li:
+  - ground
+  sub_act_li:
+  - elevate
+  - propel
+  - bend
+kicking:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: kicking
+  obj_li:
+  - ball
+  - goal
+  sub_act_li:
+  - follow-through
+  - swing
+  - approach
+kicking something:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: kicking something
+  obj_li:
+  - ball
+  - goal
+  sub_act_li:
+  - strike
+  - swing
+  - approach
+knock over:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: knock over
+  obj_li:
+  - table
+  - glass
+  sub_act_li:
+  - tilt
+  - apply force
+  - release
+make OK sign:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: make OK sign
+  obj_li: []
+  sub_act_li:
+  - raise
+  - curve
+make victory sign:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: make victory sign
+  obj_li: []
+  sub_act_li:
+  - raise
+  - position
+move heavy objects:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: move heavy objects
+  obj_li:
+  - furniture
+  - box
+  sub_act_li:
+  - carry
+  - place
+  - lift
+nausea/vomiting:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: nausea/vomiting
+  obj_li:
+  - liquid
+  - food
+  sub_act_li:
+  - stretch
+  - expel
+neck pain:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: neck pain
+  obj_li: []
+  sub_act_li:
+  - stretch
+  - relax
+nod head/bow:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: nod head/bow
+  obj_li: []
+  sub_act_li:
+  - bow
+  - nod
+open a box:
+  act_obj_triples:
+  - <lid, is part of, box>
+  act_rel_triples: []
+  label: open a box
+  obj_li:
+  - lid
+  - box
+  sub_act_li:
+  - pull
+  - grasp
+  - lift
+open bottle:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: open bottle
+  obj_li:
+  - bottle
+  sub_act_li:
+  - pull
+  - twist
+pat on back:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: pat on back
+  obj_li: []
+  sub_act_li:
+  - apply
+  - touch
+phone call:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: phone call
+  obj_li:
+  - phone
+  sub_act_li:
+  - talk
+  - listen
+  - dial
+pick up:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: pick up
+  obj_li:
+  - ground
+  - object
+  sub_act_li:
+  - grasp
+  - bend
+  - lift
+play magic cube:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: play magic cube
+  obj_li:
+  - magic cube
+  sub_act_li:
+  - catch
+  - rotate
+  - twist
+play with phone/tablet:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: play with phone/tablet
+  obj_li:
+  - table
+  - phone
+  sub_act_li:
+  - scroll
+  - tap
+  - swipe
+point finger:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: point finger
+  obj_li:
+  - target
+  sub_act_li:
+  - extend
+  - aim
+point to something:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: point to something
+  obj_li:
+  - object being pointed at
+  sub_act_li:
+  - extend
+  - indicate
+punch/slap:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: punch/slap
+  obj_li:
+  - target
+  - fist
+  sub_act_li:
+  - retract
+  - raise
+  - strike
+pushing:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: pushing
+  obj_li:
+  - door
+  - box
+  sub_act_li:
+  - move
+  - apply force
+  - maintain pressure
+put object into bag:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put object into bag
+  obj_li:
+  - object
+  - bag
+  sub_act_li:
+  - place
+  - pick
+put on a hat/cap:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put on a hat/cap
+  obj_li:
+  - hat
+  sub_act_li:
+  - place
+  - pick
+put on a shoe:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put on a shoe
+  obj_li:
+  - shoe
+  sub_act_li:
+  - place
+  - pick
+put on bag:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put on bag
+  obj_li:
+  - bag
+  sub_act_li:
+  - adjust
+  - pick
+put on glasses:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put on glasses
+  obj_li: []
+  sub_act_li:
+  - adjust
+  - pick
+  - position
+put on headphone:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put on headphone
+  obj_li: []
+  sub_act_li:
+  - adjust
+  - grab
+put on jacket:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put on jacket
+  obj_li:
+  - jacket
+  sub_act_li:
+  - open
+  - wear
+  - pick
+put palms together:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: put palms together
+  obj_li:
+  - prayer position
+  sub_act_li:
+  - bring
+  - press
+reach into pocket:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: reach into pocket
+  obj_li:
+  - pocket
+  sub_act_li:
+  - retrieve
+  - reach
+  - grasp
+reading:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: reading
+  obj_li:
+  - book
+  - article
+  sub_act_li:
+  - analyze
+  - comprehend
+  - scan
+rock-paper-scissors:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: rock-paper-scissors
+  obj_li:
+  - scissors
+  - rock
+  - paper
+  sub_act_li:
+  - compare
+  - choose
+  - reveal
+rub two hands:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: rub two hands
+  obj_li: []
+  sub_act_li:
+  - move
+  - apply
+run on the spot:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: run on the spot
+  obj_li:
+  - ground
+  - shoe
+  sub_act_li:
+  - start
+  - move
+  - maintain
+salute:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: salute
+  obj_li: []
+  sub_act_li:
+  - raise
+  - nod
+shake fist:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: shake fist
+  obj_li:
+  - fist
+  sub_act_li:
+  - move
+  - raise
+shake head:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: shake head
+  obj_li: []
+  sub_act_li:
+  - move
+  - shake
+shaking hands:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: shaking hands
+  obj_li:
+  - person
+  sub_act_li:
+  - release
+  - grasp
+  - shake
+  - approach
+shoot at basket:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: shoot at basket
+  obj_li:
+  - hoop
+  - basketball
+  sub_act_li:
+  - throw
+  - aim
+  - score
+shoot with gun:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: shoot with gun
+  obj_li:
+  - gun
+  sub_act_li:
+  - pull
+  - aim
+side kick:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: side kick
+  obj_li: []
+  sub_act_li:
+  - extend
+  - strike
+  - lift
+sit down:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: sit down
+  obj_li:
+  - floor
+  sub_act_li:
+  - lower
+  - rest
+  - approach
+snap fingers:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: snap fingers
+  obj_li: []
+  sub_act_li:
+  - press
+  - release
+  - position
+sneeze/cough:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: sneeze/cough
+  obj_li:
+  - tissue
+  sub_act_li:
+  - cover
+  - expel
+  - inhale
+sniff/smell:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: sniff/smell
+  obj_li:
+  - scent
+  sub_act_li:
+  - perceive
+  - inhale
+squat down:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: squat down
+  obj_li:
+  - ground
+  - weight
+  sub_act_li:
+  - lower
+  - hold
+  - bend
+staggering:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: staggering
+  obj_li:
+  - ground
+  sub_act_li:
+  - wobble
+  - regain
+  - lose
+stand up:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: stand up
+  obj_li:
+  - floor
+  sub_act_li:
+  - push
+  - lift
+staple book:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: staple book
+  obj_li:
+  - book
+  - staple
+  sub_act_li:
+  - press
+  - release
+  - insert
+step on foot:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: step on foot
+  obj_li: []
+  sub_act_li:
+  - place
+  - lift
+stretch oneself:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: stretch oneself
+  obj_li:
+  - body
+  - muscles
+  sub_act_li:
+  - extend
+  - hold
+  - relax
+support somebody:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: support somebody
+  obj_li:
+  - person
+  - object
+  sub_act_li:
+  - encourage
+  - assist
+  - provide
+take a photo:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take a photo
+  obj_li:
+  - camera
+  - object
+  sub_act_li:
+  - flick
+  - aim
+  - review
+take object out of bag:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take object out of bag
+  obj_li:
+  - object
+  - bag
+  sub_act_li:
+  - open
+  - move
+take off a hat/cap:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take off a hat/cap
+  obj_li:
+  - cap
+  - hat
+  sub_act_li:
+  - lower
+  - move
+take off a shoe:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take off a shoe
+  obj_li:
+  - shoe
+  sub_act_li:
+  - move
+  - unfasten
+take off bag:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take off bag
+  obj_li:
+  - bag
+  sub_act_li:
+  - unfasten
+  - lift
+take off glasses:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take off glasses
+  obj_li: []
+  sub_act_li:
+  - lower
+  - move
+take off headphone:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take off headphone
+  obj_li: []
+  sub_act_li:
+  - pull
+  - grasp
+take off jacket:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: take off jacket
+  obj_li:
+  - jacket
+  sub_act_li:
+  - move
+  - discard
+taking a selfie:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: taking a selfie
+  obj_li:
+  - smartphone
+  - camera
+  sub_act_li:
+  - hold
+  - smile
+  - capture
+tear up paper:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: tear up paper
+  obj_li:
+  - paper
+  sub_act_li:
+  - rip
+  - discard
+  - grab
+tennis bat swing:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: tennis bat swing
+  obj_li:
+  - tennis bat
+  sub_act_li:
+  - rip
+  - hit
+  - swing
+throw:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: throw
+  obj_li:
+  - object
+  - ball
+  sub_act_li:
+  - aim
+  - release
+  - lift
+throw up cap/hat:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: throw up cap/hat
+  obj_li:
+  - hat
+  - cap
+  sub_act_li:
+  - throw
+  - up
+thumb down:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: thumb down
+  obj_li:
+  - gesture
+  sub_act_li:
+  - lower
+  - tilt
+thumb up:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: thumb up
+  obj_li: []
+  sub_act_li:
+  - raise
+  - position
+toss a coin:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: toss a coin
+  obj_li:
+  - coin
+  sub_act_li:
+  - flip
+  - release
+  - grab
+touch pocket:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: touch pocket
+  obj_li:
+  - pocket
+  sub_act_li:
+  - reach
+  - press
+type on a keyboard:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: type on a keyboard
+  obj_li:
+  - keyboard
+  sub_act_li:
+  - press
+  - release
+walking apart:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: walking apart
+  obj_li: []
+  sub_act_li:
+  - separate
+  - move
+walking towards:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: walking towards
+  obj_li:
+  - destination
+  - path
+  sub_act_li:
+  - move
+  - navigate
+whisper:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: whisper
+  obj_li:
+  - voice
+  sub_act_li:
+  - lower
+  - speak
+wield knife:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: wield knife
+  obj_li:
+  - knife
+  sub_act_li:
+  - grasp
+  - swing
+wipe face:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: wipe face
+  obj_li:
+  - towel
+  - water
+  sub_act_li:
+  - wet
+  - swipe
+writing:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: writing
+  obj_li:
+  - pen
+  - paper
+  sub_act_li:
+  - hold
+  - write
+  - revise
+yawn:
+  act_obj_triples: []
+  act_rel_triples: []
+  label: yawn
+  obj_li: []
+  sub_act_li:
+  - stretch
+  - exhale
+  - inhale

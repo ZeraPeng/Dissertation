@@ -16,6 +16,7 @@ from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
 from model.get_part_feature import ModelMatch, SHIFTGCNModel
 import ipdb
 import logging
+from util_char import *
 
 
 def import_class(import_str):
@@ -319,7 +320,7 @@ def train_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, unsee
         alpha_p = 1.0
     beta = 1.0 - alpha
     beta_p = 1.0 - alpha_p
-    
+
     loss_weights = {}
     pred_weights = {}
     for i, name in enumerate(names):
@@ -688,7 +689,7 @@ def main():
     zsl_loader = ntu_loaders.get_val_loader(batch_size, 0)
     val_loader = ntu_loaders.get_test_loader(batch_size, 0)
     
-    names = ['xaa']
+    names = ['whole', 'xaa', 'xao']
 
     if phase == 'val':
         unseen_inds = np.sort(
@@ -701,17 +702,19 @@ def main():
         seen_inds = np.load(
             f'resources/label_splits/{dataset}/{st}s{str(num_classes - ss)}.npy')
     
-    tml = tm.split('_')
-    tfl = [torch.from_numpy(
-        np.load(f'resources/text_feats/{args.dataset}/{le}/{m}_{num_classes}.npy')) for m in tml]
-    text_feat = torch.concat(tfl, dim=-1)
-    text_emb_input_size = text_feat.size(-1)
-    text_emb = text_feat / torch.norm(text_feat, dim=1, keepdim=True)
-    text_emb = text_emb.to(device, non_blocking=True)
-    unseen_text_emb = text_emb[unseen_inds, :]
-    
     c_text_emb = []
     c_unseen_text_emb = []
+    if 'whole' in names:
+        tml = tm.split('_')
+        tfl = [torch.from_numpy(
+            np.load(f'resources/text_feats/{args.dataset}/{le}/{m}_{num_classes}.npy')) for m in tml]
+        text_feat = torch.concat(tfl, dim=-1)
+        text_emb_input_size = text_feat.size(-1)
+        text_emb = text_feat / torch.norm(text_feat, dim=1, keepdim=True)
+        text_emb = text_emb.to(device, non_blocking=True)
+        text_emb = text_emb.unsqueeze(dim=1)
+        c_text_emb.append(text_emb)
+        c_unseen_text_emb.append(text_emb[unseen_inds, :])
     if 'xaa' in names:
         xaa_source = torch.load('ASKG/data/xprompt_feat/xaa_text_feats_xprompt_ntu.tar', weights_only=True)
         xaa_text_emb = load_semantic_emb(xaa_source, device)
