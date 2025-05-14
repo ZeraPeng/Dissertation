@@ -1,0 +1,887 @@
+- label: drink water
+  idx: 0
+  xprompt_ao:
+  - where water is consumed
+  - where water is contained in a glass
+  xprompt_aa:
+  - where pouring precedes lifting
+  - where lifting precedes sipping
+- label: eat meal
+  idx: 1
+  xprompt_ao:
+  - which involves consuming a meal
+  - which uses utensils
+  xprompt_aa:
+  - where preparing precedes chewing
+  - where chewing precedes swallowing
+- label: brush teeth
+  idx: 2
+  xprompt_ao:
+  - used with a toothbrush
+  - toothpaste is applied to the toothbrush
+  xprompt_aa:
+  - applying precedes brushing
+  - where brushing follows applying
+  - where brushing precedes rinsing
+- label: brush hair
+  idx: 3
+  xprompt_ao:
+  - using a hairbrush
+  - that is used to style hair
+  xprompt_aa:
+  - holding before brushing
+  - brushing following holding
+  - brushing before styling
+- label: drop
+  idx: 4
+  xprompt_ao:
+  - where an item drops on it
+  - where it falls onto the ground
+  xprompt_aa:
+  - where letting go precedes falling
+- label: pick up
+  idx: 5
+  xprompt_ao:
+  - what is picked up from the object
+  - what is the source of the pick up
+  xprompt_aa:
+  - where bending precedes grasping
+  - where grasping precedes lifting
+- label: throw
+  idx: 6
+  xprompt_ao:
+  - where a ball is thrown
+  - where an object is thrown
+  xprompt_aa:
+  - where lifting precedes aiming
+  - where aiming precedes releasing
+- label: sit down
+  idx: 7
+  xprompt_ao:
+  - using a chair
+  - using the floor
+  xprompt_aa:
+  - where approaching precedes lowering
+  - where lowering precedes resting
+- label: stand up
+  idx: 8
+  xprompt_ao:
+  - where a chair is used for standing up
+  - where the floor supports standing up
+  xprompt_aa:
+  - where pushing precedes lifting
+  - where lifting follows pushing
+- label: clapping
+  idx: 9
+  xprompt_ao:
+  - where hands perform clapping
+  - where the audience responds to clapping
+  xprompt_aa:
+  - where raising precedes bringing together
+  - where bringing together follows creating sound
+- label: reading
+  idx: 10
+  xprompt_ao:
+  - involving a book
+  - involving an article
+  xprompt_aa:
+  - where scanning precedes comprehending
+  - where comprehending precedes analyzing
+- label: writing
+  idx: 11
+  xprompt_ao:
+  - using a pen for writing
+  - where paper receives writing
+  xprompt_aa:
+  - holding precedes writing
+  - writing follows holding
+  - revising follows writing
+- label: tear up paper
+  idx: 12
+  xprompt_ao:
+  - tearing paper
+  xprompt_aa:
+  - grabbing before ripping
+  - ripping following grabbing
+  - ripping before discarding
+  - discarding after ripping
+- label: put on jacket
+  idx: 13
+  xprompt_ao:
+  - where a jacket is worn
+  xprompt_aa:
+  - where picking precedes opening
+  - where opening precedes wearing
+- label: take off jacket
+  idx: 14
+  xprompt_ao:
+  - where the jacket is the object of the action
+  xprompt_aa:
+  - where removing precedes discarding
+- label: put on a shoe
+  idx: 15
+  xprompt_ao:
+  - worn by putting on a shoe
+  xprompt_aa:
+  - where picking precedes placing
+- label: take off a shoe
+  idx: 16
+  xprompt_ao:
+  - where a shoe is taken off
+  xprompt_aa:
+  - where unfastening precedes removing
+- label: put on glasses
+  idx: 17
+  xprompt_ao:
+  - involving the use of glasses
+  xprompt_aa:
+  - picking precedes positioning
+  - positioning follows picking
+  - adjusting follows positioning
+- label: take off glasses
+  idx: 18
+  xprompt_ao:
+  - where glasses are taken off
+  xprompt_aa:
+  - where removing precedes lowering
+- label: put on a hat/cap
+  idx: 19
+  xprompt_ao:
+  - which is worn on a hat
+  - where the head has a hat
+  xprompt_aa:
+  - where picking precedes placing
+- label: take off a hat/cap
+  idx: 20
+  xprompt_ao:
+  - which is worn on the head
+  - which is a hat or a cap
+  xprompt_aa:
+  - where removing precedes lowering
+- label: cheer up
+  idx: 21
+  xprompt_ao:
+  - where a friend encourages to cheer up
+  - where a joke lightens to cheer up
+  xprompt_aa:
+  - where telling precedes smiling
+  - where smiling follows listening
+- label: hand waving
+  idx: 22
+  xprompt_ao:
+  - involving hand movements
+  - where hand moves during hand waving
+  - where the air is affected by hand waving
+  xprompt_aa:
+  - where waving precedes moving
+- label: kicking something
+  idx: 23
+  xprompt_ao:
+  - kicking a ball
+  - kicking something towards a goal
+  xprompt_aa:
+  - approaching before swinging
+  - where swinging precedes striking
+- label: reach into pocket
+  idx: 24
+  xprompt_ao:
+  - where pocket contains the action
+  - where hand performs the action
+  xprompt_aa:
+  - where reaching precedes grasping
+  - where grasping precedes retrieving
+- label: hopping
+  idx: 25
+  xprompt_ao:
+  - supported by the ground
+  - facilitated by the surface
+  xprompt_aa:
+  - where jumping precedes landing
+- label: jump up
+  idx: 26
+  xprompt_ao:
+  - where the ground supports the action
+  - which reaches the air
+  xprompt_aa:
+  - where bending precedes propelling
+  - where propelling precedes elevating
+- label: phone call
+  idx: 27
+  xprompt_ao:
+  - involving the use of a phone
+  - where the ear receives sound from the phone call
+  xprompt_aa:
+  - where dialing precedes talking
+  - where talking follows listening
+- label: play with phone/tablet
+  idx: 28
+  xprompt_ao:
+  - where a phone is used
+  - where a tablet is used
+  xprompt_aa:
+  - where swiping precedes tapping
+  - where tapping follows swiping
+  - where tapping precedes scrolling
+- label: type on a keyboard
+  idx: 29
+  xprompt_ao:
+  - using a keyboard
+  xprompt_aa:
+  - where pressing precedes releasing
+- label: point to something
+  idx: 30
+  xprompt_ao:
+  - using a finger to point to something
+  - where the object being pointed at is pointed at
+  xprompt_aa:
+  - extending before indicating
+  - indicating after extending
+- label: taking a selfie
+  idx: 31
+  xprompt_ao:
+  - using a smartphone
+  - using a camera
+  xprompt_aa:
+  - where holding precedes capturing
+  - where capturing follows smiling
+- label: check time (from watch)
+  idx: 32
+  xprompt_ao:
+  - where a watch is used for checking time
+  xprompt_aa:
+  - where looking precedes interpreting
+- label: rub two hands
+  idx: 33
+  xprompt_ao:
+  - involving the hands
+  xprompt_aa:
+  - where moving precedes applying
+- label: nod head/bow
+  idx: 34
+  xprompt_ao:
+  - where the head is involved in nodding or bowing
+  xprompt_aa:
+  - where nodding precedes bowing
+- label: shake head
+  idx: 35
+  xprompt_ao:
+  - where the head is involved in shaking head
+  xprompt_aa:
+  - where shaking precedes moving
+- label: wipe face
+  idx: 36
+  xprompt_ao:
+  - using a towel to wipe face
+  - where water assists in wiping face
+  xprompt_aa:
+  - wetting before wiping
+- label: salute
+  idx: 37
+  xprompt_ao:
+  - where hand raises for salute
+  - where head nods for salute
+  xprompt_aa:
+  - where raising precedes nodding
+- label: put palms together
+  idx: 38
+  xprompt_ao:
+  - involving palms
+  - representing prayer position
+  xprompt_aa:
+  - bringing before pressing
+- label: cross hands in front
+  idx: 39
+  xprompt_ao:
+  - where hands are used to cross in front
+  xprompt_aa:
+  - where crossing precedes positioning
+- label: sneeze/cough
+  idx: 40
+  xprompt_ao:
+  - using a tissue for sneeze/cough
+  - covering with hand while sneezing/coughing
+  xprompt_aa:
+  - where inhaling precedes expelling
+  - where expelling follows covering
+- label: staggering
+  idx: 41
+  xprompt_ao:
+  - supported by the ground
+  - affected by balance
+  xprompt_aa:
+  - losing precedes regaining
+  - regaining follows wobbling
+- label: falling down
+  idx: 42
+  xprompt_ao:
+  - where the ground receives falling down
+  - where a surface supports falling down
+  xprompt_aa:
+  - where losing balance precedes descending
+  - where descending follows impact
+- label: headache
+  idx: 43
+  xprompt_ao:
+  - which can be alleviated by pain reliever
+  - where a dark room provides comfort for it
+  xprompt_aa:
+  - where resting precedes taking action
+  - where taking action follows avoiding something
+- label: chest pain
+  idx: 44
+  xprompt_ao:
+  - where chest experiences chest pain
+  - where heart is affected by chest pain
+  xprompt_aa:
+  - where feeling precedes reacting
+  - where reacting precedes assessing
+- label: back pain
+  idx: 45
+  xprompt_ao:
+  - where back experiences back pain
+  - where spine supports back pain
+  xprompt_aa:
+  - where lift precedes bend
+  - where bend follows stretch
+- label: neck pain
+  idx: 46
+  xprompt_ao:
+  - where neck experiences neck pain
+  xprompt_aa:
+  - where stretching precedes relaxing
+- label: nausea/vomiting
+  idx: 47
+  xprompt_ao:
+  - caused by food
+  - caused by liquid
+  xprompt_aa:
+  - where expelling follows retching
+- label: fan self
+  idx: 48
+  xprompt_ao:
+  - using a fan
+  - where air provides the fan
+  xprompt_aa:
+  - where waving precedes directing
+- label: punch/slap
+  idx: 49
+  xprompt_ao:
+  - using the fist
+  - where the target receives the punch/slap
+  xprompt_aa:
+  - raising precedes striking
+  - striking follows retracting
+- label: kicking
+  idx: 50
+  xprompt_ao:
+  - how a ball interacts with kicking
+  - what targets kicking
+  xprompt_aa:
+  - where approaching precedes swinging
+  - where swinging follows follow-through
+- label: pushing
+  idx: 51
+  xprompt_ao:
+  - how a door interacts with pushing
+  - how a box interacts with pushing
+  xprompt_aa:
+  - applying force precedes moving
+  - where moving follows maintaining pressure
+- label: pat on back
+  idx: 52
+  xprompt_ao:
+  - where the back receives the pat on back
+  - where the hand performs the pat on back
+  xprompt_aa:
+  - where touching precedes applying
+- label: point finger
+  idx: 53
+  xprompt_ao:
+  - using the finger to point
+  - pointing at a target
+  xprompt_aa:
+  - extending before aiming
+- label: hugging
+  idx: 54
+  xprompt_ao:
+  - where arms are used for hugging
+  - involving a person
+  xprompt_aa:
+  - where embracing precedes squeezing
+  - where squeezing follows embracing
+  - where squeezing precedes releasing
+- label: giving object
+  idx: 55
+  xprompt_ao:
+  - where a gift is given to the giving object
+  - where the recipient receives the giving object
+  xprompt_aa:
+  - where handing over precedes receiving
+- label: touch pocket
+  idx: 56
+  xprompt_ao:
+  - touching a pocket
+  xprompt_aa:
+  - where reaching precedes pressing
+- label: shaking hands
+  idx: 57
+  xprompt_ao:
+  - involving the use of hands
+  - performed by a person
+  xprompt_aa:
+  - where approaching precedes grasping
+  - where grasping precedes shaking
+  - where shaking precedes releasing
+- label: walking towards
+  idx: 58
+  xprompt_ao:
+  - where a path facilitates walking towards
+  - where a destination is targeted while walking towards
+  xprompt_aa:
+  - where moving precedes navigating
+  - where navigating follows moving
+- label: walking apart
+  idx: 59
+  xprompt_ao:
+  - where space occupies walking apart
+  - where distance increases during walking apart
+  xprompt_aa:
+  - where moving precedes separating
+- label: put on headphone
+  idx: 60
+  xprompt_ao:
+  - used in putting on headphone
+  xprompt_aa:
+  - where grabbing precedes adjusting
+- label: take off headphone
+  idx: 61
+  xprompt_ao:
+  - involving flicking hair
+  xprompt_aa:
+  - where flicking hair precedes flicking of hair
+- label: shoot at basket
+  idx: 62
+  xprompt_ao:
+  - where basketball is shot at
+  - where hoop is targeted by
+  xprompt_aa:
+  - where aiming precedes throwing
+  - where throwing follows aiming
+  - where throwing precedes scoring
+- label: bounce ball
+  idx: 63
+  xprompt_ao:
+  - involving a ball
+  xprompt_aa:
+  - where throwing precedes hitting
+- label: tennis bat swing
+  idx: 64
+  xprompt_ao:
+  - using a tennis bat swing with a tennis bat
+  - where a tennis ball is the target
+  xprompt_aa:
+  - where gripping precedes swinging
+  - where swinging precedes hitting
+- label: juggle table tennis ball
+  idx: 65
+  xprompt_ao:
+  - involving a table tennis ball
+  xprompt_aa:
+  - where tossing precedes catching
+  - where catching follows tossing
+  - where catching precedes repeating
+  - where repeating follows catching
+- label: hush
+  idx: 66
+  xprompt_ao:
+  - dampens sound
+  - influenced by the environment
+  xprompt_aa:
+  - where quiet precedes listening
+- label: flick hair
+  idx: 67
+  xprompt_ao:
+  - where hair is flicked
+  xprompt_aa:
+  - where flick precedes flicking hair
+- label: thumb up
+  idx: 68
+  xprompt_ao:
+  - where thumb performs the action
+  - where hand supports the action
+  xprompt_aa:
+  - where raising precedes positioning
+- label: thumb down
+  idx: 69
+  xprompt_ao:
+  - how thumb performs thumb down
+  - how gesture represents thumb down
+  xprompt_aa:
+  - where lowering precedes tilting
+- label: make OK sign
+  idx: 70
+  xprompt_ao:
+  - using the hand to make the OK sign
+  - forming the OK sign with fingers
+  xprompt_aa:
+  - raising precedes curving
+- label: make victory sign
+  idx: 71
+  xprompt_ao:
+  - using hands
+  - forming with fingers
+  xprompt_aa:
+  - where raising precedes positioning
+- label: staple book
+  idx: 72
+  xprompt_ao:
+  - which uses a staple book
+  - where a book is stapled by it
+  xprompt_aa:
+  - where inserting precedes pressing
+  - where pressing precedes releasing
+- label: counting money
+  idx: 73
+  xprompt_ao:
+  - involving money
+  - where a table supports counting money
+  xprompt_aa:
+  - where organizing precedes counting
+- label: cutting nails
+  idx: 74
+  xprompt_ao:
+  - using a nail clipper
+  - where nails are acted upon
+  xprompt_aa:
+  - where positioning precedes clipping
+  - where clipping follows positioning
+  - where clipping precedes filing
+- label: cutting paper
+  idx: 75
+  xprompt_ao:
+  - involving cutting paper
+  - using scissors
+  xprompt_aa:
+  - where holding precedes cutting
+- label: snap fingers
+  idx: 76
+  xprompt_ao:
+  - involving fingers
+  - resulting in a sound
+  xprompt_aa:
+  - where positioning precedes pressing
+  - where pressing precedes releasing
+- label: open bottle
+  idx: 77
+  xprompt_ao:
+  - that undergoes opening
+  xprompt_aa:
+  - where twisting precedes pulling
+- label: sniff/smell
+  idx: 78
+  xprompt_ao:
+  - involving air
+  - detecting scent
+  xprompt_aa:
+  - where inhaling precedes perceiving
+- label: squat down
+  idx: 79
+  xprompt_ao:
+  - where the ground supports squatting down
+  - where weight is held during squatting down
+  xprompt_aa:
+  - where bending precedes lowering
+  - where lowering follows holding
+- label: toss a coin
+  idx: 80
+  xprompt_ao:
+  - involving the use of a coin
+  xprompt_aa:
+  - where grabbing precedes flipping
+  - where flipping precedes releasing
+- label: fold paper
+  idx: 81
+  xprompt_ao:
+  - where paper is folded in the action
+  xprompt_aa:
+  - where crease precedes bending
+- label: ball up paper
+  idx: 82
+  xprompt_ao:
+  - involving manipulation of paper
+  - using the hand
+  xprompt_aa:
+  - where crumpling precedes squeezing
+- label: play magic cube
+  idx: 83
+  xprompt_ao:
+  - involving the use of a magic cube
+  - involving manipulation by hands
+  xprompt_aa:
+  - where rotating precedes twisting
+  - where twisting precedes matching
+- label: apply cream on face
+  idx: 84
+  xprompt_ao:
+  - where cream is applied on the face
+  - where the face receives the cream
+  xprompt_aa:
+  - where cleansing precedes applying
+  - where applying follows massaging
+- label: apply cream on hand
+  idx: 85
+  xprompt_ao:
+  - where cream is applied on the hand
+  - where the hand receives the cream
+  xprompt_aa:
+  - where applying precedes spreading
+- label: put on bag
+  idx: 86
+  xprompt_ao:
+  - using a bag for put on
+  xprompt_aa:
+  - where picking precedes adjusting
+- label: take off bag
+  idx: 87
+  xprompt_ao:
+  - where a bag is taken off
+  xprompt_aa:
+  - where unfastening precedes lifting
+- label: put object into bag
+  idx: 88
+  xprompt_ao:
+  - putting an object into a bag
+  - where a bag receives the object
+  xprompt_aa:
+  - where picking precedes placing
+- label: take object out of bag
+  idx: 89
+  xprompt_ao:
+  - where an object is taken out of something
+  - where something contains the object
+  xprompt_aa:
+  - opening precedes removing
+- label: open a box
+  idx: 90
+  xprompt_ao:
+  - containing what needs to be opened
+  - where the lid is part of the box
+  xprompt_aa:
+  - where grasping precedes lifting
+  - where lifting precedes pulling
+- label: move heavy objects
+  idx: 91
+  xprompt_ao:
+  - moving furniture
+  - moving boxes
+  xprompt_aa:
+  - lifting before carrying
+  - carrying after lifting
+  - carrying before placing
+- label: shake fist
+  idx: 92
+  xprompt_ao:
+  - where a fist performs the action
+  xprompt_aa:
+  - where raising precedes moving
+- label: throw up cap/hat
+  idx: 93
+  xprompt_ao:
+  - throwing up a cap
+  - throwing up a hat
+  xprompt_aa:
+  - where throwing precedes up
+- label: capitulate
+  idx: 94
+  xprompt_ao:
+  - when opponent yields to it
+  - when terms dictate it
+  xprompt_aa:
+  - where surrender precedes negotiation
+  - where negotiation precedes agreement
+- label: cross arms
+  idx: 95
+  xprompt_ao:
+  - how arms are manipulated during cross arms
+  xprompt_aa:
+  - where crossing precedes holding
+- label: arm circles
+  idx: 96
+  xprompt_ao:
+  - how arms perform arm circles
+  - what space requires arm circles
+  xprompt_aa:
+  - where rotating precedes extending
+- label: arm swings
+  idx: 97
+  xprompt_ao:
+  - how the arm performs arm swings
+  - how air interacts with arm swings
+  xprompt_aa:
+  - where swinging precedes moving
+  - where moving follows stretching
+- label: run on the spot
+  idx: 98
+  xprompt_ao:
+  - where the ground is used for running on the spot
+  - where shoes are worn during running on the spot
+  xprompt_aa:
+  - starting with a start
+  - where start precedes moving
+  - where moving follows maintaining
+- label: butt kicks
+  idx: 99
+  xprompt_ao:
+  - where the floor supports butt kicks
+  - where legs perform butt kicks
+  xprompt_aa:
+  - where kicking precedes lifting
+- label: cross toe touch
+  idx: 100
+  xprompt_ao:
+  - where toes are involved
+  - where the floor supports the action
+  xprompt_aa:
+  - where bending precedes reaching
+  - where reaching follows stretching
+- label: side kick
+  idx: 101
+  xprompt_ao:
+  - where the leg performs the side kick
+  - where the foot strikes during a side kick
+  xprompt_aa:
+  - involving lifting before extending
+  - where extending precedes striking
+- label: yawn
+  idx: 102
+  xprompt_ao:
+  - involving air
+  - producing a sound
+  xprompt_aa:
+  - where inhaling precedes exhaling
+  - where exhaling follows stretching
+- label: stretch oneself
+  idx: 103
+  xprompt_ao:
+  - where the body is involved
+  - which engages muscles
+  xprompt_aa:
+  - where extending precedes relaxing
+  - where relaxing precedes holding
+- label: blow nose
+  idx: 104
+  xprompt_ao:
+  - using tissue
+  - assisted by hand
+  xprompt_aa:
+  - where pinching precedes exhaling
+- label: hit with object
+  idx: 105
+  xprompt_ao:
+  - how a ball is hit by the object
+  - how a bat is used in hitting with the object
+  xprompt_aa:
+  - where swinging precedes connecting
+  - where connecting precedes impacting
+- label: wield knife
+  idx: 106
+  xprompt_ao:
+  - used in wielding a knife
+  xprompt_aa:
+  - where grasping precedes swinging
+- label: knock over
+  idx: 107
+  xprompt_ao:
+  - what is knocked over by it
+  - what is involved in it
+  xprompt_aa:
+  - where applying force precedes tilting
+  - where tilting precedes releasing
+- label: grab stuff
+  idx: 108
+  xprompt_ao:
+  - involving grabbing stuff
+  xprompt_aa:
+  - where reaching precedes holding
+- label: shoot with gun
+  idx: 109
+  xprompt_ao:
+  - using a gun
+  xprompt_aa:
+  - aiming precedes pulling
+- label: step on foot
+  idx: 110
+  xprompt_ao:
+  - where foot is stepped on
+  xprompt_aa:
+  - where lifting precedes placing
+- label: high-five
+  idx: 111
+  xprompt_ao:
+  - where the hand performs the high-five
+  - where the palm touches during a high-five
+  xprompt_aa:
+  - where raising precedes swinging
+  - where swinging precedes connecting
+- label: cheers and drink
+  idx: 112
+  xprompt_ao:
+  - consuming cheers and drink
+  - where a glass holds cheers and drink
+  xprompt_aa:
+  - where cheering precedes drinking
+- label: carry object
+  idx: 113
+  xprompt_ao:
+  - how a box carries the carry object
+  - how a bag carries the carry object
+  xprompt_aa:
+  - where lifting precedes holding
+  - where holding precedes transporting
+- label: take a photo
+  idx: 114
+  xprompt_ao:
+  - where a camera is used
+  - where a subject is captured
+  xprompt_aa:
+  - where aiming precedes clicking
+  - where clicking follows aiming
+  - where clicking comes before reviewing
+- label: follow
+  idx: 115
+  xprompt_ao:
+  - where the path follows the follow
+  - where the leader guides the follow
+  xprompt_aa:
+  - where walking precedes observing
+- label: whisper
+  idx: 116
+  xprompt_ao:
+  - where the ear receives a whisper
+  - where the voice produces a whisper
+  xprompt_aa:
+  - where lowering precedes speaking
+- label: exchange things
+  idx: 117
+  xprompt_ao:
+  - where things are exchanged
+  - where items are exchanged
+  xprompt_aa:
+  - where giving precedes receiving
+- label: support somebody
+  idx: 118
+  xprompt_ao:
+  - supporting a person
+  - using an object for support
+  xprompt_aa:
+  - where assisting precedes encouraging
+  - where encouraging follows providing
+- label: rock-paper-scissors
+  idx: 119
+  xprompt_ao:
+  - where rock is played in rock-paper-scissors
+  - where paper is played in rock-paper-scissors
+  - where scissors is played in rock-paper-scissors
+  xprompt_aa:
+  - where choosing precedes revealing
+  - where revealing precedes comparing

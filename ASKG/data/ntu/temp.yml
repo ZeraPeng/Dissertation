@@ -1,0 +1,11 @@
+flick hair:
+  obj_li:
+  - hair
+  act_obj_triples:
+  - <hair, is flicked by, flick hair>
+  sub_act_li:
+  - flick
+  sub_act_rel_triples:
+  - <flick, precedes, flick hair>
+  label: flick hair
+  idx: 67

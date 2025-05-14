@@ -1,0 +1,485 @@
+0:
+- - a human action of drink water, where pouring precedes lifting
+  - a human action of drink water, where lifting precedes sipping
+  - a human action of drink water, where pouring precedes lifting
+  - a human action of drink water, where lifting precedes sipping
+- - a human action of eat meal, where preparing precedes chewing
+  - a human action of eat meal, where chewing precedes swallowing
+  - a human action of eat meal, where preparing precedes chewing
+  - a human action of eat meal, where chewing precedes swallowing
+- - a human action of brush teeth, applying precedes brushing
+  - a human action of brush teeth, where brushing follows applying
+  - a human action of brush teeth, where brushing precedes rinsing
+  - a human action of brush teeth, applying precedes brushing
+- - a human action of brush hair, holding before brushing
+  - a human action of brush hair, brushing following holding
+  - a human action of brush hair, brushing before styling
+  - a human action of brush hair, holding before brushing
+- - a human action of drop, where letting go precedes falling
+  - a human action of drop, where letting go precedes falling
+  - a human action of drop, where letting go precedes falling
+  - a human action of drop, where letting go precedes falling
+- - a human action of pick up, where bending precedes grasping
+  - a human action of pick up, where grasping precedes lifting
+  - a human action of pick up, where bending precedes grasping
+  - a human action of pick up, where grasping precedes lifting
+- - a human action of throw, where lifting precedes aiming
+  - a human action of throw, where aiming precedes releasing
+  - a human action of throw, where lifting precedes aiming
+  - a human action of throw, where aiming precedes releasing
+- - a human action of sit down, where approaching precedes lowering
+  - a human action of sit down, where lowering precedes resting
+  - a human action of sit down, where approaching precedes lowering
+  - a human action of sit down, where lowering precedes resting
+- - a human action of stand up, where pushing precedes lifting
+  - a human action of stand up, where lifting follows pushing
+  - a human action of stand up, where pushing precedes lifting
+  - a human action of stand up, where lifting follows pushing
+- - a human action of clapping, where raising precedes bringing together
+  - a human action of clapping, where bringing together follows creating sound
+  - a human action of clapping, where raising precedes bringing together
+  - a human action of clapping, where bringing together follows creating sound
+- - a human action of reading, where scanning precedes comprehending
+  - a human action of reading, where comprehending precedes analyzing
+  - a human action of reading, where scanning precedes comprehending
+  - a human action of reading, where comprehending precedes analyzing
+- - a human action of writing, holding precedes writing
+  - a human action of writing, writing follows holding
+  - a human action of writing, revising follows writing
+  - a human action of writing, holding precedes writing
+- - a human action of tear up paper, grabbing before ripping
+  - a human action of tear up paper, ripping following grabbing
+  - a human action of tear up paper, ripping before discarding
+  - a human action of tear up paper, discarding after ripping
+- - a human action of put on jacket, where picking precedes opening
+  - a human action of put on jacket, where opening precedes wearing
+  - a human action of put on jacket, where picking precedes opening
+  - a human action of put on jacket, where opening precedes wearing
+- - a human action of take off jacket, where removing precedes discarding
+  - a human action of take off jacket, where removing precedes discarding
+  - a human action of take off jacket, where removing precedes discarding
+  - a human action of take off jacket, where removing precedes discarding
+- - a human action of put on a shoe, where picking precedes placing
+  - a human action of put on a shoe, where picking precedes placing
+  - a human action of put on a shoe, where picking precedes placing
+  - a human action of put on a shoe, where picking precedes placing
+- - a human action of take off a shoe, where unfastening precedes removing
+  - a human action of take off a shoe, where unfastening precedes removing
+  - a human action of take off a shoe, where unfastening precedes removing
+  - a human action of take off a shoe, where unfastening precedes removing
+- - a human action of put on glasses, picking precedes positioning
+  - a human action of put on glasses, positioning follows picking
+  - a human action of put on glasses, adjusting follows positioning
+  - a human action of put on glasses, picking precedes positioning
+- - a human action of take off glasses, where removing precedes lowering
+  - a human action of take off glasses, where removing precedes lowering
+  - a human action of take off glasses, where removing precedes lowering
+  - a human action of take off glasses, where removing precedes lowering
+- - a human action of put on a hat/cap, where picking precedes placing
+  - a human action of put on a hat/cap, where picking precedes placing
+  - a human action of put on a hat/cap, where picking precedes placing
+  - a human action of put on a hat/cap, where picking precedes placing
+- - a human action of take off a hat/cap, where removing precedes lowering
+  - a human action of take off a hat/cap, where removing precedes lowering
+  - a human action of take off a hat/cap, where removing precedes lowering
+  - a human action of take off a hat/cap, where removing precedes lowering
+- - a human action of cheer up, where telling precedes smiling
+  - a human action of cheer up, where smiling follows listening
+  - a human action of cheer up, where telling precedes smiling
+  - a human action of cheer up, where smiling follows listening
+- - a human action of hand waving, where waving precedes moving
+  - a human action of hand waving, where waving precedes moving
+  - a human action of hand waving, where waving precedes moving
+  - a human action of hand waving, where waving precedes moving
+- - a human action of kicking something, approaching before swinging
+  - a human action of kicking something, where swinging precedes striking
+  - a human action of kicking something, approaching before swinging
+  - a human action of kicking something, where swinging precedes striking
+- - a human action of reach into pocket, where reaching precedes grasping
+  - a human action of reach into pocket, where grasping precedes retrieving
+  - a human action of reach into pocket, where reaching precedes grasping
+  - a human action of reach into pocket, where grasping precedes retrieving
+- - a human action of hopping, where jumping precedes landing
+  - a human action of hopping, where jumping precedes landing
+  - a human action of hopping, where jumping precedes landing
+  - a human action of hopping, where jumping precedes landing
+- - a human action of jump up, where bending precedes propelling
+  - a human action of jump up, where propelling precedes elevating
+  - a human action of jump up, where bending precedes propelling
+  - a human action of jump up, where propelling precedes elevating
+- - a human action of phone call, where dialing precedes talking
+  - a human action of phone call, where talking follows listening
+  - a human action of phone call, where dialing precedes talking
+  - a human action of phone call, where talking follows listening
+- - a human action of play with phone/tablet, where swiping precedes tapping
+  - a human action of play with phone/tablet, where tapping follows swiping
+  - a human action of play with phone/tablet, where tapping precedes scrolling
+  - a human action of play with phone/tablet, where swiping precedes tapping
+- - a human action of type on a keyboard, where pressing precedes releasing
+  - a human action of type on a keyboard, where pressing precedes releasing
+  - a human action of type on a keyboard, where pressing precedes releasing
+  - a human action of type on a keyboard, where pressing precedes releasing
+- - a human action of point to something, extending before indicating
+  - a human action of point to something, indicating after extending
+  - a human action of point to something, extending before indicating
+  - a human action of point to something, indicating after extending
+- - a human action of taking a selfie, where holding precedes capturing
+  - a human action of taking a selfie, where capturing follows smiling
+  - a human action of taking a selfie, where holding precedes capturing
+  - a human action of taking a selfie, where capturing follows smiling
+- - a human action of check time (from watch), where looking precedes interpreting
+  - a human action of check time (from watch), where looking precedes interpreting
+  - a human action of check time (from watch), where looking precedes interpreting
+  - a human action of check time (from watch), where looking precedes interpreting
+- - a human action of rub two hands, where moving precedes applying
+  - a human action of rub two hands, where moving precedes applying
+  - a human action of rub two hands, where moving precedes applying
+  - a human action of rub two hands, where moving precedes applying
+- - a human action of nod head/bow, where nodding precedes bowing
+  - a human action of nod head/bow, where nodding precedes bowing
+  - a human action of nod head/bow, where nodding precedes bowing
+  - a human action of nod head/bow, where nodding precedes bowing
+- - a human action of shake head, where shaking precedes moving
+  - a human action of shake head, where shaking precedes moving
+  - a human action of shake head, where shaking precedes moving
+  - a human action of shake head, where shaking precedes moving
+- - a human action of wipe face, wetting before wiping
+  - a human action of wipe face, wetting before wiping
+  - a human action of wipe face, wetting before wiping
+  - a human action of wipe face, wetting before wiping
+- - a human action of salute, where raising precedes nodding
+  - a human action of salute, where raising precedes nodding
+  - a human action of salute, where raising precedes nodding
+  - a human action of salute, where raising precedes nodding
+- - a human action of put palms together, bringing before pressing
+  - a human action of put palms together, bringing before pressing
+  - a human action of put palms together, bringing before pressing
+  - a human action of put palms together, bringing before pressing
+- - a human action of cross hands in front, where crossing precedes positioning
+  - a human action of cross hands in front, where crossing precedes positioning
+  - a human action of cross hands in front, where crossing precedes positioning
+  - a human action of cross hands in front, where crossing precedes positioning
+- - a human action of sneeze/cough, where inhaling precedes expelling
+  - a human action of sneeze/cough, where expelling follows covering
+  - a human action of sneeze/cough, where inhaling precedes expelling
+  - a human action of sneeze/cough, where expelling follows covering
+- - a human action of staggering, losing precedes regaining
+  - a human action of staggering, regaining follows wobbling
+  - a human action of staggering, losing precedes regaining
+  - a human action of staggering, regaining follows wobbling
+- - a human action of falling down, where losing balance precedes descending
+  - a human action of falling down, where descending follows impact
+  - a human action of falling down, where losing balance precedes descending
+  - a human action of falling down, where descending follows impact
+- - a human action of headache, where resting precedes taking action
+  - a human action of headache, where taking action follows avoiding something
+  - a human action of headache, where resting precedes taking action
+  - a human action of headache, where taking action follows avoiding something
+- - a human action of chest pain, where feeling precedes reacting
+  - a human action of chest pain, where reacting precedes assessing
+  - a human action of chest pain, where feeling precedes reacting
+  - a human action of chest pain, where reacting precedes assessing
+- - a human action of back pain, where lift precedes bend
+  - a human action of back pain, where bend follows stretch
+  - a human action of back pain, where lift precedes bend
+  - a human action of back pain, where bend follows stretch
+- - a human action of neck pain, where stretching precedes relaxing
+  - a human action of neck pain, where stretching precedes relaxing
+  - a human action of neck pain, where stretching precedes relaxing
+  - a human action of neck pain, where stretching precedes relaxing
+- - a human action of nausea/vomiting, where expelling follows retching
+  - a human action of nausea/vomiting, where expelling follows retching
+  - a human action of nausea/vomiting, where expelling follows retching
+  - a human action of nausea/vomiting, where expelling follows retching
+- - a human action of fan self, where waving precedes directing
+  - a human action of fan self, where waving precedes directing
+  - a human action of fan self, where waving precedes directing
+  - a human action of fan self, where waving precedes directing
+- - a human action of punch/slap, raising precedes striking
+  - a human action of punch/slap, striking follows retracting
+  - a human action of punch/slap, raising precedes striking
+  - a human action of punch/slap, striking follows retracting
+- - a human action of kicking, where approaching precedes swinging
+  - a human action of kicking, where swinging follows follow-through
+  - a human action of kicking, where approaching precedes swinging
+  - a human action of kicking, where swinging follows follow-through
+- - a human action of pushing, applying force precedes moving
+  - a human action of pushing, where moving follows maintaining pressure
+  - a human action of pushing, applying force precedes moving
+  - a human action of pushing, where moving follows maintaining pressure
+- - a human action of pat on back, where touching precedes applying
+  - a human action of pat on back, where touching precedes applying
+  - a human action of pat on back, where touching precedes applying
+  - a human action of pat on back, where touching precedes applying
+- - a human action of point finger, extending before aiming
+  - a human action of point finger, extending before aiming
+  - a human action of point finger, extending before aiming
+  - a human action of point finger, extending before aiming
+- - a human action of hugging, where embracing precedes squeezing
+  - a human action of hugging, where squeezing follows embracing
+  - a human action of hugging, where squeezing precedes releasing
+  - a human action of hugging, where embracing precedes squeezing
+- - a human action of giving object, where handing over precedes receiving
+  - a human action of giving object, where handing over precedes receiving
+  - a human action of giving object, where handing over precedes receiving
+  - a human action of giving object, where handing over precedes receiving
+- - a human action of touch pocket, where reaching precedes pressing
+  - a human action of touch pocket, where reaching precedes pressing
+  - a human action of touch pocket, where reaching precedes pressing
+  - a human action of touch pocket, where reaching precedes pressing
+- - a human action of shaking hands, where approaching precedes grasping
+  - a human action of shaking hands, where grasping precedes shaking
+  - a human action of shaking hands, where shaking precedes releasing
+  - a human action of shaking hands, where approaching precedes grasping
+- - a human action of walking towards, where moving precedes navigating
+  - a human action of walking towards, where navigating follows moving
+  - a human action of walking towards, where moving precedes navigating
+  - a human action of walking towards, where navigating follows moving
+- - a human action of walking apart, where moving precedes separating
+  - a human action of walking apart, where moving precedes separating
+  - a human action of walking apart, where moving precedes separating
+  - a human action of walking apart, where moving precedes separating
+- - a human action of put on headphone, where grabbing precedes adjusting
+  - a human action of put on headphone, where grabbing precedes adjusting
+  - a human action of put on headphone, where grabbing precedes adjusting
+  - a human action of put on headphone, where grabbing precedes adjusting
+- - a human action of take off headphone, where flicking hair precedes flicking of
+    hair
+  - a human action of take off headphone, where flicking hair precedes flicking of
+    hair
+  - a human action of take off headphone, where flicking hair precedes flicking of
+    hair
+  - a human action of take off headphone, where flicking hair precedes flicking of
+    hair
+- - a human action of shoot at basket, where aiming precedes throwing
+  - a human action of shoot at basket, where throwing follows aiming
+  - a human action of shoot at basket, where throwing precedes scoring
+  - a human action of shoot at basket, where aiming precedes throwing
+- - a human action of bounce ball, where throwing precedes hitting
+  - a human action of bounce ball, where throwing precedes hitting
+  - a human action of bounce ball, where throwing precedes hitting
+  - a human action of bounce ball, where throwing precedes hitting
+- - a human action of tennis bat swing, where gripping precedes swinging
+  - a human action of tennis bat swing, where swinging precedes hitting
+  - a human action of tennis bat swing, where gripping precedes swinging
+  - a human action of tennis bat swing, where swinging precedes hitting
+- - a human action of juggle table tennis ball, where tossing precedes catching
+  - a human action of juggle table tennis ball, where catching follows tossing
+  - a human action of juggle table tennis ball, where catching precedes repeating
+  - a human action of juggle table tennis ball, where repeating follows catching
+- - a human action of hush, where quiet precedes listening
+  - a human action of hush, where quiet precedes listening
+  - a human action of hush, where quiet precedes listening
+  - a human action of hush, where quiet precedes listening
+- - a human action of flick hair, where flick precedes flicking hair
+  - a human action of flick hair, where flick precedes flicking hair
+  - a human action of flick hair, where flick precedes flicking hair
+  - a human action of flick hair, where flick precedes flicking hair
+- - a human action of thumb up, where raising precedes positioning
+  - a human action of thumb up, where raising precedes positioning
+  - a human action of thumb up, where raising precedes positioning
+  - a human action of thumb up, where raising precedes positioning
+- - a human action of thumb down, where lowering precedes tilting
+  - a human action of thumb down, where lowering precedes tilting
+  - a human action of thumb down, where lowering precedes tilting
+  - a human action of thumb down, where lowering precedes tilting
+- - a human action of make OK sign, raising precedes curving
+  - a human action of make OK sign, raising precedes curving
+  - a human action of make OK sign, raising precedes curving
+  - a human action of make OK sign, raising precedes curving
+- - a human action of make victory sign, where raising precedes positioning
+  - a human action of make victory sign, where raising precedes positioning
+  - a human action of make victory sign, where raising precedes positioning
+  - a human action of make victory sign, where raising precedes positioning
+- - a human action of staple book, where inserting precedes pressing
+  - a human action of staple book, where pressing precedes releasing
+  - a human action of staple book, where inserting precedes pressing
+  - a human action of staple book, where pressing precedes releasing
+- - a human action of counting money, where organizing precedes counting
+  - a human action of counting money, where organizing precedes counting
+  - a human action of counting money, where organizing precedes counting
+  - a human action of counting money, where organizing precedes counting
+- - a human action of cutting nails, where positioning precedes clipping
+  - a human action of cutting nails, where clipping follows positioning
+  - a human action of cutting nails, where clipping precedes filing
+  - a human action of cutting nails, where positioning precedes clipping
+- - a human action of cutting paper, where holding precedes cutting
+  - a human action of cutting paper, where holding precedes cutting
+  - a human action of cutting paper, where holding precedes cutting
+  - a human action of cutting paper, where holding precedes cutting
+- - a human action of snap fingers, where positioning precedes pressing
+  - a human action of snap fingers, where pressing precedes releasing
+  - a human action of snap fingers, where positioning precedes pressing
+  - a human action of snap fingers, where pressing precedes releasing
+- - a human action of open bottle, where twisting precedes pulling
+  - a human action of open bottle, where twisting precedes pulling
+  - a human action of open bottle, where twisting precedes pulling
+  - a human action of open bottle, where twisting precedes pulling
+- - a human action of sniff/smell, where inhaling precedes perceiving
+  - a human action of sniff/smell, where inhaling precedes perceiving
+  - a human action of sniff/smell, where inhaling precedes perceiving
+  - a human action of sniff/smell, where inhaling precedes perceiving
+- - a human action of squat down, where bending precedes lowering
+  - a human action of squat down, where lowering follows holding
+  - a human action of squat down, where bending precedes lowering
+  - a human action of squat down, where lowering follows holding
+- - a human action of toss a coin, where grabbing precedes flipping
+  - a human action of toss a coin, where flipping precedes releasing
+  - a human action of toss a coin, where grabbing precedes flipping
+  - a human action of toss a coin, where flipping precedes releasing
+- - a human action of fold paper, where crease precedes bending
+  - a human action of fold paper, where crease precedes bending
+  - a human action of fold paper, where crease precedes bending
+  - a human action of fold paper, where crease precedes bending
+- - a human action of ball up paper, where crumpling precedes squeezing
+  - a human action of ball up paper, where crumpling precedes squeezing
+  - a human action of ball up paper, where crumpling precedes squeezing
+  - a human action of ball up paper, where crumpling precedes squeezing
+- - a human action of play magic cube, where rotating precedes twisting
+  - a human action of play magic cube, where twisting precedes matching
+  - a human action of play magic cube, where rotating precedes twisting
+  - a human action of play magic cube, where twisting precedes matching
+- - a human action of apply cream on face, where cleansing precedes applying
+  - a human action of apply cream on face, where applying follows massaging
+  - a human action of apply cream on face, where cleansing precedes applying
+  - a human action of apply cream on face, where applying follows massaging
+- - a human action of apply cream on hand, where applying precedes spreading
+  - a human action of apply cream on hand, where applying precedes spreading
+  - a human action of apply cream on hand, where applying precedes spreading
+  - a human action of apply cream on hand, where applying precedes spreading
+- - a human action of put on bag, where picking precedes adjusting
+  - a human action of put on bag, where picking precedes adjusting
+  - a human action of put on bag, where picking precedes adjusting
+  - a human action of put on bag, where picking precedes adjusting
+- - a human action of take off bag, where unfastening precedes lifting
+  - a human action of take off bag, where unfastening precedes lifting
+  - a human action of take off bag, where unfastening precedes lifting
+  - a human action of take off bag, where unfastening precedes lifting
+- - a human action of put object into bag, where picking precedes placing
+  - a human action of put object into bag, where picking precedes placing
+  - a human action of put object into bag, where picking precedes placing
+  - a human action of put object into bag, where picking precedes placing
+- - a human action of take object out of bag, opening precedes removing
+  - a human action of take object out of bag, opening precedes removing
+  - a human action of take object out of bag, opening precedes removing
+  - a human action of take object out of bag, opening precedes removing
+- - a human action of open a box, where grasping precedes lifting
+  - a human action of open a box, where lifting precedes pulling
+  - a human action of open a box, where grasping precedes lifting
+  - a human action of open a box, where lifting precedes pulling
+- - a human action of move heavy objects, lifting before carrying
+  - a human action of move heavy objects, carrying after lifting
+  - a human action of move heavy objects, carrying before placing
+  - a human action of move heavy objects, lifting before carrying
+- - a human action of shake fist, where raising precedes moving
+  - a human action of shake fist, where raising precedes moving
+  - a human action of shake fist, where raising precedes moving
+  - a human action of shake fist, where raising precedes moving
+- - a human action of throw up cap/hat, where throwing precedes up
+  - a human action of throw up cap/hat, where throwing precedes up
+  - a human action of throw up cap/hat, where throwing precedes up
+  - a human action of throw up cap/hat, where throwing precedes up
+- - a human action of capitulate, where surrender precedes negotiation
+  - a human action of capitulate, where negotiation precedes agreement
+  - a human action of capitulate, where surrender precedes negotiation
+  - a human action of capitulate, where negotiation precedes agreement
+- - a human action of cross arms, where crossing precedes holding
+  - a human action of cross arms, where crossing precedes holding
+  - a human action of cross arms, where crossing precedes holding
+  - a human action of cross arms, where crossing precedes holding
+- - a human action of arm circles, where rotating precedes extending
+  - a human action of arm circles, where rotating precedes extending
+  - a human action of arm circles, where rotating precedes extending
+  - a human action of arm circles, where rotating precedes extending
+- - a human action of arm swings, where swinging precedes moving
+  - a human action of arm swings, where moving follows stretching
+  - a human action of arm swings, where swinging precedes moving
+  - a human action of arm swings, where moving follows stretching
+- - a human action of run on the spot, starting with a start
+  - a human action of run on the spot, where start precedes moving
+  - a human action of run on the spot, where moving follows maintaining
+  - a human action of run on the spot, starting with a start
+- - a human action of butt kicks, where kicking precedes lifting
+  - a human action of butt kicks, where kicking precedes lifting
+  - a human action of butt kicks, where kicking precedes lifting
+  - a human action of butt kicks, where kicking precedes lifting
+- - a human action of cross toe touch, where bending precedes reaching
+  - a human action of cross toe touch, where reaching follows stretching
+  - a human action of cross toe touch, where bending precedes reaching
+  - a human action of cross toe touch, where reaching follows stretching
+- - a human action of side kick, involving lifting before extending
+  - a human action of side kick, where extending precedes striking
+  - a human action of side kick, involving lifting before extending
+  - a human action of side kick, where extending precedes striking
+- - a human action of yawn, where inhaling precedes exhaling
+  - a human action of yawn, where exhaling follows stretching
+  - a human action of yawn, where inhaling precedes exhaling
+  - a human action of yawn, where exhaling follows stretching
+- - a human action of stretch oneself, where extending precedes relaxing
+  - a human action of stretch oneself, where relaxing precedes holding
+  - a human action of stretch oneself, where extending precedes relaxing
+  - a human action of stretch oneself, where relaxing precedes holding
+- - a human action of blow nose, where pinching precedes exhaling
+  - a human action of blow nose, where pinching precedes exhaling
+  - a human action of blow nose, where pinching precedes exhaling
+  - a human action of blow nose, where pinching precedes exhaling
+- - a human action of hit with object, where swinging precedes connecting
+  - a human action of hit with object, where connecting precedes impacting
+  - a human action of hit with object, where swinging precedes connecting
+  - a human action of hit with object, where connecting precedes impacting
+- - a human action of wield knife, where grasping precedes swinging
+  - a human action of wield knife, where grasping precedes swinging
+  - a human action of wield knife, where grasping precedes swinging
+  - a human action of wield knife, where grasping precedes swinging
+- - a human action of knock over, where applying force precedes tilting
+  - a human action of knock over, where tilting precedes releasing
+  - a human action of knock over, where applying force precedes tilting
+  - a human action of knock over, where tilting precedes releasing
+- - a human action of grab stuff, where reaching precedes holding
+  - a human action of grab stuff, where reaching precedes holding
+  - a human action of grab stuff, where reaching precedes holding
+  - a human action of grab stuff, where reaching precedes holding
+- - a human action of shoot with gun, aiming precedes pulling
+  - a human action of shoot with gun, aiming precedes pulling
+  - a human action of shoot with gun, aiming precedes pulling
+  - a human action of shoot with gun, aiming precedes pulling
+- - a human action of step on foot, where lifting precedes placing
+  - a human action of step on foot, where lifting precedes placing
+  - a human action of step on foot, where lifting precedes placing
+  - a human action of step on foot, where lifting precedes placing
+- - a human action of high-five, where raising precedes swinging
+  - a human action of high-five, where swinging precedes connecting
+  - a human action of high-five, where raising precedes swinging
+  - a human action of high-five, where swinging precedes connecting
+- - a human action of cheers and drink, where cheering precedes drinking
+  - a human action of cheers and drink, where cheering precedes drinking
+  - a human action of cheers and drink, where cheering precedes drinking
+  - a human action of cheers and drink, where cheering precedes drinking
+- - a human action of carry object, where lifting precedes holding
+  - a human action of carry object, where holding precedes transporting
+  - a human action of carry object, where lifting precedes holding
+  - a human action of carry object, where holding precedes transporting
+- - a human action of take a photo, where aiming precedes clicking
+  - a human action of take a photo, where clicking follows aiming
+  - a human action of take a photo, where clicking comes before reviewing
+  - a human action of take a photo, where aiming precedes clicking
+- - a human action of follow, where walking precedes observing
+  - a human action of follow, where walking precedes observing
+  - a human action of follow, where walking precedes observing
+  - a human action of follow, where walking precedes observing
+- - a human action of whisper, where lowering precedes speaking
+  - a human action of whisper, where lowering precedes speaking
+  - a human action of whisper, where lowering precedes speaking
+  - a human action of whisper, where lowering precedes speaking
+- - a human action of exchange things, where giving precedes receiving
+  - a human action of exchange things, where giving precedes receiving
+  - a human action of exchange things, where giving precedes receiving
+  - a human action of exchange things, where giving precedes receiving
+- - a human action of support somebody, where assisting precedes encouraging
+  - a human action of support somebody, where encouraging follows providing
+  - a human action of support somebody, where assisting precedes encouraging
+  - a human action of support somebody, where encouraging follows providing
+- - a human action of rock-paper-scissors, where choosing precedes revealing
+  - a human action of rock-paper-scissors, where revealing precedes comparing
+  - a human action of rock-paper-scissors, where choosing precedes revealing
+  - a human action of rock-paper-scissors, where revealing precedes comparing

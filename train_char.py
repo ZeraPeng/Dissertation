@@ -67,6 +67,8 @@ def parse_arg():
 
     parser.add_argument("--body_part", type=int, default=6)
 
+    parser.add_argument("--askg_mode", type=str, default='vocab')   # or vanilla
+
     args = parser.parse_args()
     return args
 
@@ -672,7 +674,7 @@ def main():
     else:
         raise ValueError('Unknown visual embedding model')
     text_emb_input_size = 1024
-
+    askg_mode = args.askg_mode
     seed = 5
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
@@ -702,8 +704,13 @@ def main():
         seen_inds = np.load(
             f'resources/label_splits/{dataset}/{st}s{str(num_classes - ss)}.npy')
     
+    aug = True
     c_text_emb = []
     c_unseen_text_emb = []
+    if aug:
+        prefix = 'aug'
+    else:
+        prefix = 'no_aug'
     if 'whole' in names:
         tml = tm.split('_')
         tfl = [torch.from_numpy(
@@ -716,12 +723,12 @@ def main():
         c_text_emb.append(text_emb)
         c_unseen_text_emb.append(text_emb[unseen_inds, :])
     if 'xaa' in names:
-        xaa_source = torch.load('ASKG/data/xprompt_feat/xaa_text_feats_xprompt_ntu.tar', weights_only=True)
+        xaa_source = torch.load(f'ASKG/data/{askg_mode}/{prefix}/xaa_text_feats_xprompt_ntu.tar', weights_only=True)
         xaa_text_emb = load_semantic_emb(xaa_source, device)
         c_text_emb.append(xaa_text_emb)
         c_unseen_text_emb.append(xaa_text_emb[unseen_inds,:,:])
     if 'xao' in names:
-        xao_source = torch.load('ASKG/data/xprompt_feat/xao_text_feats_xprompt_ntu.tar', weights_only=True)
+        xao_source = torch.load(f'ASKG/data/{askg_mode}/{prefix}/xao_text_feats_xprompt_ntu.tar', weights_only=True)
         xao_text_emb = load_semantic_emb(xao_source, device)
         c_text_emb.append(xao_text_emb)
         c_unseen_text_emb.append(xao_text_emb[unseen_inds,:,:])

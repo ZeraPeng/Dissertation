@@ -16,7 +16,7 @@ def get_templates(dataset_name):
     return data
 
 def get_xprompt(dataset_name):
-    xprompt_file = f"ASKG/data/{dataset_name}/classes_xprompt_{dataset_name}_formatted.yml"
+    xprompt_file = f"ASKG/data/vocab/classes_xprompt_{dataset_name}_formatted.yml"
     with open(xprompt_file, 'r') as f:
         text = yaml.load(f, Loader=yaml.FullLoader)
     return text
@@ -501,10 +501,10 @@ def xprompt_feat_processor(cls_prompt_type='xao'):    # Create a class for datas
     clip_model, _ = clip.load("ViT-B/32", device=device)
     
     # Process text features
-    classes_feats_file = f"ASKG/data/xprompt_feat/{cls_prompt_type}_text_feats_xprompt_ntu.tar"
+    classes_feats_file = f"ASKG/data/vocab/{cls_prompt_type}_text_feats_xprompt_ntu.tar"
     cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = text_prepare(data, config.data.dataset, num_templates=config.data.num_templates, cls_prompt_type=cls_prompt_type)
     # Save cls_text_dict to a YAML file
-    cls_text_dict_file = f"ASKG/data/xprompt_feat/{cls_prompt_type}_text_dict_xprompt_ntu.yml"
+    cls_text_dict_file = f"ASKG/data/vocab/{cls_prompt_type}_text_dict_xprompt_ntu.yml"
     with open(cls_text_dict_file, 'w') as f:
         yaml.dump(cls_text_dict, f)
     
@@ -587,4 +587,4 @@ def entity_only_processor():    # Create a class for dataset configuration
         torch.save(classes_features, classes_feats_file)
 
 if __name__ == '__main__':
-    xprompt_feat_processor('xaa')
+    aug_feat_processor('xaa')

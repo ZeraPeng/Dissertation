@@ -32,9 +32,9 @@ def chat_completion_with_backoff(**kwargs):
 # Adjust the paths as needed
 data_path = 'ASKG/data'
 # read file path
-label_ASKG_path = os.path.join(data_path, 'ntu/classes_ASKG_vocab_ntu.yml')
+label_ASKG_path = os.path.join(data_path, 'ntu/temp.yml')
 # write file path
-xprompt_path = os.path.join(data_path, 'vocab/classes_xprompt_ntu.yml')
+xprompt_path = os.path.join(data_path, 'vocab/temp.yml')
 
 print(f"Reading data from: {label_ASKG_path}")
 print(f"Output will be written to: {xprompt_path}")
