@@ -290,6 +290,77 @@ def get_en_labels(en_list, en_dict):
         en_label_list.append(en_labels)
     return en_label_dict, en_label_list
 
+def aug_text_prepare_no_expand(data, dataset: str, num_templates: int, cls_prompt_type: str):
+    text = get_xprompt(dataset)
+    classes = data # ["c1", "c2", ...]
+    num_classes = len(classes)
+    n_prompts = [0, 0]
+    
+    templates = ["a human action of"]
+    total_templates = len(templates)
+    num_templates = min(num_templates, total_templates)
+
+    tokenized_dict = {}
+    cls_text_dict = {}
+    text_dict = {}
+    xao_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
+    xaa_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
+    for i, t in enumerate(text):
+        xao_dict[i] = t['xprompt_ao']
+        xaa_dict[i] = t['xprompt_aa']
+    for ii, txt in enumerate(templates):
+        text_dict[ii] = {
+            'aug': txt,
+            'xao': [],
+            'xaa': []
+        }
+        tokenized_dict[ii] = []
+        for i, c in enumerate(classes):
+            # ci_xao_list = text_dict[ii]['a'][i][:]
+            # ci_xaa_list = text_dict[ii]['a'][i][:]
+            ci_xao_list = []
+            ci_xaa_list = []
+            for j, t in enumerate(xao_dict[i]):
+                ci_xao_list.append(f"{txt.format(c)} {c}, {t}")
+            text_dict[ii]['xao'].append(ci_xao_list)
+            for j, t in enumerate(xaa_dict[i]):
+                ci_xaa_list.append(f"{txt.format(c)} {c}, {t}")
+            text_dict[ii]['xaa'].append(ci_xaa_list)
+        if cls_prompt_type == 'xao':
+            cls_text_dict[ii] = text_dict[ii]['xao']
+        elif cls_prompt_type == 'xaa':
+            cls_text_dict[ii] = text_dict[ii]['xaa']
+        elif cls_prompt_type == 'xmix':
+            cls_text_dict[ii] = []
+            for i in range(len(classes)):
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+        elif cls_prompt_type == 'xpair':
+            cls_text_dict[ii] = []
+            for i in range(len(classes)):
+                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+        else:
+            cls_text_dict[ii] = text_dict[ii]['a']
+
+
+        cls_text_dict[ii], n_prompts[0], n_prompts[1] = expand_cls_text(cls_text_dict[ii])
+
+        for n in range(n_prompts[1]):
+            tokenized_dict[ii].append(torch.cat([clip.tokenize(t[n]) for t in cls_text_dict[ii]])) # [c 77, c 77,...]
+        # tokenized_dict[0] shape: (3, 120, 77) -> (number of prompts, classes, token)
+
+        tokenized_dict[ii] = torch.cat(tokenized_dict[ii])  # (360, 77)
+        # for i in range(len(cls_text_dict[ii])):
+        #     tokenized_dict[ii].append(torch.cat([clip.tokenize(t) for t in cls_text_dict[ii][i]]))
+
+
+    # cls_tokenized = [torch.cat([tokenized_dict[i][j] for i in range(num_templates)], dim=0) for j in range(num_classes)]
+
+    cls_tokenized = torch.cat([v for v in tokenized_dict.values()]) # (num_templates max_prompt num_cls) 77
+
+
+    # expand and repeat cls_tokenized dim to max
+    # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
+    return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
 
 
 def aug_text_prepare(data, dataset: str, num_templates: int, cls_prompt_type: str):
