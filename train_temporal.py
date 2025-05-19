@@ -175,7 +175,7 @@ def train_one_cycle(cycle_num,
         t = get_text_data(text_emb, t).to(device, non_blocking=True)    # torch.Size([32, 4, 512])
         num_segments = []
         for item_t in t:
-            num_valid = sum(tensor.sum() == 0 for tensor in item_t)
+            num_valid = int(sum(tensor.sum() != 0 for tensor in item_t))
             num_segments.append(num_valid)
         t = t.to(dtype=list(text_encoder.parameters())[0].dtype)
 

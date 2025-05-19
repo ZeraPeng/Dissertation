@@ -72,7 +72,6 @@ def aug_subaction_prepare_no_expand(data, dataset: str, num_templates: int, cls_
                 cls_text_dict[ii].append(list(set(text_dict[ii]['sub_act'][i] + text_dict[ii]['obj'][i])))
         else:
             cls_text_dict[ii] = text_dict[ii]['aug']
-        ipdb.set_trace()
         for t in cls_text_dict[ii]:
             tokenized_item = []
             for n in range(len(t)):
@@ -82,26 +81,22 @@ def aug_subaction_prepare_no_expand(data, dataset: str, num_templates: int, cls_
 
         # tokenized_dict[ii] = torch.cat(tokenized_dict[ii])  # (360, 77)
     # cls_tokenized = torch.cat([v for v in tokenized_dict.values()]) # (num_templates max_prompt num_cls) 77
-    # cls_tokenized = tokenized_dict[0]
-    tensor_list = tokenized_dict[0]
-    max_x = max(tensor.shape[0] for tensor in tensor_list)
+    cls_tokenized = tokenized_dict[0]
+    # tensor_list = tokenized_dict[0]
+    # max_x = max(tensor.shape[0] for tensor in tensor_list)
 
-    padded_tensors = []
-    for tensor in tensor_list:
-        # 计算需要填充的数量
-        pad_size = max_x - tensor.shape[0]
+    # padded_tensors = []
+    # for tensor in tensor_list:
+    #     pad_size = max_x - tensor.shape[0]
         
-        if pad_size > 0:
-            # 在第一个维度（x维度）的末尾填充0
-            # F.pad的参数格式是(pad_left, pad_right, pad_top, pad_bottom)
-            padded_tensor = F.pad(tensor, (0, 0, 0, pad_size), "constant", 0)
-        else:
-            padded_tensor = tensor
+    #     if pad_size > 0:
+    #         padded_tensor = F.pad(tensor, (0, 0, 0, pad_size), "constant", 0)
+    #     else:
+    #         padded_tensor = tensor
             
-        padded_tensors.append(padded_tensor)
+    #     padded_tensors.append(padded_tensor)
 
-    # cls_tokenized = torch.stack(padded_tensors, dim=0)
-    cls_tokenized = torch.cat(padded_tensors)
+    # cls_tokenized = torch.cat(padded_tensors)
 
     return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
 
@@ -128,29 +123,42 @@ def aug_feat_processor_sub_action_no_expand(cls_prompt_type='sub_act'):    # Cre
     cls_text_dict_file = f"ASKG/data/vocab/{cls_prompt_type}_text_dict_askg_ntu.yml"
     with open(cls_text_dict_file, 'w') as f:
         yaml.dump(cls_text_dict, f)
-    
+    ipdb.set_trace()
+
     # Calculate number of classes and text augmentations
     n_classes = int(120)
     num_text_aug = n_prompts[1] * n_templates
     
-    # Rearrange tensor dimensions for processing
-    cls_tokenized = rearrange(cls_tokenized, '(x a) d -> x a d', a=n_classes)      # [3, 120, 77]
-    x, a, d = cls_tokenized.size()
+    # # Rearrange tensor dimensions for processing
+    # cls_tokenized = rearrange(cls_tokenized, '(x a) d -> x a d', a=n_classes)      # [3, 120, 77]
+    # x, a, d = cls_tokenized.size()
     
     # Encode text features with CLIP
     clip_model.eval()
     with torch.no_grad():
         # Process each batch and ensure it's on the correct device
         classes_features = []
-        for i in range(x):
-            # Make sure the tensor is on the right device before passing to encode_text
-            text_batch = cls_tokenized[i].squeeze().to(device)
-            feature = clip_model.encode_text(text_batch)
+        for i, cls_sub_acts in enumerate(cls_tokenized):
+            cls_sub_acts = cls_sub_acts.to(device)
+            feature = clip_model.encode_text(cls_sub_acts)  # torch.Size([3, 512])
             classes_features.append(feature)
-        
-        classes_features = torch.stack(classes_features)
-        # Rearrange features for storage
-        classes_features = classes_features.permute(1, 0, 2)  # a x d
+        # zero-padding
+        tensor_list = classes_features
+        max_x = max(tensor.shape[0] for tensor in tensor_list)
+
+        padded_tensors = []
+        for tensor in tensor_list:
+            pad_size = max_x - tensor.shape[0]
+            
+            if pad_size > 0:
+                padded_tensor = F.pad(tensor, (0, 0, 0, pad_size), "constant", 0)
+            else:
+                padded_tensor = tensor
+                
+            padded_tensors.append(padded_tensor)
+
+        classes_features = torch.cat(padded_tensors)
+        classes_features = rearrange(classes_features, '(x a) d -> x a d', x=n_classes)
         # Move to CPU for saving
         classes_features = classes_features.to('cpu')       # [120, 3, 512]
         torch.save(classes_features, classes_feats_file)
