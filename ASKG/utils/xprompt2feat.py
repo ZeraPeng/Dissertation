@@ -21,6 +21,12 @@ def get_xprompt(dataset_name):
         text = yaml.load(f, Loader=yaml.FullLoader)
     return text
 
+def get_askg(dataset_name):
+    askg_file = f"ASKG/data/ntu/classes_ASKG_vocab_{dataset_name}.yml"
+    with open(askg_file, 'r') as f:
+        askg = yaml.load(f, Loader=yaml.FullLoader)
+    return askg
+
 def get_ASKG_entity(dataset_name, classes, entity_type):
     ASKG_file = f"ASKG/data/{dataset_name}/classes_ASKG_{dataset_name}.yml"
     with open(ASKG_file, 'r') as f:
@@ -290,8 +296,8 @@ def get_en_labels(en_list, en_dict):
         en_label_list.append(en_labels)
     return en_label_dict, en_label_list
 
-def aug_text_prepare_no_expand(data, dataset: str, num_templates: int, cls_prompt_type: str):
-    text = get_xprompt(dataset)
+def aug_subaction_prepare_no_expand(data, dataset: str, num_templates: int, cls_prompt_type: str):
+    text = get_askg(dataset)
     classes = data # ["c1", "c2", ...]
     num_classes = len(classes)
     n_prompts = [0, 0]
@@ -303,43 +309,43 @@ def aug_text_prepare_no_expand(data, dataset: str, num_templates: int, cls_promp
     tokenized_dict = {}
     cls_text_dict = {}
     text_dict = {}
-    xao_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
-    xaa_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
+    sub_act_dict = {} # {0: [xprompt_ao,...], 1: [xprompt_ao], ...}
+    obj_dict = {} # {0: [xprompt_aa,...], 1: [xprompt_aa], ...}
     for i, t in enumerate(text):
-        xao_dict[i] = t['xprompt_ao']
-        xaa_dict[i] = t['xprompt_aa']
+        sub_act_dict[i] = t['sub_act_li']
+        obj_dict[i] = t['obj_li']
     for ii, txt in enumerate(templates):
         text_dict[ii] = {
             'aug': txt,
-            'xao': [],
-            'xaa': []
+            'sub_act': [],
+            'obj': []
         }
         tokenized_dict[ii] = []
         for i, c in enumerate(classes):
             # ci_xao_list = text_dict[ii]['a'][i][:]
             # ci_xaa_list = text_dict[ii]['a'][i][:]
-            ci_xao_list = []
-            ci_xaa_list = []
-            for j, t in enumerate(xao_dict[i]):
-                ci_xao_list.append(f"{txt.format(c)} {c}, {t}")
-            text_dict[ii]['xao'].append(ci_xao_list)
-            for j, t in enumerate(xaa_dict[i]):
-                ci_xaa_list.append(f"{txt.format(c)} {c}, {t}")
-            text_dict[ii]['xaa'].append(ci_xaa_list)
-        if cls_prompt_type == 'xao':
-            cls_text_dict[ii] = text_dict[ii]['xao']
-        elif cls_prompt_type == 'xaa':
-            cls_text_dict[ii] = text_dict[ii]['xaa']
-        elif cls_prompt_type == 'xmix':
+            ci_sub_act_list = []
+            ci_obj_list = []
+            for j, t in enumerate(sub_act_dict[i]):
+                ci_sub_act_list.append(f"{txt.format(c)} {c}, {t}")
+            text_dict[ii]['sub_act'].append(ci_sub_act_list)
+            for j, t in enumerate(obj_dict[i]):
+                ci_obj_list.append(f"{txt.format(c)} {c}, {t}")
+            text_dict[ii]['obj'].append(ci_obj_list)
+        if cls_prompt_type == 'sub_act':
+            cls_text_dict[ii] = text_dict[ii]['sub_act']
+        elif cls_prompt_type == 'obj':
+            cls_text_dict[ii] = text_dict[ii]['obj']
+        elif cls_prompt_type == 'mix':
             cls_text_dict[ii] = []
             for i in range(len(classes)):
-                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
-        elif cls_prompt_type == 'xpair':
+                cls_text_dict[ii].append(list(set(text_dict[ii]['sub_act'][i] + text_dict[ii]['obj'][i])))
+        elif cls_prompt_type == 'pair':
             cls_text_dict[ii] = []
             for i in range(len(classes)):
-                cls_text_dict[ii].append(list(set(text_dict[ii]['xao'][i] + text_dict[ii]['xaa'][i])))
+                cls_text_dict[ii].append(list(set(text_dict[ii]['sub_act'][i] + text_dict[ii]['obj'][i])))
         else:
-            cls_text_dict[ii] = text_dict[ii]['a']
+            cls_text_dict[ii] = text_dict[ii]['aug']
 
 
         cls_text_dict[ii], n_prompts[0], n_prompts[1] = expand_cls_text(cls_text_dict[ii])
@@ -357,9 +363,6 @@ def aug_text_prepare_no_expand(data, dataset: str, num_templates: int, cls_promp
 
     cls_tokenized = torch.cat([v for v in tokenized_dict.values()]) # (num_templates max_prompt num_cls) 77
 
-
-    # expand and repeat cls_tokenized dim to max
-    # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
     return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
 
 
@@ -504,6 +507,55 @@ def text_prepare(data, dataset: str, num_templates: 0, cls_prompt_type: str):
     # cls_tokenized = expand_cls_tokenized(cls_tokenized, max_prompt) # c max 77
     return cls_tokenized, cls_text_dict, tokenized_dict, num_templates, n_prompts
 
+def aug_feat_processor_sub_action_no_expand(cls_prompt_type='sub_act'):    # Create a class for dataset configuration
+    class Config:
+        def __init__(self):
+            self.data = type('', (), {})()
+            self.data.dataset = 'ntu'
+            self.data.num_templates = 1
+
+    config = Config()
+    # Load dataset
+    dataset_name = config.data.dataset
+    data = get_templates(dataset_name)
+
+    # Load CLIP model
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    clip_model, _ = clip.load("ViT-B/32", device=device)
+    
+    # Process text features
+    classes_feats_file = f"ASKG/data/vocab/{cls_prompt_type}_text_feats_askg_ntu.tar"
+    cls_tokenized, cls_text_dict, text_dict, n_templates, n_prompts = aug_text_prepare(data, config.data.dataset, num_templates=config.data.num_templates, cls_prompt_type=cls_prompt_type)
+    # Save cls_text_dict to a YAML file
+    cls_text_dict_file = f"ASKG/data/vocab/{cls_prompt_type}_text_dict_askg_ntu.yml"
+    with open(cls_text_dict_file, 'w') as f:
+        yaml.dump(cls_text_dict, f)
+    
+    # Calculate number of classes and text augmentations
+    n_classes = int(cls_tokenized.size(0) / (n_templates * n_prompts[1]))
+    num_text_aug = n_prompts[1] * n_templates
+    
+    # Rearrange tensor dimensions for processing
+    cls_tokenized = rearrange(cls_tokenized, '(x a) d -> x a d', a=n_classes)      # [3, 120, 77]
+    x, a, d = cls_tokenized.size()
+    
+    # Encode text features with CLIP
+    clip_model.eval()
+    with torch.no_grad():
+        # Process each batch and ensure it's on the correct device
+        classes_features = []
+        for i in range(x):
+            # Make sure the tensor is on the right device before passing to encode_text
+            text_batch = cls_tokenized[i].squeeze().to(device)
+            feature = clip_model.encode_text(text_batch)
+            classes_features.append(feature)
+        
+        classes_features = torch.stack(classes_features)
+        # Rearrange features for storage
+        classes_features = classes_features.permute(1, 0, 2)  # a x d
+        # Move to CPU for saving
+        classes_features = classes_features.to('cpu')       # [120, 3, 512]
+        torch.save(classes_features, classes_feats_file)
 
 def aug_feat_processor(cls_prompt_type='xao'):    # Create a class for dataset configuration
     class Config:
@@ -658,4 +710,5 @@ def entity_only_processor():    # Create a class for dataset configuration
         torch.save(classes_features, classes_feats_file)
 
 if __name__ == '__main__':
-    aug_feat_processor('xaa')
+    ipdb.set_trace()
+    aug_feat_processor_sub_action_no_expand('sub_act')

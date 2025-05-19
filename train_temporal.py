@@ -163,16 +163,20 @@ def train_one_cycle(cycle_num,
                     (float(i) / len(train_loader) - 1/3) * args.beta_y
 
         cross_alignment_loss_factor = 1 * (i > cr_fact_iter)
-        
-        _, channels, _ = text_emb.shape
+        ipdb.set_trace()
+        # sub_action alignment
+        # t: validation check; s: temporal segmentation
         s = inputs.to(device, non_blocking=True)        # torch.Size([32, 256, 16, 25])
-        s = s.repeat_interleave(channels, dim=0)      # Shape: [128, 256, 16, 25]
         b, e, f, j = s.shape
-        s = s.view(b, e, f)
+        s = s.mean(dim=3)
+        s = s.permute(0, 2, 1)  # 32, 16, 256
 
         t = target.to(device, non_blocking=True)
         t = get_text_data(text_emb, t).to(device, non_blocking=True)    # torch.Size([32, 4, 512])
-        t = t.reshape(-1, 512)  # torch.Size([128, 512])
+        num_segments = []
+        for item_t in t:
+            num_valid = sum(tensor.sum() == 0 for tensor in item_t)
+            num_segments.append(num_valid)
         t = t.to(dtype=list(text_encoder.parameters())[0].dtype)
 
         smu, slv, ismu, islv = sequence_encoder(s, instance_style=True, type=type)      
@@ -688,14 +692,13 @@ def main():
         os.makedirs(f'{wdir}/{le}/{tm}')
 
     # DataLoader
-    ipdb.set_trace()
     ntu_loaders = NTUDataLoaders(dataset_path, 'max', 1)
     train_loader = ntu_loaders.get_train_loader(
         batch_size, 0)
     zsl_loader = ntu_loaders.get_val_loader(batch_size, 0)
     val_loader = ntu_loaders.get_test_loader(batch_size, 0)
     
-    names = ['whole', 'xaa', 'xao']
+    names = ['sub_act']
 
     if phase == 'val':
         unseen_inds = np.sort(
@@ -736,7 +739,11 @@ def main():
         xao_text_emb = load_semantic_emb(xao_source, device)
         c_text_emb.append(xao_text_emb)
         c_unseen_text_emb.append(xao_text_emb[unseen_inds,:,:])
-
+    if 'sub_act' in names:
+        sub_act_source = torch.load(f'ASKG/data/{askg_mode}/{prefix}/sub_act_text_feats_askg_ntu.tar', weights_only=True)
+        sa_text_emb = load_semantic_emb(sub_act_source, device)
+        c_text_emb.append(sa_text_emb)
+        c_unseen_text_emb.append(sa_text_emb[unseen_inds,:,:])
     vae_dict = init_vaes(names, vis_emb_input_size, semantic_latent_size, style_latent_size, text_emb_input_size, device)
     # ========== Training ==========
     best = 0
