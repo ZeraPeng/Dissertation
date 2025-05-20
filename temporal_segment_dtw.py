@@ -6,14 +6,14 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from data_cnn60_origin import AverageMeter, NTUDataLoaders
 
-def segment_skeleton_sequences_with_dtw(skeleton_batch, num_segments=5):
+def segment_skeleton_sequences_with_dtw(skeleton_batch, num_segments=list):
     """
     Segment batch skeleton sequences using DTW distance, with specified number of segments
     
     Args:
         skeleton_batch: Batch of skeleton sequences, shape [batch_size, embedding_size, frames, joints]
                         Expected to be a PyTorch tensor
-        num_segments: Number of segments to divide each sequence into
+        num_segments: List of number of segments to divide each sequence into
     
     Returns:
         segment_points_batch: List of lists containing segment points for each sample
@@ -40,7 +40,7 @@ def segment_skeleton_sequences_with_dtw(skeleton_batch, num_segments=5):
         dtw_matrix = compute_dtw_matrix(skeleton_sequence_flat)
         
         # Perform segmentation based on DTW distances
-        segment_points = find_optimal_segments(dtw_matrix, num_segments)
+        segment_points = find_optimal_segments(dtw_matrix, num_segments[batch_idx])
         
         segment_points_batch.append(segment_points)
     
@@ -149,6 +149,62 @@ def visualize_segmentation(skeleton_sequence, segment_points):
     plt.xlabel('Frames')
     plt.ylabel('Average Joint Position')
     plt.show()
+
+def representative_segs(skeleton_batch, segment_points_batch):
+    """
+    Obtain representative segments by averaging over the frame dimension.
+    Returns all representative segments across all samples as a single tensor.
+    
+    Args:
+        skeleton_batch: Batch of skeleton sequences with shape [batch_size, embedding_size, frames, joints]
+                        Expected to be a PyTorch tensor
+        segment_points_batch: List of lists containing segment points for each sample
+                             Each inner list contains the frame indices for segment boundaries
+    
+    Returns:
+        rep_segs: Single tensor containing all representative segments from all samples
+                  Shape: [total_segments, embedding_size, joints]
+    """
+    # Ensure input is PyTorch tensor
+    if not isinstance(skeleton_batch, torch.Tensor):
+        skeleton_batch = torch.tensor(skeleton_batch)
+    
+    batch_size, embedding_size, num_frames, num_joints = skeleton_batch.shape
+    
+    # List to collect all representative segments from all samples
+    all_rep_segs = []
+    
+    for batch_idx in range(batch_size):
+        # Get current sample's skeleton sequence and segment points
+        skeleton_sequence = skeleton_batch[batch_idx]
+        segment_points = [0] + segment_points_batch[batch_idx] + [num_frames - 1]
+
+        # Add start and end points for complete segmentation
+        num_seg = len(segment_points) - 1
+        # Process each segment
+        for seg_idx in range(num_seg):
+            start_frame = segment_points[seg_idx]
+            end_frame = segment_points[seg_idx + 1]
+            
+            # Handle edge case where segments might be identical
+            if start_frame == end_frame:
+                segment_frames = skeleton_sequence[:, start_frame, :]
+            else:
+                segment_frames = skeleton_sequence[:, start_frame:end_frame, :]
+                rep_seg = torch.mean(segment_frames, dim=1)     # torch.Size([256, 25])
+            
+            # Add to collection
+            all_rep_segs.append(rep_seg)
+    
+    # Stack all representative segments into a single tensor
+    # Shape: [total_segments, embedding_size, joints]
+    if all_rep_segs:
+        rep_segs = torch.stack(all_rep_segs, dim=0)     # torch.Size([80, 256, 25])
+    else:
+        # Handle empty case
+        rep_segs = torch.zeros(0, embedding_size, num_joints)
+    
+    return rep_segs
 
 # Example usage
 if __name__ == "__main__":

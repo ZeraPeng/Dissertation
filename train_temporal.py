@@ -17,8 +17,7 @@ from model.get_part_feature import ModelMatch, SHIFTGCNModel
 import ipdb
 import logging
 from util_char import *
-from temporal_alignment import TemporalAlignment, TemporalClassifier
-
+from temporal_segment_dtw import *
 
 
 def import_class(import_str):
@@ -163,26 +162,37 @@ def train_one_cycle(cycle_num,
                     (float(i) / len(train_loader) - 1/3) * args.beta_y
 
         cross_alignment_loss_factor = 1 * (i > cr_fact_iter)
-        ipdb.set_trace()
         # sub_action alignment
         # t: validation check; s: temporal segmentation
         s = inputs.to(device, non_blocking=True)        # torch.Size([32, 256, 16, 25])
-        b, e, f, j = s.shape
-        s = s.mean(dim=3)
-        s = s.permute(0, 2, 1)  # 32, 16, 256
+        # b, e, f, j = s.shape
+        # s = s.mean(dim=3)
+        # s = s.permute(0, 2, 1)  # 32, 16, 256
 
         t = target.to(device, non_blocking=True)
         t = get_text_data(text_emb, t).to(device, non_blocking=True)    # torch.Size([32, 4, 512])
+        # concanecate all the valid sub-actions
         num_segments = []
+        valid_t = []
         for item_t in t:
-            num_valid = int(sum(tensor.sum() != 0 for tensor in item_t))
+            valid_tensors = [tensor for tensor in item_t if tensor.sum() != 0]
+            for tensor in valid_tensors:
+                valid_t.append(tensor)
+            num_valid = len(valid_tensors)
             num_segments.append(num_valid)
+        t = torch.stack(valid_t)        # torch.Size([80, 512])  80: all the sub_acts
         t = t.to(dtype=list(text_encoder.parameters())[0].dtype)
-
+        
+        # temporal segmentation (according to num_segments)
+        segment_points = segment_skeleton_sequences_with_dtw(s, num_segments=num_segments)
+        s = representative_segs(s, segment_points)
+        
+        s = torch.max(s, dim=2)[0]
+        
         smu, slv, ismu, islv = sequence_encoder(s, instance_style=True, type=type)      
-        sz = reparameterize(smu, slv)   # [128,96]
-        isz = reparameterize(ismu, islv)    # [128,8]
-        sout = sequence_decoder(torch.cat([sz, isz], dim=-1))   # [128, 256]
+        sz = reparameterize(smu, slv)   # [80,96]
+        isz = reparameterize(ismu, islv)    # [80,8]
+        sout = sequence_decoder(torch.cat([sz, isz], dim=-1))   # [80, 256]
 
         tmu, tlv = text_encoder(t)
         tz = reparameterize(tmu, tlv)
@@ -322,6 +332,10 @@ def save_all_model(epoch, part_models):
     save_checkpoint({'epoch': epoch + 1,
                      'state_dict': model_checkpoints}, part_models_checkpoint)
 
+
+def train_sub_act_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, unseen_text_emb, alpha, alpha_p, device):
+    
+    return
 
 def train_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, unseen_text_emb, alpha, alpha_p, device):
     if len(names) == 1:
@@ -680,7 +694,7 @@ def main():
         vis_emb_input_size = 256
     else:
         raise ValueError('Unknown visual embedding model')
-    text_emb_input_size = 1024
+    text_emb_input_size = 512
     askg_mode = args.askg_mode
     seed = 5
     torch.manual_seed(seed)
@@ -744,6 +758,7 @@ def main():
         sa_text_emb = load_semantic_emb(sub_act_source, device)
         c_text_emb.append(sa_text_emb)
         c_unseen_text_emb.append(sa_text_emb[unseen_inds,:,:])
+    
     vae_dict = init_vaes(names, vis_emb_input_size, semantic_latent_size, style_latent_size, text_emb_input_size, device)
     # ========== Training ==========
     best = 0
@@ -774,6 +789,7 @@ def main():
     
         # ===== Train Classifier =====
         # zsl_acc, val_out_embs, val_out_logits, clf_dict, weights = train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, val_loader, unseen_inds, unseen_text_emb, part_unseen_text_emb, device)
+        ipdb.set_trace()
         zsl_acc, clf_dict = train_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, c_unseen_text_emb, alpha, alpha_p, device)
 
         if (zsl_acc > best):
