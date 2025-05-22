@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-
+import torch.nn.functional as F
+import numpy as np
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -11,8 +12,6 @@ def weights_init(m):
     elif classname.find('BatchNorm') != -1:
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
-import torch
-import torch.nn.functional as F
 
 def fuse_logits(part_logits_list, fusion_type="weighted_sum"):
     """
@@ -181,3 +180,135 @@ def permute_dims(zs, zis):
     perm_zis = zis[perm2]
 
     return perm_zs, perm_zis
+
+
+class ZeroShotClassifier(nn.Module):
+    """
+    Classifier that samples frames from a sequence and predicts top-k sub-actions/objects
+    from each frame, then maps to unseen class labels through a probability graph.
+    """
+    def __init__(self, input_dim, output_dim, num_frames=4, top_k=5):
+        """
+        Args:
+            input_dim (int): Dimension of the input features
+            output_dim (int): Number of output classes
+            num_frames (int): Number of frames to sample from the sequence
+            top_k (int): Number of top sub-actions/objects to consider per frame
+        """
+        super(ZeroShotClassifier, self).__init__()
+        self.num_frames = num_frames
+        self.top_k = top_k
+        
+        # Base classifier for predicting sub-actions & objects
+        self.classifier = nn.Sequential(
+            nn.Linear(input_dim, 256),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(256, output_dim)
+        )
+        
+        # Mapping network to unseen classes (implemented as fully-connected layer)
+        self.mapping = nn.Linear(output_dim * num_frames, output_dim)
+        
+    def sample_frames(self, x):
+        """
+        Sample frames from a sequence
+        
+        Args:
+            x (torch.Tensor): Input sequences of shape [batch_size, seq_len, feat_dim]
+            
+        Returns:
+            torch.Tensor: Sampled frames of shape [batch_size, num_frames, feat_dim]
+        """
+        batch_size, seq_len, feat_dim = x.shape
+        
+        if seq_len <= self.num_frames:
+            # If sequence is shorter than requested frames, pad with duplicates
+            indices = torch.arange(seq_len, device=x.device)
+            if seq_len < self.num_frames:
+                padding = torch.tensor([seq_len-1] * (self.num_frames - seq_len), 
+                                      device=x.device)
+                indices = torch.cat([indices, padding])
+        else:
+            # Evenly sample frames across the sequence
+            indices = torch.linspace(0, seq_len-1, self.num_frames, dtype=torch.long, device=x.device)
+        
+        return torch.index_select(x, 1, indices)
+    
+    def forward(self, sequence_encoder, x, unseen_inds=None):
+        """
+        Forward pass through the classifier
+        
+        Args:
+            sequence_encoder: Encoder model to extract features from frames
+            x (torch.Tensor): Input sequences [batch size, embedding size, frames]
+            unseen_inds: Indices of unseen classes for mapping
+            
+        Returns:
+            tuple: (frame_logits, class_logits, frame_predictions)
+        """
+        batch_size = x.shape[0]
+        x = x.permute(0, 2, 1)
+        # Handle different input formats
+        if len(x.shape) == 3:  # [batch, seq_len, feat_dim]
+            sampled_frames = self.sample_frames(x)
+        else:  # [batch, feat_dim] - treat as single frame
+            sampled_frames = x.unsqueeze(1).repeat(1, self.num_frames, 1)
+        
+        frame_logits = []
+        frame_features = []
+        
+        # Process each sampled frame
+        for i in range(self.num_frames):
+            frame = sampled_frames[:, i]
+            
+            # Extract features using the sequence encoder
+            with torch.no_grad():
+                frame_feat, _ = sequence_encoder(frame)
+            
+            frame_features.append(frame_feat)
+            
+            # Predict sub-actions & objects for this frame
+            logits = self.classifier(frame_feat)
+            frame_logits.append(logits)
+        
+        # Stack frame logits [batch, num_frames, num_classes]
+        frame_logits = torch.stack(frame_logits, dim=1)
+        
+        # Get top-k predictions for each frame
+        probs = F.softmax(frame_logits, dim=-1)
+        topk_values, topk_indices = torch.topk(probs, self.top_k, dim=-1)
+        
+        # Create probability graph by flattening across frames
+        # [batch, num_frames * num_classes]
+        flat_probs = probs.reshape(batch_size, -1)
+        
+        # Map to unseen class labels
+        class_logits = self.mapping(flat_probs)
+        
+        if unseen_inds is not None:
+            # Map to unseen classes
+            class_logits = class_logits[:, unseen_inds]
+        
+        return frame_logits, class_logits, (topk_values, topk_indices)
+    
+    def predict(self, sequence_encoder, x, unseen_inds=None):
+        """
+        Make predictions for input sequences
+        
+        Args:
+            sequence_encoder: Encoder model
+            x (torch.Tensor): Input sequences
+            unseen_inds: Indices of unseen classes
+            
+        Returns:
+            torch.Tensor: Final class predictions
+        """
+        _, class_logits, _ = self.forward(sequence_encoder, x, unseen_inds)
+        predictions = torch.argmax(class_logits, dim=-1)
+        
+        if unseen_inds is not None:
+            # Map predictions back to original class indices
+            predictions = torch.tensor(unseen_inds, device=predictions.device)[predictions]
+            
+        return predictions

@@ -11,7 +11,7 @@ import traceback
 import sys
 from data_cnn60_origin import AverageMeter, NTUDataLoaders
 from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
-                   permute_dims, reparameterize, fuse_logits)
+                   permute_dims, reparameterize, fuse_logits, ZeroShotClassifier)
 
 from model.get_part_feature import ModelMatch, SHIFTGCNModel
 import ipdb
@@ -164,10 +164,7 @@ def train_one_cycle(cycle_num,
         cross_alignment_loss_factor = 1 * (i > cr_fact_iter)
         # sub_action alignment
         # t: validation check; s: temporal segmentation
-        s = inputs.to(device, non_blocking=True)        # torch.Size([32, 256, 16, 25])
-        # b, e, f, j = s.shape
-        # s = s.mean(dim=3)
-        # s = s.permute(0, 2, 1)  # 32, 16, 256
+        s = inputs.to(device, non_blocking=True)        # torch.Size([32, 256, 16])
 
         t = target.to(device, non_blocking=True)
         t = get_text_data(text_emb, t).to(device, non_blocking=True)    # torch.Size([32, 4, 512])
@@ -186,9 +183,7 @@ def train_one_cycle(cycle_num,
         # temporal segmentation (according to num_segments)
         segment_points = segment_skeleton_sequences_with_dtw(s, num_segments=num_segments)
         s = representative_segs(s, segment_points)
-        
-        s = torch.max(s, dim=2)[0]
-        
+            
         smu, slv, ismu, islv = sequence_encoder(s, instance_style=True, type=type)      
         sz = reparameterize(smu, slv)   # [80,96]
         isz = reparameterize(ismu, islv)    # [80,8]
@@ -333,9 +328,134 @@ def save_all_model(epoch, part_models):
                      'state_dict': model_checkpoints}, part_models_checkpoint)
 
 
-def train_sub_act_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, unseen_text_emb, alpha, alpha_p, device):
+def train_zero_shot_classifier(vae_dict, train_loader, val_loader, unseen_inds, device, num_frames=4, top_k=5, num_epochs=300, lr=0.001, semantic_latent_size=96, ss=5, rep_mode='sample'):
+    """
+    Train a frame sampling classifier for zero-shot action recognition
     
-    return
+    Returns:
+        tuple: Trained classifier and test accuracy
+    """
+    
+    # Initialize the frame sampling classifier
+    classifier = ZeroShotClassifier(
+        input_dim=semantic_latent_size, 
+        output_dim=ss, 
+        num_frames=num_frames, 
+        top_k=top_k
+    ).to(device)
+    
+    # Set up optimizer
+    optimizer = optim.Adam(classifier.parameters(), lr=lr)
+    
+    # Loss functions
+    criterion = torch.nn.CrossEntropyLoss().to(device)
+    
+    # Training loop
+    best_acc = 0.0
+    
+    for epoch in range(num_epochs):
+        classifier.train()      # replace? similarity or ...
+        running_loss = 0.0
+        y = torch.tensor(range(ss)).to(device)
+        y = y.repeat([500])
+        for i, (inputs, target) in enumerate(train_loader):
+            sequence_encoder = vae_dict['sub_act']['sequence_encoder']
+            sequence_encoder.eval()
+            
+            t_s = inputs.to(device, non_blocking=True)
+            if rep_mode == 'dtw':
+                segment_points = segment_skeleton_sequences_with_dtw(t_s, num_segments=4)
+                t_s = representative_segs(t_s, segment_points)
+            elif rep_mode == 'sample':
+                indices = torch.linspace(0, t_s.shape[2] - 1, num_frames).long()
+                t_s = t_s[:, :, indices]
+
+            # Forward pass
+            _, class_logits, _ = classifier(sequence_encoder, inputs.to(device))
+            loss = criterion(class_logits, y)
+            
+            # Backward pass and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            
+            running_loss += loss.item()
+            
+        # Validate every epoch
+        classifier.eval()
+        correct = 0
+        total = 0
+        
+        with torch.no_grad():
+            for inputs, target in val_loader:
+                inputs = inputs.to(device)
+                target = target.to(device)
+                
+                # Get sequence encoder
+                sequence_encoder = vae_dict['sub_act']['sequence_encoder']
+                
+                # representations
+                t_s = inputs.to(device, non_blocking=True)
+                if rep_mode == 'dtw':
+                    segment_points = segment_skeleton_sequences_with_dtw(t_s, num_segments=4)
+                    t_s_rep = representative_segs(t_s, segment_points)
+                elif rep_mode == 'sample':
+                    indices = torch.linspace(0, t_s.shape[2] - 1, num_frames).long()
+                    t_s_rep = t_s[:, :, indices]        # [bs, embedding, num_frames]
+                # encode
+                nt_smu = []
+                t_slv = []
+                sa_idx = []
+                for i in range(num_frames):
+                    nt_smu[i], t_slv[i] = sequence_encoder(t_s_rep[:, :, i])
+                    # encoded embedding -> sub-action semantic embedding
+                    sa_idx.append(sa_align(nt_smu[i], ))
+                
+
+                predictions = []
+                # Count correct predictions
+                correct += (predictions == target).sum().item()
+                total += target.size(0)
+                
+        accuracy = correct / total
+        print(f"Epoch {epoch+1}, Loss: {running_loss/len(train_loader):.4f}, Acc: {accuracy:.4f}")
+        
+        # Save best model
+        if accuracy > best_acc:
+            best_acc = accuracy
+            print(f"New best accuracy: {best_acc:.4f}")
+            
+    print(f"Final accuracy: {best_acc:.4f}")
+    return classifier, best_acc
+
+def save_frame_sampling_classifier(classifier, path):
+    """
+    Save the trained frame sampling classifier
+    
+    Args:
+        classifier: Trained classifier model
+        path (str): Path to save the model
+    """
+    torch.save({'state_dict': classifier.state_dict()}, path)
+    
+def load_frame_sampling_classifier(path, input_dim, output_dim, num_frames=4, top_k=5):
+    """
+    Load a trained frame sampling classifier
+    
+    Args:
+        path (str): Path to the saved model
+        input_dim (int): Dimension of input features
+        output_dim (int): Number of output classes
+        num_frames (int): Number of frames to sample
+        top_k (int): Number of top sub-actions/objects to consider
+        
+    Returns:
+        FrameSamplingClassifier: Loaded classifier model
+    """
+    classifier = ZeroShotClassifier(input_dim, output_dim, num_frames, top_k)
+    checkpoint = torch.load(path)
+    classifier.load_state_dict(checkpoint['state_dict'])
+    return classifier
 
 def train_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, unseen_text_emb, alpha, alpha_p, device):
     if len(names) == 1:
@@ -790,7 +910,7 @@ def main():
         # ===== Train Classifier =====
         # zsl_acc, val_out_embs, val_out_logits, clf_dict, weights = train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, val_loader, unseen_inds, unseen_text_emb, part_unseen_text_emb, device)
         ipdb.set_trace()
-        zsl_acc, clf_dict = train_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, c_unseen_text_emb, alpha, alpha_p, device)
+        zsl_acc, clf_dict = train_zero_shot_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, c_unseen_text_emb, alpha, alpha_p, device)
 
         if (zsl_acc > best):
             best = zsl_acc

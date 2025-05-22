@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.animation as animation
 from data_cnn60_origin import AverageMeter, NTUDataLoaders
 
-def visualize_skeleton(skeleton_data, sample_idx=0, frame_idx=None):
+def visualize_skeleton(skeleton_data, sample_idx=0, frame_idx=0):
     """
     可视化NTU RGB+D骨架数据
     
@@ -191,10 +191,12 @@ ntu_loaders = NTUDataLoaders(dataset_path, 'max', 1)
 train_loader = ntu_loaders.get_val_loader(batch_size, 0)
 
 for i, (inputs, target) in enumerate(train_loader):
+    torch.save(inputs[0], "skeleton_sample.tar")
     fig, ax = visualize_skeleton(inputs)
     mean_pool = pool_joints(inputs)
-    fig_mean, ax = visualize_pooled_skeleton()
-
+    fig_mean, ax = visualize_pooled_skeleton(mean_pool)
+    fig.savefig('visualization/fig.png')
+    fig_mean.savefig('visualization/fig_mean.png')
 
     break
     # max_pool = pool_joints(inputs, method='max')
