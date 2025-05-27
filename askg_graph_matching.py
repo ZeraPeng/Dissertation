@@ -311,220 +311,441 @@ class GraphMatcher(nn.Module):
         _, mapping_matrix = torch.topk(similarity_matrix, k=self.top_k, dim=1)
         
         return similarity_matrix, mapping_matrix
-    
-    # def get_interested_nodes(self, mapping_matrix: torch.Tensor, 
-    #                           similarity_matrix: torch.Tensor,
-    #                           node_embeddings: torch.Tensor) -> Dict:
-    #     """
-    #     Build interested subgraph from top-k nodes.
-        
-    #     Args:
-    #         mapping_matrix: Mapping matrix from node alignment
-    #         similarity_matrix: Similarity scores between representations and nodes
-    #         node_embeddings: Node embeddings
-            
-    #     Returns:
-    #         Dictionary containing interested graph information
-    #     """
-    #     # Get interested node set
-    #     interested_nodes = torch.unique(mapping_matrix.flatten())   # tensor([  9,  14,  15,  25,  42,  49,  67,  84, 107, 112, 115, 129]
-        
-    #     # Extract subgraph embeddings
-    #     subgraph_node_embeddings = node_embeddings[interested_nodes]     # torch.Size([12, 96])
-        
-    #     # Generate path-level similarity vectors (scores)
-    #     path_similarities = []
-    #     for i in range(mapping_matrix.size(0)): # 4
-    #         top_k_nodes = mapping_matrix[i]
-    #         path_sim = similarity_matrix[i, top_k_nodes]
-    #         path_similarities.append(path_sim)
-        
-    #     path_similarities = torch.stack(path_similarities, dim=0)
-        
-    #     return {
-    #         'interested_nodes': interested_nodes,
-    #         'subgraph_embeddings': subgraph_node_embeddings,
-    #         'path_similarities': path_similarities
-    #     }
-    
-    # def build_interested_graphs(self, interested_nodes_info: Dict) -> Dict:
-    #     """
-    #     Build interested subgraph containing all paths that include the interested nodes.
-        
-    #     Args:
-    #         interested_nodes_info: Dictionary containing interested nodes information
-            
-    #     Returns:
-    #         Dictionary containing the interested subgraph with paths and similarity vectors
-    #     """
-    #     ipdb.set_trace()
-    #     interested_nodes = interested_nodes_info['interested_nodes']  # tensor of node indices
-    #     path_similarities = interested_nodes_info['path_similarities']  # similarities for each representation
-    #     subgraph_embeddings = interested_nodes_info['subgraph_embeddings']
-        
-    #     # Get adjacency matrices for building paths
-    #     adj_matrices = self.askg.get_adjacency_matrices()
-    #     precedes_adj = adj_matrices['precedes']  # [num_subactions, num_subactions]
-        
-    #     # Convert interested_nodes to set for efficient lookup
-    #     interested_nodes_set = set(interested_nodes.cpu().numpy())
-        
-    #     # Find all paths in the knowledge graph that contain interested nodes
-    #     all_paths = []
-    #     path_node_similarities = []  # Store similarity vectors for each path
-        
 
-    #     num_subactions = precedes_adj.size(0)
+    def build_interested_graph(self, mapping_matrix: torch.Tensor, 
+                            similarity_matrix: torch.Tensor,
+                            node_embeddings: torch.Tensor) -> Dict:
+        """
+        Build interested subgraph from top-k nodes with paths in [label, [sa1, sa2, sa3]] format.
         
-    #     # For each pair of interested nodes, find paths between them
-    #     for i, start_node in enumerate(interested_nodes):
-    #         start_idx = start_node.item()
+        Args:
+            mapping_matrix: Mapping matrix from node alignment [num_representations, top_k]
+            similarity_matrix: Similarity scores between representations and nodes [num_representations, num_nodes]
+            node_embeddings: Node embeddings [num_nodes, embedding_dim]
             
-    #         # DFS to find all paths starting from this node
-    #         visited_paths = self._find_paths_from_node(
-    #             start_idx, precedes_adj, interested_nodes_set, max_depth=5
-    #         )
+        Returns:
+            Dictionary containing interested graph information with structured paths
+        """
+        # Get interested node set (unique nodes from top-k selections)
+        interested_nodes = torch.unique(mapping_matrix.flatten())  # e.g., tensor([9, 14, 15, 25, 42, 49, 67, 84, 107, 112, 115, 129])
+        num_interested = len(interested_nodes)
+        
+        # Extract subgraph embeddings for interested nodes
+        subgraph_node_embeddings = node_embeddings[interested_nodes]  # [num_interested, embedding_dim]
+        
+        # Generate path-level similarity vectors for each representation
+        path_similarities = []
+        for i in range(mapping_matrix.size(0)):  # For each temporal representation
+            top_k_nodes = mapping_matrix[i]  # Top-k node indices for this representation
+            path_sim = similarity_matrix[i, top_k_nodes]  # Similarity scores for top-k nodes
+            path_similarities.append(path_sim)
+        
+        path_similarities = torch.stack(path_similarities, dim=0)  # [num_representations, top_k]
+        
+        # Extract paths from ASKG mapping in [label, [sa1, sa2, sa3]] format
+        structured_paths = self._extract_structured_paths(interested_nodes)
+
+        # Create global to local node index mapping
+        global_to_local = {node_idx.item(): i for i, node_idx in enumerate(interested_nodes)}
+        
+        # Create adjacency matrix based on structured paths
+        subgraph_adj = self._create_path_based_adjacency(interested_nodes, structured_paths)
+        
+        # Create node similarity matrix within the subgraph 这一块不一定有用 to be checked
+        subgraph_similarity = torch.zeros(num_interested, num_interested, device=interested_nodes.device)
+        for i in range(num_interested):
+            for j in range(num_interested):
+                if i != j:
+                    # Calculate cosine similarity between node embeddings
+                    node_i_emb = subgraph_node_embeddings[i]
+                    node_j_emb = subgraph_node_embeddings[j]
+                    sim = F.cosine_similarity(node_i_emb.unsqueeze(0), node_j_emb.unsqueeze(0))
+                    subgraph_similarity[i, j] = sim
+        
+        return {
+            'interested_nodes': interested_nodes,                    # [num_interested] - Tensor of interested node indices
+            'subgraph_embeddings': subgraph_node_embeddings,        # [num_interested, embedding_dim] - Node embeddings
+            'path_similarities': path_similarities,                 # [num_representations, top_k] - Similarity scores
+            'structured_paths': structured_paths,                   # List of [label, [sa1, sa2, sa3]] format paths
+            'subgraph_adjacency': subgraph_adj,                     # [num_interested, num_interested] - Adjacency matrix
+            'subgraph_similarity': subgraph_similarity,             # [num_interested, num_interested] - Node similarity matrix
+            'global_to_local_mapping': global_to_local,             # Dict - Global to local node index mapping
+            'num_interested_nodes': num_interested,                 # Int - Number of interested nodes
+            'num_paths': len(structured_paths)                      # Int - Number of structured paths
+        }
+
+    def _extract_structured_paths(self, interested_nodes: torch.Tensor) -> List[List]:
+        """
+        Extract structured paths in [label, [sa1, sa2, sa3]] format from ASKG mapping.
+        Only include paths that contain at least one interested node.
+        
+        Args:
+            interested_nodes: Tensor of interested node indices
             
-    #         for path in visited_paths:
-    #             if len(path) >= 2:  # Only consider paths with at least 2 nodes
-    #                 all_paths.append(path)
+        Returns:
+            List of paths in [label, [sa1, sa2, sa3]] format
+        """
+        structured_paths = []
+        cls2sa = self.askg.askg_mapping.get('cls2sa', {})
+        
+        # Convert interested nodes to set for efficient lookup
+        interested_nodes_set = set(interested_nodes.cpu().numpy())
+        
+        # Create reverse mapping from subaction names to indices
+        subaction_name_to_idx = {name: idx for name, idx in self.askg.subaction_nodes.items()}
+        
+        for class_label, subaction_sequence in cls2sa.items():
+            # Convert subaction names to indices
+            subaction_indices = []
+            for sa_name in subaction_sequence:
+                if sa_name in subaction_name_to_idx:
+                    sa_idx = subaction_name_to_idx[sa_name]
+                    subaction_indices.append(sa_idx)
+            
+            # Check if this path contains any interested nodes
+            path_has_interested_nodes = any(sa_idx in interested_nodes_set for sa_idx in subaction_indices)
+            
+            if path_has_interested_nodes and len(subaction_indices) > 0:
+                # Store in [label, [sa1, sa2, sa3]] format with both names and indices
+                structured_path = {
+                    'label': class_label,
+                    'subaction_names': subaction_sequence,      # Original names from mapping
+                    'subaction_indices': subaction_indices,    # Corresponding node indices
+                    'interested_nodes_in_path': [idx for idx in subaction_indices if idx in interested_nodes_set]
+                }
+                structured_paths.append(structured_path)
+        
+        return structured_paths
+
+    def _create_path_based_adjacency(self, interested_nodes: torch.Tensor, 
+                                    structured_paths: List[Dict]) -> torch.Tensor:
+        """
+        Create adjacency matrix based on structured paths.
+        Nodes are connected if they appear in the same path or consecutive in a sequence.
+        
+        Args:
+            interested_nodes: Tensor of interested node indices
+            structured_paths: List of structured paths
+            
+        Returns:
+            Adjacency matrix for the subgraph
+        """
+        num_interested = len(interested_nodes)
+        subgraph_adj = torch.zeros(num_interested, num_interested, device=interested_nodes.device)
+        
+        # Create global to local mapping
+        global_to_local = {node_idx.item(): i for i, node_idx in enumerate(interested_nodes)}
+        
+        for path_info in structured_paths:
+            subaction_indices = path_info['subaction_indices']
+            
+            # Connect nodes that appear in the same path
+            for i, sa_idx_i in enumerate(subaction_indices):
+                if sa_idx_i in global_to_local:
+                    local_i = global_to_local[sa_idx_i]
                     
-    #                 # Create similarity vector for this path
-    #                 path_sim_vector = []
-    #                 for node_idx in path:
-    #                     # Find which representation this node belongs to and get its similarity
-    #                     node_tensor = torch.tensor(node_idx, device=interested_nodes.device)
-    #                     if node_tensor in interested_nodes:
-    #                         # Find the position of this node in interested_nodes
-    #                         pos = (interested_nodes == node_tensor).nonzero(as_tuple=True)[0]
-    #                         if len(pos) > 0:
-    #                             # Get similarity from the corresponding representation
-    #                             repr_idx = pos[0] % path_similarities.size(0)  # Handle case where node appears multiple times
-    #                             topk_idx = pos[0] % path_similarities.size(1)
-    #                             sim_score = path_similarities[repr_idx, topk_idx]
-    #                             path_sim_vector.append(sim_score)
-    #                         else:
-    #                             path_sim_vector.append(torch.tensor(0.0, device=interested_nodes.device))
-    #                     else:
-    #                         # Node not in interested nodes, assign average similarity
-    #                         path_sim_vector.append(torch.mean(path_similarities))
-                    
-    #                 if path_sim_vector:
-    #                     path_node_similarities.append(torch.stack(path_sim_vector))
+                    # Connect to all other nodes in the same path
+                    for j, sa_idx_j in enumerate(subaction_indices):
+                        if sa_idx_j in global_to_local and i != j:
+                            local_j = global_to_local[sa_idx_j]
+                            subgraph_adj[local_i, local_j] = 1
+                            
+                            # If nodes are consecutive in the sequence, give stronger connection
+                            if abs(i - j) == 1:
+                                subgraph_adj[local_i, local_j] = 2  # Stronger connection for consecutive nodes
         
-    #     # Remove duplicate paths
-    #     unique_paths = []
-    #     unique_path_similarities = []
-    #     seen_paths = set()
-        
-    #     for i, path in enumerate(all_paths):
-    #         path_tuple = tuple(sorted(path))  # Sort for consistent comparison
-    #         if path_tuple not in seen_paths:
-    #             seen_paths.add(path_tuple)
-    #             unique_paths.append(path)
-    #             if i < len(path_node_similarities):
-    #                 unique_path_similarities.append(path_node_similarities[i])
-        
-    #     # Create subgraph adjacency matrix for interested nodes only
-    #     num_interested = len(interested_nodes)
-    #     subgraph_adj = torch.zeros(num_interested, num_interested, device=interested_nodes.device)
-        
-    #     # Map global node indices to local subgraph indices
-    #     global_to_local = {node_idx.item(): i for i, node_idx in enumerate(interested_nodes)}
-        
-    #     # Fill adjacency matrix for subgraph
-    #     for i, node_i in enumerate(interested_nodes):
-    #         for j, node_j in enumerate(interested_nodes):
-    #             if i != j and precedes_adj[node_i.item(), node_j.item()] > 0:
-    #                 subgraph_adj[i, j] = 1
-        
-    #     return {
-    #         'interested_nodes': interested_nodes,
-    #         'subgraph_embeddings': subgraph_embeddings,
-    #         'path_similarities': path_similarities,
-    #         'all_paths': unique_paths,
-    #         'path_node_similarities': unique_path_similarities,
-    #         'subgraph_adjacency': subgraph_adj,
-    #         'global_to_local_mapping': global_to_local,
-    #         'num_paths': len(unique_paths)
-    #     }
+        return subgraph_adj
 
-    # def _find_paths_from_node(self, start_node: int, adj_matrix: torch.Tensor, 
-    #                         interested_nodes_set: set, max_depth: int = 5) -> List[List[int]]:
-    #     """
-    #     Find all paths starting from a given node using DFS.
-        
-    #     Args:
-    #         start_node: Starting node index
-    #         adj_matrix: Adjacency matrix for the graph
-    #         interested_nodes_set: Set of interested node indices
-    #         max_depth: Maximum path depth to explore
-            
-    #     Returns:
-    #         List of paths, where each path is a list of node indices
-    #     """
-    #     paths = []
-    
-    #     def dfs(current_node: int, current_path: List[int], visited: set, depth: int):
-    #         if depth > max_depth:
-    #             return
-                
-    #         # Add current path if it contains interested nodes and has reasonable length
-    #         if len(current_path) >= 1 and any(node in interested_nodes_set for node in current_path):
-    #             paths.append(current_path.copy())
-            
-    #         # Explore neighbors
-    #         neighbors = torch.nonzero(adj_matrix[current_node], as_tuple=True)[0]
-    #         for neighbor in neighbors:
-    #             neighbor_idx = neighbor.item()
-    #             if neighbor_idx not in visited:  # Avoid cycles
-    #                 visited.add(neighbor_idx)
-    #                 current_path.append(neighbor_idx)
-    #                 dfs(neighbor_idx, current_path, visited, depth + 1)
-    #                 current_path.pop()
-    #                 visited.remove(neighbor_idx)
-    
-    #     # Start DFS from the starting node
-    #     visited = {start_node}
-    #     dfs(start_node, [start_node], visited, 0)
-        
-    #     return paths
 
-    def graph_alignment(self, temporal_repr: torch.Tensor, 
-                       interested_graph: Dict) -> torch.Tensor:
+    def graph_alignment(self, temporal_repr: torch.Tensor, interested_graph: Dict) -> Dict:
         """
         Perform graph alignment between sample graph and interested subgraph.
         
         Args:
-            temporal_repr: Temporal representations
+            temporal_repr: Temporal representations [num_frames, embedding_dim]
             interested_graph: Dictionary containing interested graph info
             
         Returns:
-            Graph-level similarity vector
+            Dictionary containing:
+            - 'structured_paths': List of path information with similarity scores
+            - 'class_similarities': Dictionary mapping class labels to aggregated similarity scores
+            - 'best_paths': Dictionary mapping class labels to best matching path info
+            - 'graph_similarity_vector': Final similarity vector for classification [num_classes]
         """
-        # Build sample graph from temporal representations
-        sample_graph = temporal_repr.unsqueeze(0)  # Add batch dimension    # torch.Size([1, 4, 96])
+        device = temporal_repr.device
         
-        # Get interested subgraph embeddings
-        subgraph_emb = interested_graph['subgraph_embeddings'].unsqueeze(0)     # torch.Size([1, 12, 96])
+        # Step 1: Aggregate temporal representation using attention
+        temporal_repr_batch = temporal_repr.unsqueeze(0)  # [1, num_frames, embedding_dim]
         
-        # Apply graph attention for alignment
-        aligned_features = self.graph_attention(
-            query=sample_graph,
-            key=subgraph_emb,
-            value=subgraph_emb
-        )       # torch.Size([1, 4, 96])
+        # Self-attention to aggregate temporal information
+        aggregated_temporal = self.node_attention(
+            query=temporal_repr_batch,
+            key=temporal_repr_batch, 
+            value=temporal_repr_batch
+        )  # [1, num_frames, embedding_dim]
         
-        # Calculate graph-level similarity scores for each class
-        graph_similarity = torch.zeros(self.num_classes, device=temporal_repr.device)
+        # Create unified temporal representation
+        unified_temporal_repr = torch.mean(aggregated_temporal.squeeze(0), dim=0)  # [embedding_dim]
         
-        # Simple aggregation - can be made more sophisticated
-        aggregated_features = torch.mean(aligned_features, dim=1)  # [1, embedding_dim]
-        class_logits = self.classifier(aggregated_features)  # [1, num_classes]
-        graph_similarity = torch.softmax(class_logits.squeeze(0), dim=0)    # tensor([0.2072, 0.2060, 0.1764, 0.2015, 0.2089], device='cuda:0')
+        # Step 2: Extract path information
+        structured_paths = interested_graph['structured_paths']
+        subgraph_embeddings = interested_graph['subgraph_embeddings']  # [num_interested, embedding_dim]
+        global_to_local = interested_graph['global_to_local_mapping']
         
-        return graph_similarity
+        # Step 3: Calculate similarity for each individual path
+        paths_with_scores = []
+        class_to_paths = {}
+        
+        for path_idx, path_info in enumerate(structured_paths):
+            class_label = path_info['label']
+            subaction_indices = path_info['subaction_indices']
+            subaction_names = path_info['subaction_names']
+            
+            # Initialize class tracking
+            if class_label not in class_to_paths:
+                class_to_paths[class_label] = []
+            
+            # Build path embedding
+            path_node_embeddings = []
+            valid_subactions = []
+            
+            for i, sa_idx in enumerate(subaction_indices):
+                if sa_idx in global_to_local:
+                    local_idx = global_to_local[sa_idx]
+                    path_node_embeddings.append(subgraph_embeddings[local_idx])
+                    valid_subactions.append({
+                        'name': subaction_names[i],
+                        'index': sa_idx,
+                        'position_in_path': i
+                    })
+            
+            if len(path_node_embeddings) > 0:
+                # Create path embedding
+                path_embedding = torch.stack(path_node_embeddings, dim=0)  # [path_length, embedding_dim]
+                
+                # Apply attention within the path
+                path_embedding_batch = path_embedding.unsqueeze(0)  # [1, path_length, embedding_dim]
+                attended_path = self.graph_attention(
+                    query=path_embedding_batch,
+                    key=path_embedding_batch,
+                    value=path_embedding_batch
+                ).squeeze(0)  # [path_length, embedding_dim]
+                
+                # Aggregate path to single representation
+                # Cosine similarity with mean aggregation
+                aggregated_path = torch.mean(attended_path, dim=0)  # [embedding_dim]
+
+                cos_sim_mean = F.cosine_similarity(
+                    unified_temporal_repr.unsqueeze(0), 
+                    aggregated_path.unsqueeze(0)
+                ).item()
+
+                # Node-level similarities for detailed analysis
+                node_similarities = []
+                for i, node_emb in enumerate(path_node_embeddings):
+                    node_sim = F.cosine_similarity(
+                        unified_temporal_repr.unsqueeze(0),
+                        node_emb.unsqueeze(0)
+                    ).item()
+                    node_similarities.append({
+                        'subaction_name': valid_subactions[i]['name'],
+                        'subaction_index': valid_subactions[i]['index'],
+                        'position': valid_subactions[i]['position_in_path'],
+                        'similarity': node_sim
+                    })
+                
+                # Calculate final path similarity score
+                final_similarity = cos_sim_mean 
+                
+                # Create comprehensive path information
+                path_with_score = {
+                    'path_index': path_idx,
+                    'class_label': class_label,
+                    'subaction_names': subaction_names,
+                    'subaction_indices': subaction_indices,
+                    'valid_subactions': valid_subactions,
+                    'path_length': len(valid_subactions),
+                    'similarity_scores': {
+                        'final_score': final_similarity,
+                        'cosine_mean': cos_sim_mean
+                    },
+                    'node_similarities': node_similarities,
+                    'path_embedding': aggregated_path.detach()  # Store for potential future use
+                }
+                
+                paths_with_scores.append(path_with_score)
+                class_to_paths[class_label].append(path_with_score)
+            else:
+                # Handle paths with no valid subactions
+                path_with_score = {
+                    'path_index': path_idx,
+                    'class_label': class_label,
+                    'subaction_names': subaction_names,
+                    'subaction_indices': subaction_indices,
+                    'valid_subactions': [],
+                    'path_length': 0,
+                    'similarity_scores': {
+                        'final_score': 0.0,
+                        'cosine_mean': 0.0,
+                        'cosine_weighted': 0.0,
+                        'sequence_similarity': 0.0
+                    },
+                    'node_similarities': [],
+                    'path_embedding': None,
+                    'weighted_path_embedding': None
+                }
+                paths_with_scores.append(path_with_score)
+                class_to_paths[class_label].append(path_with_score)
+        
+        # Step 4: Calculate class-level similarities and find best paths
+        class_similarities = {}
+        best_paths = {}
+        graph_similarity_vector = torch.zeros(self.num_classes, device=device)
+        
+        class_names = list(class_to_paths.keys())
+        for class_idx, class_label in enumerate(class_names):
+            if class_idx >= self.num_classes:
+                break
+            
+            class_paths = class_to_paths[class_label]
+            valid_paths = [p for p in class_paths if p['path_length'] > 0]
+            
+            if len(valid_paths) > 0:
+                # Get all similarity scores for this class
+                scores = [p['similarity_scores']['final_score'] for p in valid_paths]
+                
+                # Calculate class-level aggregated similarity
+                max_score = max(scores)
+                mean_score = sum(scores) / len(scores)
+                
+                # Find best path for this class
+                best_path = max(valid_paths, key=lambda x: x['similarity_scores']['final_score'])
+                
+                class_similarities[class_label] = {
+                    'max_similarity': max_score,
+                    'mean_similarity': mean_score,
+                    'num_paths': len(valid_paths),
+                    'all_scores': scores
+                }
+                
+                best_paths[class_label] = best_path
+                graph_similarity_vector[class_idx] = max_score  # Use max score for classification
+            else:
+                class_similarities[class_label] = {
+                    'max_similarity': 0.0,
+                    'mean_similarity': 0.0,
+                    'num_paths': 0,
+                    'all_scores': []
+                }
+                best_paths[class_label] = None
+                graph_similarity_vector[class_idx] = 0.0
+        
+        # Step 5: Normalize the similarity vector
+        if graph_similarity_vector.sum() > 0:
+            graph_similarity_vector = F.softmax(graph_similarity_vector, dim=0)
+        
+        # Return comprehensive graph alignment results
+        return {
+            'structured_paths': paths_with_scores,           # List of all paths with detailed similarity info
+            'class_similarities': class_similarities,        # Aggregated similarities by class
+            'best_paths': best_paths,                        # Best matching path for each class
+            'graph_similarity_vector': graph_similarity_vector,  # Final classification vector [num_classes]
+            'num_total_paths': len(paths_with_scores),       # Total number of paths processed
+            'num_valid_paths': len([p for p in paths_with_scores if p['path_length'] > 0]),  # Valid paths count
+            'temporal_representation': unified_temporal_repr.detach(),  # Aggregated temporal representation
+            'alignment_metadata': {
+                'embedding_dim': self.embedding_dim,
+                'top_k': self.top_k,
+                'num_classes': self.num_classes,
+                'num_temporal_frames': temporal_repr.size(0)
+            }
+        }
+
+    def get_top_k_paths(graph_alignment_result: Dict, k: int = 3) -> Dict:
+        """
+        Utility function to get top-k paths with highest similarity scores.
+        
+        Args:
+            graph_alignment_result: Result dictionary from graph_alignment
+            k: Number of top paths to return
+            
+        Returns:
+            Dictionary with top-k paths information
+        """
+        paths_with_scores = graph_alignment_result['structured_paths']
+        
+        # Sort paths by final similarity score
+        sorted_paths = sorted(
+            paths_with_scores, 
+            key=lambda x: x['similarity_scores']['final_score'], 
+            reverse=True
+        )
+        
+        top_k_paths = sorted_paths[:k]
+        
+        return {
+            'top_k_paths': top_k_paths,
+            'top_k_scores': [p['similarity_scores']['final_score'] for p in top_k_paths],
+            'top_k_classes': [p['class_label'] for p in top_k_paths],
+            'score_statistics': {
+                'max_score': max([p['similarity_scores']['final_score'] for p in paths_with_scores]),
+                'min_score': min([p['similarity_scores']['final_score'] for p in paths_with_scores]),
+                'mean_score': sum([p['similarity_scores']['final_score'] for p in paths_with_scores]) / len(paths_with_scores)
+            }
+        }
+
+    def analyze_path_similarities(graph_alignment_result: Dict) -> Dict:
+        """
+        Utility function to analyze path similarities in detail.
+        
+        Args:
+            graph_alignment_result: Result dictionary from graph_alignment
+            
+        Returns:
+            Detailed analysis of path similarities
+        """
+        paths_with_scores = graph_alignment_result['structured_paths']
+        class_similarities = graph_alignment_result['class_similarities']
+        
+        analysis = {
+            'per_class_analysis': {},
+            'overall_statistics': {},
+            'similarity_distribution': {}
+        }
+        
+        # Per-class analysis
+        for class_label, class_info in class_similarities.items():
+            class_paths = [p for p in paths_with_scores if p['class_label'] == class_label]
+            
+            analysis['per_class_analysis'][class_label] = {
+                'num_paths': len(class_paths),
+                'max_similarity': class_info['max_similarity'],
+                'mean_similarity': class_info['mean_similarity'],
+                'valid_paths': len([p for p in class_paths if p['path_length'] > 0]),
+                'path_details': [
+                    {
+                        'path_index': p['path_index'],
+                        'similarity': p['similarity_scores']['final_score'],
+                        'length': p['path_length'],
+                        'subactions': p['subaction_names'][:3]  # First 3 subactions for brevity
+                    } for p in class_paths
+                ]
+            }
+        
+        # Overall statistics
+        all_scores = [p['similarity_scores']['final_score'] for p in paths_with_scores if p['path_length'] > 0]
+        if all_scores:
+            analysis['overall_statistics'] = {
+                'total_valid_paths': len(all_scores),
+                'max_similarity': max(all_scores),
+                'min_similarity': min(all_scores),
+                'mean_similarity': sum(all_scores) / len(all_scores),
+                'std_similarity': torch.tensor(all_scores).std().item() if len(all_scores) > 1 else 0.0
+            }
+        
+        return analysis
     
+
     def forward(self, temporal_repr: torch.Tensor, 
                 stream_type: str = 'subaction') -> torch.Tensor:
         """
@@ -558,11 +779,17 @@ class GraphMatcher(nn.Module):
         #     mapping_matrix, similarity_matrix, node_embeddings
         # )
 
-        interested_graph = self.build_interested_graphs(mapping_matrix)
+        interested_graph = self.build_interested_graph(mapping_matrix, similarity_matrix, node_embeddings)
 
         # Step 3: Graph Alignment
+        ipdb.set_trace()
+
         graph_similarity = self.graph_alignment(temporal_repr, interested_graph)
+        similarity_vec = []
+        for key, items in graph_similarity['best_paths'].items():
+            
         
+
         # Step 4: Integration
         # Calculate path-level confidence (average of top-k similarities)
         path_confidence = torch.mean(interested_graph['path_similarities'], dim=0)

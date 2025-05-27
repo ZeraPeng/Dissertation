@@ -1,5 +1,5 @@
 {
-    "idx2subact": {
+    "idx2sa": {
         "0": "pour",
         "1": "lift",
         "2": "sip",
@@ -275,7 +275,7 @@
         "116": "items",
         "117": "rock"
     },
-    "class2subact_idx": {
+    "cls2sa": {
         "0": [
             0,
             1,
@@ -814,7 +814,7 @@
             153
         ]
     },
-    "class2obj_idx": {
+    "cls2obj": {
         "0": [
             0,
             1

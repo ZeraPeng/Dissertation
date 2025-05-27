@@ -9,11 +9,11 @@ import torch.nn.functional as F
 import torch.optim as optim
 import traceback
 import sys
+import json
 from data_cnn60_origin import AverageMeter, NTUDataLoaders
-from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence,
-                   permute_dims, reparameterize, fuse_logits, ZeroShotClassifier)
+from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence, permute_dims, reparameterize, fuse_logits, ZeroShotClassifier)
+from askg_graph_matching import ASKG, GraphMatcher, ZeroShotASKG, graph_match_vae
 
-from model.get_part_feature import ModelMatch, SHIFTGCNModel
 import ipdb
 import logging
 from util_char import *
@@ -391,10 +391,13 @@ def train_zero_shot_classifier(vae_dict, train_loader, val_loader, unseen_inds, 
                 inputs = inputs.to(device)
                 target = target.to(device)
                 
+                # for key, vae in vae_dict.items():
+                #     if key == 'sub_act':
+
                 # Get sequence encoder
                 sequence_encoder = vae_dict['sub_act']['sequence_encoder']
                 
-                # representations
+                # representation
                 t_s = inputs.to(device, non_blocking=True)
                 if rep_mode == 'dtw':
                     segment_points = segment_skeleton_sequences_with_dtw(t_s, num_segments=4)
@@ -409,7 +412,6 @@ def train_zero_shot_classifier(vae_dict, train_loader, val_loader, unseen_inds, 
                 for i in range(num_frames):
                     nt_smu[i], t_slv[i] = sequence_encoder(t_s_rep[:, :, i])
                     # encoded embedding -> sub-action semantic embedding
-                    sa_idx.append(sa_align(nt_smu[i], ))
                 
 
                 predictions = []
@@ -875,10 +877,16 @@ def main():
         c_unseen_text_emb.append(xao_text_emb[unseen_inds,:,:])
     if 'sub_act' in names:
         sub_act_source = torch.load(f'ASKG/data/{askg_mode}/{prefix}/sub_act_text_feats_askg_ntu.tar', weights_only=True)
-        sa_text_emb = load_semantic_emb(sub_act_source, device)
+        sa_text_emb = load_semantic_emb(sub_act_source, device)     # torch.Size([60, 4, 512])
         c_text_emb.append(sa_text_emb)
         c_unseen_text_emb.append(sa_text_emb[unseen_inds,:,:])
-    
+
+    vocab_emb = {}
+    sa_vocab_source = torch.load(f'ASKG/data/{askg_mode}/{prefix}/sub_act_vocab_feats_ntu.tar', weights_only=True)
+    sa_vocab_emb = sa_vocab_source / torch.norm(sa_vocab_source, dim=1, keepdim=True)
+    sa_vocab_emb = sa_vocab_emb.to(device, non_blocking=True)
+    vocab_emb['sub_action'] = sa_vocab_emb      # torch.Size([154, 512])
+
     vae_dict = init_vaes(names, vis_emb_input_size, semantic_latent_size, style_latent_size, text_emb_input_size, device)
     # ========== Training ==========
     best = 0
@@ -907,9 +915,44 @@ def main():
             if phase == 'train':
                 save_all_model(cycle_length*(epoch+1)-1, vae_dict) 
     
+        # ===== Graph Matching =====
+        with open('ASKG/data/ntu/askg_mappings.json', 'r') as f:
+            askg_mapping = json.load(f)
+
+        # 2. Integrate with existing framework
+        zs_askg_model = graph_match_vae(vae_dict, ss, askg_mapping, sa_vocab_emb, semantic_latent_size, device)
+
+        # 3. Use for zero-shot classification
+        zs_askg_model.eval()
+        count = 0
+        num = 0
+        final_preds = []
+        tars = []
+        u_inds = torch.from_numpy(unseen_inds).to(device)
+        with torch.no_grad():
+            for batch_data, target in zsl_loader:
+                batch_data = batch_data.to(device)
+                
+                # Get predictions using graph matching
+                gm_out = zs_askg_model(batch_data, num_reps=4)      # torch.Size([32, 5])
+                
+                preds = torch.argmax(gm_out, dim=1)
+                final_preds.append(u_inds[preds])
+                tars.append(target)
+                count += torch.sum(u_inds[preds] == target)
+                num += len(target)
+
+        zsl_acc = float(count)/num
+        if (zsl_acc > best):
+            best = zsl_acc
+            print('---------------------')
+            print(
+                f'zsl_accuracy increased to {best :.2%} on cycle ', epoch)
+
+        '''
         # ===== Train Classifier =====
         # zsl_acc, val_out_embs, val_out_logits, clf_dict, weights = train_classifier(text_encoder, sequence_encoder, part_models, zsl_loader, val_loader, unseen_inds, unseen_text_emb, part_unseen_text_emb, device)
-        ipdb.set_trace()
+        
         zsl_acc, clf_dict = train_zero_shot_classifier(names, vae_dict, zsl_loader, val_loader, unseen_inds, c_unseen_text_emb, alpha, alpha_p, device)
 
         if (zsl_acc > best):
@@ -919,6 +962,7 @@ def main():
             print(
                 f'zsl_accuracy increased to {best :.2%} on cycle ', epoch)
             print('checkpoint saved')
+        '''
             # if phase == 'train':
             #     np.save(
             #         f'{wdir}/{le}/{tm}/MSF_{str(ss)}_r_gzsl_zs.npy', val_out_embs)
