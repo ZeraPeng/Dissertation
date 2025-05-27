@@ -12,7 +12,7 @@ import sys
 import json
 from data_cnn60_origin import AverageMeter, NTUDataLoaders
 from s_model import (MLP, Decoder, Discriminator, Encoder, KL_divergence, permute_dims, reparameterize, fuse_logits, ZeroShotClassifier)
-from askg_graph_matching import ASKG, GraphMatcher, ZeroShotASKG, graph_match_vae
+from askg_graph_matching import *
 
 import ipdb
 import logging
@@ -806,6 +806,33 @@ def load_semantic_emb(source, device):
 
     return text_emb
 
+
+def get_temporal_repr(vae_dict, batch_data, num_reps=4, mode='sample'):
+    if mode == 'sample':
+        # Sample frames for temporal representation
+        indices = torch.linspace(0, batch_data.shape[2] - 1, num_reps).long()  # 改为 rep_mode可选
+        rep_segs = batch_data[:, :, indices]  # [batch_size, embedding_size, num_frames]
+        
+        # Encode each frame using VAE encoder
+        sequence_encoder = vae_dict['sub_act']['sequence_encoder']
+        sequence_encoder.eval()
+        
+        for b in range(batch_size):
+            frame_representations = [] 
+            temporal_repr_batch = []
+            # Encode each frame
+            for f in range(num_reps):
+                frame_data = rep_segs[b, :, f].unsqueeze(0)  # [1, channels]
+                mu, logvar = sequence_encoder(frame_data)
+                frame_representations.append(mu.squeeze(0))  # [embedding_dim]  
+            
+            temporal_rep = torch.stack(frame_representations, dim=0)  # [num_frames, embedding_dim]
+            temporal_repr_batch.append(temporal_rep)
+
+        temporal_repr_batch = torch.stack(temporal_repr_batch, dim=0)
+
+    return temporal_repr_batch
+
 def main():
     # Embedding Dim
     if args.ve == 'shift':
@@ -919,24 +946,83 @@ def main():
         with open('ASKG/data/ntu/askg_mappings.json', 'r') as f:
             askg_mapping = json.load(f)
 
-        # 2. Integrate with existing framework
-        zs_askg_model = graph_match_vae(vae_dict, ss, askg_mapping, sa_vocab_emb, semantic_latent_size, device)
+        # Initialize ASKG and Zero-shot graph matching model
+        # zs_askg_model = graph_match_vae(vae_dict, ss, askg_mapping, sa_vocab_emb, semantic_latent_size, device)
+        # ipdb.set_trace()
+        askg_unseen = ASKG(askg_mapping, embedding_dim=semantic_latent_size, mode='unseen', u_inds=unseen_inds, dataset=args.dataset)
+    
+        # load the encoded semantic embeddings
+        text_encoder = vae_dict['sub_act']['text_encoder']
+        text_encoder.eval()
+        sa_vocab_emb = sa_vocab_emb.to(torch.float32)
+        t_tmu, t_tlv = text_encoder(sa_vocab_emb)
+        sa_emb = reparameterize(t_tmu, t_tlv)
+        askg_unseen = load_askg_embeddings(askg_unseen, sa_emb, device)
+        
+        # Initialize the zero-shot graph matching model
+        zs_askg_model = ZeroShotASKG(
+            askg=askg_unseen,
+            vae_dict=vae_dict,
+            embedding_dim=semantic_latent_size,  # Should match VAE encoder output
+            top_k=5,
+            num_classes=ss
+        ).to(device)
 
-        # 3. Use for zero-shot classification
+        # Train
+        # ipdb.set_trace()
+        for c_e in range(300):
+            zs_askg_model.train()
+            optimizer = optim.Adam(zs_askg_model.parameters(), lr=0.001)
+            criterion = nn.CrossEntropyLoss().to(device) 
+            # build training set (semantic embeddings)
+            y = torch.tensor(range(ss)).to(device) 
+            y = y.repeat([500])
+
+            unseen_text_emb = sa_text_emb[unseen_inds]
+            for i, name in enumerate(vae_dict):
+                text_encoder = vae_dict[name]['text_encoder']
+                text_encoder.eval()
+                n_t = unseen_text_emb.to(device).float()        # 5, 4, 512
+                n_t = n_t.reshape(-1, n_t.shape[-1])        # torch.Size([20, 512])
+                t_tmu, t_tlv = text_encoder(n_t)
+                t_z = reparameterize(t_tmu, t_tlv)
+                t_z = t_z.reshape(unseen_text_emb.shape[0], unseen_text_emb.shape[1], t_z.shape[-1])  # 5, 4, 96
+                semantic_repr_batch = t_z.repeat([500, 1, 1])       # 2500, 4, 96
+            
+            # loss
+            semantic_repr_batch = semantic_repr_batch.detach()
+            train_out = zs_askg_model(semantic_repr_batch)
+            align_loss = criterion(train_out, y)
+            total_loss = align_loss
+            
+            # BP
+            optimizer.zero_grad()
+            total_loss.backward()
+            optimizer.step()
+
+            # Acc
+            preds = torch.argmax(train_out, dim=1)
+            count = torch.sum(preds == y)
+            acc = float(torch.sum(y == preds)) / (ss * 500)
+            print(f"Epoch {c_e}: acc={acc}")
+
+        # Use for zero-shot classification
         zs_askg_model.eval()
         count = 0
         num = 0
         final_preds = []
         tars = []
-        u_inds = torch.from_numpy(unseen_inds).to(device)
+        u_inds = torch.from_numpy(unseen_inds)
+        num_reps = 4
         with torch.no_grad():
             for batch_data, target in zsl_loader:
                 batch_data = batch_data.to(device)
                 
                 # Get predictions using graph matching
-                gm_out = zs_askg_model(batch_data, num_reps=4)      # torch.Size([32, 5])
+                temporal_repr_batch = get_temporal_repr(vae_dict, batch_data, num_reps=num_reps)
+                gm_out = zs_askg_model(temporal_repr_batch)      # torch.Size([32, 5])
                 
-                preds = torch.argmax(gm_out, dim=1)
+                preds = torch.argmax(gm_out, dim=1).to('cpu')
                 final_preds.append(u_inds[preds])
                 tars.append(target)
                 count += torch.sum(u_inds[preds] == target)

@@ -25,16 +25,25 @@ class ASKG:
     - precedes: Directed edges representing temporal order between sub-actions
     """
     
-    def __init__(self, askg_mapping: Dict, embedding_dim: int = 512):
+    def __init__(self, askg_mapping: Dict, embedding_dim: int = 96, mode: str = 'all', u_inds: List = [], dataset: str='ntu60'):
         """
         Initialize the ASKG with predefined mappings.
         
         Args:
             askg_mapping: Dictionary containing cls2obj and cls2sa mappings
             embedding_dim: Dimension of semantic embeddings for nodes
+            mode: 'all' to include all classes, 'unseen' to include only classes specified in u_inds
+            u_inds: List of class indices to include when mode='unseen'
         """
         self.embedding_dim = embedding_dim
         self.askg_mapping = askg_mapping
+        self.mode = mode
+        self.u_inds = u_inds
+        self.dataset = dataset
+
+        # Validate inputs when mode is 'unseen'
+        if self.mode == 'unseen' and len(self.u_inds) == 0:
+            raise ValueError("u_inds must be provided when mode='unseen'")
         
         # Initialize node dictionaries
         self.class_nodes = {}
@@ -54,50 +63,71 @@ class ASKG:
         self._build_graph()
     
     def _build_graph(self):
-        """Build the knowledge graph from askg_mapping."""
+        """Build the knowledge graph from askg_mapping based on mode and u_inds."""
         cls2obj = self.askg_mapping.get('cls2obj', {})
         cls2sa = self.askg_mapping.get('cls2sa', {})
         
-        # Build class nodes
-        all_classes = set(cls2obj.keys()) | set(cls2sa.keys())
-        for i, cls in enumerate(sorted(all_classes)):
+        if self.dataset == 'ntu60':
+            all_classes_list = range(60)
+        elif self.dataset == 'ntu120':
+            all_classes_list = range(120)
+
+        if self.mode == 'all':
+            selected_classes = [str(ind) for ind in all_classes_list]
+        elif self.mode == 'unseen':
+            selected_classes = [str(ind) for ind in self.u_inds]
+        else:
+            raise ValueError(f"Unsupported mode: {self.mode}. Use 'all' or 'unseen'.")
+        
+        # Build class nodes with filtered classes
+        for i, cls in enumerate(selected_classes):
             self.class_nodes[cls] = i
         
-        # Build object nodes and edges
+        # Build object nodes and edges (only for selected classes)
         all_objects = set()
-        for cls, objects in cls2obj.items():
-            all_objects.update(objects)
+        for cls in selected_classes:
+            if cls in cls2obj.keys():
+                all_objects.update(cls2obj[cls])
         
         for i, obj in enumerate(sorted(all_objects)):
             self.object_nodes[obj] = i
         
-        # Create object edges
-        for cls, objects in cls2obj.items():
-            cls_idx = self.class_nodes[cls]
-            for obj in objects:
-                obj_idx = self.object_nodes[obj]
-                self.object_edges.append((cls_idx, obj_idx))
+        # Create object edges (only for selected classes)
+        for cls in selected_classes:
+            if cls in cls2obj.keys():
+                cls_idx = self.class_nodes[cls]
+                for obj in cls2obj[cls]:
+                    if obj in self.object_nodes:
+                        obj_idx = self.object_nodes[obj]
+                        self.object_edges.append((cls_idx, obj_idx))
         
-        # Build sub-action nodes and edges
+        # Build sub-action nodes and edges (only for selected classes)
         all_subactions = set()
-        for cls, subactions in cls2sa.items():
-            all_subactions.update(subactions)
+        for cls in selected_classes:
+            if cls in cls2sa:
+                all_subactions.update(cls2sa[cls])
         
         for i, sa in enumerate(sorted(all_subactions)):
             self.subaction_nodes[sa] = i
         
-        # Create sub-action edges
-        for cls, subactions in cls2sa.items():
-            cls_idx = self.class_nodes[cls]
-            for sa in subactions:
-                sa_idx = self.subaction_nodes[sa]
-                self.subaction_edges.append((cls_idx, sa_idx))
-            
-            # Create temporal precedes edges between consecutive sub-actions
-            for i in range(len(subactions) - 1):
-                sa1_idx = self.subaction_nodes[subactions[i]]
-                sa2_idx = self.subaction_nodes[subactions[i + 1]]
-                self.precedes_edges.append((sa1_idx, sa2_idx))
+        # Create sub-action edges (only for selected classes)
+        for cls in selected_classes:
+            if cls in cls2sa:
+                cls_idx = self.class_nodes[cls]
+                subactions = cls2sa[cls]
+                
+                for sa in subactions:
+                    if sa in self.subaction_nodes:
+                        sa_idx = self.subaction_nodes[sa]
+                        self.subaction_edges.append((cls_idx, sa_idx))
+                
+                # Create temporal precedes edges between consecutive sub-actions
+                for i in range(len(subactions) - 1):
+                    sa1, sa2 = subactions[i], subactions[i + 1]
+                    if sa1 in self.subaction_nodes and sa2 in self.subaction_nodes:
+                        sa1_idx = self.subaction_nodes[sa1]
+                        sa2_idx = self.subaction_nodes[sa2]
+                        self.precedes_edges.append((sa1_idx, sa2_idx))
     
     def load_embeddings(self, class_emb: torch.Tensor, object_emb: torch.Tensor, 
                        subaction_emb: torch.Tensor):
@@ -153,9 +183,41 @@ class ASKG:
             'subactions': self.subaction_nodes,
             'num_classes': len(self.class_nodes),
             'num_objects': len(self.object_nodes),
-            'num_subactions': len(self.subaction_nodes)
+            'num_subactions': len(self.subaction_nodes),
+            'mode': self.mode,
+            'selected_indices': self.u_inds if self.mode == 'unseen' else None
         }
-
+    
+    def get_selected_class_mapping(self) -> Dict:
+        """
+        Get mapping information for selected classes.
+        
+        Returns:
+            Dictionary containing mapping information
+        """
+        if self.mode == 'all':
+            return {
+                'mode': 'all',
+                'all_classes': list(self.class_nodes.keys()),
+                'class_count': len(self.class_nodes)
+            }
+        else:
+            # Get original class list for reference
+            all_classes = set(self.askg_mapping.get('cls2obj', {}).keys()) | set(self.askg_mapping.get('cls2sa', {}).keys())
+            all_classes_list = sorted(list(all_classes))
+            
+            selected_class_names = []
+            for idx in self.u_inds:
+                if idx < len(all_classes_list):
+                    selected_class_names.append(all_classes_list[idx])
+            
+            return {
+                'mode': 'unseen',
+                'original_indices': self.u_inds,
+                'selected_classes': selected_class_names,
+                'all_available_classes': all_classes_list,
+                'class_count': len(self.class_nodes)
+            }
 
 class MultiHeadGraphAttention(nn.Module):
     """Multi-head attention mechanism for graph nodes."""
@@ -283,7 +345,8 @@ class GraphMatcher(nn.Module):
         
         # Adaptive fusion module
         self.adaptive_fusion = AdaptiveFusion(input_dim=embedding_dim)
-        
+        self.temperature = 0.1
+
         # Final classification layer
         self.classifier = nn.Linear(embedding_dim, num_classes)
         
@@ -312,11 +375,9 @@ class GraphMatcher(nn.Module):
         
         return similarity_matrix, mapping_matrix
 
-    def build_interested_graph(self, mapping_matrix: torch.Tensor, 
-                            similarity_matrix: torch.Tensor,
-                            node_embeddings: torch.Tensor) -> Dict:
+    def build_interested_graph(self, mapping_matrix: torch.Tensor, similarity_matrix: torch.Tensor, node_embeddings: torch.Tensor) -> Dict:
         """
-        Build interested subgraph from top-k nodes with paths in [label, [sa1, sa2, sa3]] format.
+        Build interested subgraph from top-k nodes and return comprehensive graph information.
         
         Args:
             mapping_matrix: Mapping matrix from node alignment [num_representations, top_k]
@@ -324,139 +385,351 @@ class GraphMatcher(nn.Module):
             node_embeddings: Node embeddings [num_nodes, embedding_dim]
             
         Returns:
-            Dictionary containing interested graph information with structured paths
+            Dictionary containing:
+            - 'interested_askg': ASKG instance with filtered mappings
+            - 'structured_paths': List of path information for each class
         """
-        # Get interested node set (unique nodes from top-k selections)
+        # Step 1: Get interested node set (unique nodes from top-k selections)
         interested_nodes = torch.unique(mapping_matrix.flatten())  # e.g., tensor([9, 14, 15, 25, 42, 49, 67, 84, 107, 112, 115, 129])
-        num_interested = len(interested_nodes)
-        
-        # Extract subgraph embeddings for interested nodes
-        subgraph_node_embeddings = node_embeddings[interested_nodes]  # [num_interested, embedding_dim]
-        
-        # Generate path-level similarity vectors for each representation
-        path_similarities = []
-        for i in range(mapping_matrix.size(0)):  # For each temporal representation
-            top_k_nodes = mapping_matrix[i]  # Top-k node indices for this representation
-            path_sim = similarity_matrix[i, top_k_nodes]  # Similarity scores for top-k nodes
-            path_similarities.append(path_sim)
-        
-        path_similarities = torch.stack(path_similarities, dim=0)  # [num_representations, top_k]
-        
-        # Extract paths from ASKG mapping in [label, [sa1, sa2, sa3]] format
-        structured_paths = self._extract_structured_paths(interested_nodes)
-
-        # Create global to local node index mapping
-        global_to_local = {node_idx.item(): i for i, node_idx in enumerate(interested_nodes)}
-        
-        # Create adjacency matrix based on structured paths
-        subgraph_adj = self._create_path_based_adjacency(interested_nodes, structured_paths)
-        
-        # Create node similarity matrix within the subgraph 这一块不一定有用 to be checked
-        subgraph_similarity = torch.zeros(num_interested, num_interested, device=interested_nodes.device)
-        for i in range(num_interested):
-            for j in range(num_interested):
-                if i != j:
-                    # Calculate cosine similarity between node embeddings
-                    node_i_emb = subgraph_node_embeddings[i]
-                    node_j_emb = subgraph_node_embeddings[j]
-                    sim = F.cosine_similarity(node_i_emb.unsqueeze(0), node_j_emb.unsqueeze(0))
-                    subgraph_similarity[i, j] = sim
-        
-        return {
-            'interested_nodes': interested_nodes,                    # [num_interested] - Tensor of interested node indices
-            'subgraph_embeddings': subgraph_node_embeddings,        # [num_interested, embedding_dim] - Node embeddings
-            'path_similarities': path_similarities,                 # [num_representations, top_k] - Similarity scores
-            'structured_paths': structured_paths,                   # List of [label, [sa1, sa2, sa3]] format paths
-            'subgraph_adjacency': subgraph_adj,                     # [num_interested, num_interested] - Adjacency matrix
-            'subgraph_similarity': subgraph_similarity,             # [num_interested, num_interested] - Node similarity matrix
-            'global_to_local_mapping': global_to_local,             # Dict - Global to local node index mapping
-            'num_interested_nodes': num_interested,                 # Int - Number of interested nodes
-            'num_paths': len(structured_paths)                      # Int - Number of structured paths
-        }
-
-    def _extract_structured_paths(self, interested_nodes: torch.Tensor) -> List[List]:
-        """
-        Extract structured paths in [label, [sa1, sa2, sa3]] format from ASKG mapping.
-        Only include paths that contain at least one interested node.
-        
-        Args:
-            interested_nodes: Tensor of interested node indices
-            
-        Returns:
-            List of paths in [label, [sa1, sa2, sa3]] format
-        """
-        structured_paths = []
-        cls2sa = self.askg.askg_mapping.get('cls2sa', {})
-        
-        # Convert interested nodes to set for efficient lookup
         interested_nodes_set = set(interested_nodes.cpu().numpy())
         
-        # Create reverse mapping from subaction names to indices
+        # Step 2: Find all class nodes that are connected to the interested sub-action nodes
+        interested_class_nodes = set()
+        
+        # Iterate through the original ASKG's sub-action edges to find connected classes
+        for cls_idx, sa_idx in self.askg.subaction_edges:
+            if sa_idx in interested_nodes_set:
+                interested_class_nodes.add(cls_idx)
+        
+        # Convert class indices to class names for easier processing
+        class_idx_to_name = {idx: name for name, idx in self.askg.class_nodes.items()}
+        interested_class_names = {class_idx_to_name[cls_idx] for cls_idx in interested_class_nodes 
+                                if cls_idx in class_idx_to_name}
+        
+        # Step 3: Based on interested class nodes, extract complete sub-action paths from original ASKG
+        filtered_cls2sa = {}
+        filtered_cls2obj = {}
+        
+        # Get complete sub-action sequences for interested classes
+        original_cls2sa = self.askg.askg_mapping.get('cls2sa', {})
+        original_cls2obj = self.askg.askg_mapping.get('cls2obj', {})
+        
+        # For each interested class, include its complete sub-action path
+        all_required_subactions = set()
+        for class_name in interested_class_names:
+            if class_name in original_cls2sa:
+                # Include the complete sub-action sequence for this class
+                complete_subaction_sequence = original_cls2sa[class_name]
+                filtered_cls2sa[class_name] = complete_subaction_sequence
+                
+                # Collect all required sub-actions
+                all_required_subactions.update(complete_subaction_sequence)
+                
+                # Also include object relationships for this class
+                if class_name in original_cls2obj:
+                    filtered_cls2obj[class_name] = original_cls2obj[class_name]
+        
+        # Step 4: Ensure all required sub-actions are included (even if not in top-k)
+        # This maintains the integrity of the complete action paths
         subaction_name_to_idx = {name: idx for name, idx in self.askg.subaction_nodes.items()}
+        all_required_subaction_indices = set()
+        for sa_name in all_required_subactions:
+            if sa_name in subaction_name_to_idx:
+                all_required_subaction_indices.add(subaction_name_to_idx[sa_name])
         
-        for class_label, subaction_sequence in cls2sa.items():
-            # Convert subaction names to indices
-            subaction_indices = []
+        # Step 5: Create filtered ASKG mapping with complete paths
+        filtered_askg_mapping = {
+            'cls2sa': filtered_cls2sa,
+            'cls2obj': filtered_cls2obj
+        }
+        
+        # Step 6: Create new ASKG instance with filtered mapping
+        interested_askg = ASKG(filtered_askg_mapping, embedding_dim=self.embedding_dim)
+        
+        # Step 7: Extract and load filtered embeddings
+        # Get all nodes that are actually used in the filtered graph
+        used_subaction_indices = set()
+        used_class_indices = set()
+        used_object_indices = set()
+        
+        # Collect used subaction indices (all required ones, not just top-k)
+        for class_name, subaction_names in filtered_cls2sa.items():
+            if class_name in self.askg.class_nodes:
+                used_class_indices.add(self.askg.class_nodes[class_name])
+            for sa_name in subaction_names:
+                if sa_name in self.askg.subaction_nodes:
+                    used_subaction_indices.add(self.askg.subaction_nodes[sa_name])
+        
+        # Collect used object indices
+        for class_name, object_names in filtered_cls2obj.items():
+            for obj_name in object_names:
+                if obj_name in self.askg.object_nodes:
+                    used_object_indices.add(self.askg.object_nodes[obj_name])
+        
+        # Step 8: Create mappings from original indices to new filtered indices
+        original_to_filtered_sa = {}
+        filtered_to_original_sa = {}
+        for new_idx, (sa_name, _) in enumerate(interested_askg.subaction_nodes.items()):
+            if sa_name in self.askg.subaction_nodes:
+                original_global_idx = self.askg.subaction_nodes[sa_name]
+                original_to_filtered_sa[original_global_idx] = new_idx
+                filtered_to_original_sa[new_idx] = original_global_idx
+        
+        original_to_filtered_class = {}
+        for new_idx, (class_name, _) in enumerate(interested_askg.class_nodes.items()):
+            if class_name in self.askg.class_nodes:
+                original_global_idx = self.askg.class_nodes[class_name]
+                original_to_filtered_class[original_global_idx] = new_idx
+        
+        original_to_filtered_obj = {}
+        for new_idx, (obj_name, _) in enumerate(interested_askg.object_nodes.items()):
+            if obj_name in self.askg.object_nodes:
+                original_global_idx = self.askg.object_nodes[obj_name]
+                original_to_filtered_obj[original_global_idx] = new_idx
+        
+        # Step 9: Extract filtered embeddings from original ASKG
+        device = node_embeddings.device
+        
+        if self.askg.subaction_embeddings is not None and len(used_subaction_indices) > 0:
+            filtered_sa_embeddings = torch.zeros(
+                len(interested_askg.subaction_nodes), 
+                self.askg.subaction_embeddings.size(1),
+                device=device
+            )
+            
+            for sa_name, new_idx in interested_askg.subaction_nodes.items():
+                if sa_name in self.askg.subaction_nodes:
+                    original_idx = self.askg.subaction_nodes[sa_name]
+                    filtered_sa_embeddings[new_idx] = self.askg.subaction_embeddings[original_idx]
+        else:
+            filtered_sa_embeddings = None
+        
+        if self.askg.class_embeddings is not None and len(used_class_indices) > 0:
+            filtered_class_embeddings = torch.zeros(
+                len(interested_askg.class_nodes), 
+                self.askg.class_embeddings.size(1),
+                device=device
+            )
+            
+            for class_name, new_idx in interested_askg.class_nodes.items():
+                if class_name in self.askg.class_nodes:
+                    original_idx = self.askg.class_nodes[class_name]
+                    filtered_class_embeddings[new_idx] = self.askg.class_embeddings[original_idx]
+        else:
+            filtered_class_embeddings = None
+        
+        if self.askg.object_embeddings is not None and len(used_object_indices) > 0:
+            filtered_obj_embeddings = torch.zeros(
+                len(interested_askg.object_nodes), 
+                self.askg.object_embeddings.size(1),
+                device=device
+            )
+            
+            for obj_name, new_idx in interested_askg.object_nodes.items():
+                if obj_name in self.askg.object_nodes:
+                    original_idx = self.askg.object_nodes[obj_name]
+                    filtered_obj_embeddings[new_idx] = self.askg.object_embeddings[original_idx]
+        else:
+            filtered_obj_embeddings = None
+        
+        # Step 10: Load filtered embeddings into the new ASKG
+        if filtered_class_embeddings is not None or filtered_obj_embeddings is not None or filtered_sa_embeddings is not None:
+            interested_askg.load_embeddings(
+                filtered_class_embeddings, 
+                filtered_obj_embeddings, 
+                filtered_sa_embeddings
+            )
+        
+        # Step 11: Build structured paths for graph alignment
+        structured_paths = []
+        for class_name, subaction_sequence in filtered_cls2sa.items():
+            # Convert sub-action names to indices in the filtered graph
+            subaction_indices_in_original = []
+            subaction_indices_in_filtered = []
+            valid_subaction_names = []
+            
             for sa_name in subaction_sequence:
-                if sa_name in subaction_name_to_idx:
-                    sa_idx = subaction_name_to_idx[sa_name]
-                    subaction_indices.append(sa_idx)
+                if sa_name in self.askg.subaction_nodes and sa_name in interested_askg.subaction_nodes:
+                    original_idx = self.askg.subaction_nodes[sa_name]
+                    filtered_idx = interested_askg.subaction_nodes[sa_name]
+                    
+                    subaction_indices_in_original.append(original_idx)
+                    subaction_indices_in_filtered.append(filtered_idx)
+                    valid_subaction_names.append(sa_name)
             
-            # Check if this path contains any interested nodes
-            path_has_interested_nodes = any(sa_idx in interested_nodes_set for sa_idx in subaction_indices)
-            
-            if path_has_interested_nodes and len(subaction_indices) > 0:
-                # Store in [label, [sa1, sa2, sa3]] format with both names and indices
-                structured_path = {
-                    'label': class_label,
-                    'subaction_names': subaction_sequence,      # Original names from mapping
-                    'subaction_indices': subaction_indices,    # Corresponding node indices
-                    'interested_nodes_in_path': [idx for idx in subaction_indices if idx in interested_nodes_set]
+            if len(valid_subaction_names) > 0:
+                path_info = {
+                    'label': class_name,
+                    'subaction_names': valid_subaction_names,
+                    'subaction_indices': subaction_indices_in_original,  # Original indices for reference
+                    'filtered_subaction_indices': subaction_indices_in_filtered,  # Filtered indices for computation
+                    'path_length': len(valid_subaction_names),
+                    'complete_sequence_length': len(subaction_sequence),  # Original complete length
+                    'coverage_ratio': len(valid_subaction_names) / len(subaction_sequence) if len(subaction_sequence) > 0 else 0.0
                 }
-                structured_paths.append(structured_path)
+                structured_paths.append(path_info)
         
-        return structured_paths
+        # Step 12: Calculate path-level similarities with complete paths
+        path_similarities = self._calculate_complete_path_similarities(
+            mapping_matrix, similarity_matrix, interested_nodes, original_to_filtered_sa, structured_paths
+        )
+        
+        # Step 13: Prepare subgraph embeddings for computation
+        if filtered_sa_embeddings is not None:
+            subgraph_embeddings = filtered_sa_embeddings
+        else:
+            subgraph_embeddings = torch.zeros(
+                len(interested_askg.subaction_nodes), 
+                self.embedding_dim,
+                device=device
+            )
+        
+        # Step 14: Store metadata
+        interested_askg.metadata = {
+            'original_interested_nodes': interested_nodes,
+            'interested_class_nodes': interested_class_nodes,
+            'interested_class_names': interested_class_names,
+            'all_required_subactions': all_required_subactions,
+            'all_required_subaction_indices': all_required_subaction_indices,
+            'coverage_stats': {
+                'num_original_top_k_nodes': len(interested_nodes),
+                'num_complete_required_nodes': len(all_required_subaction_indices),
+                'num_interested_classes': len(interested_class_names),
+                'expansion_ratio': len(all_required_subaction_indices) / len(interested_nodes) if len(interested_nodes) > 0 else 0.0
+            }
+        }
+        
+        # Return comprehensive graph information
+        return interested_askg, structured_paths, {
+            'interested_askg': interested_askg,
+            'structured_paths': structured_paths,
+            'subgraph_embeddings': subgraph_embeddings,
+            'global_to_local_mapping': original_to_filtered_sa,
+            'local_to_global_mapping': filtered_to_original_sa,
+            'path_similarities': path_similarities,
+            'index_mappings': {
+                'original_to_filtered_sa': original_to_filtered_sa,
+                'original_to_filtered_class': original_to_filtered_class,
+                'original_to_filtered_obj': original_to_filtered_obj,
+                'filtered_to_original_sa': filtered_to_original_sa
+            },
+            'metadata': interested_askg.metadata
+        }
 
-    def _create_path_based_adjacency(self, interested_nodes: torch.Tensor, 
-                                    structured_paths: List[Dict]) -> torch.Tensor:
+    def _calculate_complete_path_similarities(self, mapping_matrix: torch.Tensor, 
+                                similarity_matrix: torch.Tensor,
+                                interested_nodes: torch.Tensor,
+                                original_to_filtered_sa: Dict[int, int],
+                                structured_paths: List[Dict]) -> Dict:
         """
-        Create adjacency matrix based on structured paths.
-        Nodes are connected if they appear in the same path or consecutive in a sequence.
+        Calculate path-level similarity vectors for complete sub-action paths.
         
         Args:
+            mapping_matrix: Mapping matrix from node alignment [num_representations, top_k]
+            similarity_matrix: Similarity scores [num_representations, num_nodes]
             interested_nodes: Tensor of interested node indices
-            structured_paths: List of structured paths
+            original_to_filtered_sa: Mapping from original to filtered subaction indices
+            structured_paths: List of structured path information
             
         Returns:
-            Adjacency matrix for the subgraph
+            Dictionary containing comprehensive path similarity information
         """
-        num_interested = len(interested_nodes)
-        subgraph_adj = torch.zeros(num_interested, num_interested, device=interested_nodes.device)
+        path_similarities = {}
         
-        # Create global to local mapping
-        global_to_local = {node_idx.item(): i for i, node_idx in enumerate(interested_nodes)}
-        
-        for path_info in structured_paths:
-            subaction_indices = path_info['subaction_indices']
+        # Calculate similarities for each temporal representation
+        for repr_idx in range(mapping_matrix.size(0)):
+            repr_similarities = {}
             
-            # Connect nodes that appear in the same path
-            for i, sa_idx_i in enumerate(subaction_indices):
-                if sa_idx_i in global_to_local:
-                    local_i = global_to_local[sa_idx_i]
+            # Process each structured path (class)
+            for path_idx, path_info in enumerate(structured_paths):
+                class_name = path_info['label']
+                subaction_indices = path_info['subaction_indices']  # Original indices
+                subaction_names = path_info['subaction_names']
+                
+                # Calculate similarity for each node in this path
+                node_similarities = []
+                total_similarity = 0.0
+                valid_nodes = 0
+                
+                for pos, (sa_idx, sa_name) in enumerate(zip(subaction_indices, subaction_names)):
+                    if sa_idx < similarity_matrix.size(1):  # Ensure index is valid
+                        similarity_score = similarity_matrix[repr_idx, sa_idx].item()
+                        
+                        node_similarities.append({
+                            'subaction_name': sa_name,
+                            'original_index': sa_idx,
+                            'position_in_path': pos,
+                            'similarity': similarity_score,
+                            'is_top_k': sa_idx in interested_nodes.cpu().numpy()
+                        })
+                        
+                        total_similarity += similarity_score
+                        valid_nodes += 1
+                
+                # Calculate path-level statistics
+                if valid_nodes > 0:
+                    mean_similarity = total_similarity / valid_nodes
+                    max_similarity = max([ns['similarity'] for ns in node_similarities])
+                    min_similarity = min([ns['similarity'] for ns in node_similarities])
                     
-                    # Connect to all other nodes in the same path
-                    for j, sa_idx_j in enumerate(subaction_indices):
-                        if sa_idx_j in global_to_local and i != j:
-                            local_j = global_to_local[sa_idx_j]
-                            subgraph_adj[local_i, local_j] = 1
-                            
-                            # If nodes are consecutive in the sequence, give stronger connection
-                            if abs(i - j) == 1:
-                                subgraph_adj[local_i, local_j] = 2  # Stronger connection for consecutive nodes
+                    # Calculate weighted similarity (give more weight to nodes that were in top-k)
+                    weighted_similarity = 0.0
+                    total_weight = 0.0
+                    for ns in node_similarities:
+                        weight = 1.5 if ns['is_top_k'] else 1.0  # Higher weight for top-k nodes
+                        weighted_similarity += ns['similarity'] * weight
+                        total_weight += weight
+                    
+                    if total_weight > 0:
+                        weighted_similarity /= total_weight
+                else:
+                    mean_similarity = max_similarity = min_similarity = weighted_similarity = 0.0
+                
+                repr_similarities[class_name] = {
+                    'path_index': path_idx,
+                    'node_similarities': node_similarities,
+                    'path_stats': {
+                        'mean_similarity': mean_similarity,
+                        'max_similarity': max_similarity,
+                        'min_similarity': min_similarity,
+                        'weighted_similarity': weighted_similarity,
+                        'num_nodes': valid_nodes,
+                        'path_length': len(subaction_names),
+                        'top_k_coverage': sum([1 for ns in node_similarities if ns['is_top_k']]) / len(node_similarities) if len(node_similarities) > 0 else 0.0
+                    }
+                }
+            
+            path_similarities[f'representation_{repr_idx}'] = repr_similarities
         
-        return subgraph_adj
+        # Calculate aggregated statistics across all representations
+        aggregated_stats = {}
+        all_class_names = set()
+        for repr_key, repr_data in path_similarities.items():
+            all_class_names.update(repr_data.keys())
+        
+        for class_name in all_class_names:
+            class_similarities = []
+            class_weighted_similarities = []
+            
+            for repr_key, repr_data in path_similarities.items():
+                if class_name in repr_data:
+                    class_similarities.append(repr_data[class_name]['path_stats']['mean_similarity'])
+                    class_weighted_similarities.append(repr_data[class_name]['path_stats']['weighted_similarity'])
+            
+            if len(class_similarities) > 0:
+                aggregated_stats[class_name] = {
+                    'overall_mean_similarity': sum(class_similarities) / len(class_similarities),
+                    'overall_max_similarity': max(class_similarities),
+                    'overall_weighted_similarity': sum(class_weighted_similarities) / len(class_weighted_similarities),
+                    'consistency': 1.0 - (max(class_similarities) - min(class_similarities)) if len(class_similarities) > 1 else 1.0,
+                    'num_representations': len(class_similarities)
+                }
+        
+        path_similarities['aggregated_stats'] = aggregated_stats
+        
+        return path_similarities
 
-
+    # Graph_alignment: path-level only
     def graph_alignment(self, temporal_repr: torch.Tensor, interested_graph: Dict) -> Dict:
         """
         Perform graph alignment between sample graph and interested subgraph.
@@ -744,6 +1017,115 @@ class GraphMatcher(nn.Module):
             }
         
         return analysis
+
+    # Graph_attention_alignment: first aggregate the features using attention, then calculate the similarity
+    def graph_attention_alignment(self, temporal_repr: torch.Tensor, structured_paths: List[Dict]) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """
+        Perform graph attention alignment between temporal representations and structured paths.
+        
+        Args:
+            temporal_repr: Temporal representations [num_frames, embedding_dim]
+            structured_paths: List of path dictionaries containing 'label' and 'subaction_indices'
+            
+        Returns:
+            Tuple of (graph_similarity_scores, repr_feat, askg_feats):
+            - graph_similarity_scores: Similarity scores between repr_feat and askg_feats [num_classes]
+            - repr_feat: Aggregated temporal representation [embedding_dim]
+            - askg_feats: Class-indexed ASKG features [num_classes, embedding_dim]
+        """
+        device = temporal_repr.device
+        
+        # Step 1: Aggregate temporal representation using self-attention
+        temporal_repr_batch = temporal_repr.unsqueeze(0)  # [1, num_frames, embedding_dim]
+        
+        # Apply self-attention to temporal representations
+        aggregated_temporal = self.node_attention(
+            query=temporal_repr_batch,
+            key=temporal_repr_batch,
+            value=temporal_repr_batch
+        )  # [1, num_frames, embedding_dim]
+        
+        # Aggregate to single representation
+        repr_feat = torch.mean(aggregated_temporal.squeeze(0), dim=0)  # [embedding_dim]
+        
+        # Step 2: Process structured paths and build class-indexed ASKG features
+        askg_feats = torch.zeros(self.num_classes, self.embedding_dim, device=device)
+        
+        # Create class name to index mapping
+        class_names = [path['label'] for path in structured_paths]
+        unique_class_names = sorted(list(set(class_names)))
+        class_name_to_idx = {name: idx for idx, name in enumerate(unique_class_names)}
+        
+        # Process each path (one path per class)
+        for path in structured_paths:
+            class_name = path['label']
+            subaction_indices = path['subaction_indices']
+            
+            if class_name not in class_name_to_idx:
+                continue
+                
+            class_idx = class_name_to_idx[class_name]
+            if class_idx >= self.num_classes:
+                continue
+            
+            # Get embeddings for sub-actions in this path (preserving order)
+            path_embeddings = []
+
+            for sa_idx in subaction_indices:
+                if (self.askg.subaction_embeddings is not None and 
+                    sa_idx < self.askg.subaction_embeddings.size(0)):
+                    sa_embedding = self.askg.subaction_embeddings[sa_idx]
+                    path_embeddings.append(sa_embedding)
+            
+            if len(path_embeddings) > 0:
+                # Stack path embeddings and apply graph attention within the path
+                path_emb_tensor = torch.stack(path_embeddings, dim=0)  # [path_length, embedding_dim]
+                path_emb_batch = path_emb_tensor.unsqueeze(0)  # [1, path_length, embedding_dim]
+                
+                # Apply graph attention to the path (preserving subaction order)
+                attended_path = self.graph_attention(
+                    query=path_emb_batch,
+                    key=path_emb_batch,
+                    value=path_emb_batch
+                ).squeeze(0)  # [path_length, embedding_dim]
+                
+                # Aggregate path to single representation using mean
+                weighted_path_repr = torch.mean(attended_path, dim=0)
+                askg_feats[class_idx] = weighted_path_repr
+            else:
+                # No valid embeddings found for this path
+                askg_feats[class_idx] = torch.zeros(self.embedding_dim, device=device)
+        
+        # Step 3: Cross-attention between temporal representation and ASKG features
+        # Prepare for cross-attention: repr_feat as query, askg_feats as key/value
+        repr_feat_batch = repr_feat.unsqueeze(0).unsqueeze(0)  # [1, 1, embedding_dim]
+        askg_feats_batch = askg_feats.unsqueeze(0)  # [1, num_classes, embedding_dim]
+        
+        # Apply cross-attention: temporal representation attends to ASKG features
+        cross_attended = self.graph_attention(
+            query=repr_feat_batch,
+            key=askg_feats_batch,
+            value=askg_feats_batch
+        )  # [1, 1, embedding_dim]
+        
+        # Update repr_feat with cross-attention information
+        enhanced_repr_feat = cross_attended.squeeze(0).squeeze(0)  # [embedding_dim]
+        
+        # Step 4: Calculate similarity scores
+        # Normalize features for cosine similarity
+        enhanced_repr_feat_norm = F.normalize(enhanced_repr_feat, p=2, dim=0)
+        askg_feats_norm = F.normalize(askg_feats, p=2, dim=1)  # [num_classes, embedding_dim]
+        
+        # Calculate cosine similarity
+        graph_similarity_scores = torch.mm(
+            enhanced_repr_feat_norm.unsqueeze(0),  # [1, embedding_dim]
+            askg_feats_norm.t()  # [embedding_dim, num_classes]
+        ).squeeze(0)  # [num_classes]
+        
+        # Apply temperature scaling for better discrimination
+        graph_similarity_scores = graph_similarity_scores / self.temperature
+        
+        return graph_similarity_scores, enhanced_repr_feat, askg_feats
     
 
     def forward(self, temporal_repr: torch.Tensor, 
@@ -775,39 +1157,15 @@ class GraphMatcher(nn.Module):
         )
         
         # Step 2: Build Interested Graph
-        # interested_nodes = self.get_interested_nodes(
-        #     mapping_matrix, similarity_matrix, node_embeddings
-        # )
-
-        interested_graph = self.build_interested_graph(mapping_matrix, similarity_matrix, node_embeddings)
+        interested_askg, structured_paths, _ = self.build_interested_graph(mapping_matrix, similarity_matrix, node_embeddings)
 
         # Step 3: Graph Alignment
-        ipdb.set_trace()
+        graph_similarity_scores, repr_feat, askg_feats = self.graph_attention_alignment(temporal_repr, structured_paths)
+        
+        # Integration of Similarity Scores
+        total_similarity_scores = graph_similarity_scores
 
-        graph_similarity = self.graph_alignment(temporal_repr, interested_graph)
-        similarity_vec = []
-        for key, items in graph_similarity['best_paths'].items():
-            
-        
-
-        # Step 4: Integration
-        # Calculate path-level confidence (average of top-k similarities)
-        path_confidence = torch.mean(interested_graph['path_similarities'], dim=0)
-        path_confidence = torch.mean(path_confidence)  # Average across all representations
-        
-        # Expand path_confidence to match graph_similarity dimensions
-        path_confidence_expanded = path_confidence.expand_as(graph_similarity)
-        
-        # # Adaptive fusion of path and graph level similarities
-        # total_similarity = self.adaptive_fusion(
-        #     path_confidence_expanded.unsqueeze(0),
-        #     graph_similarity.unsqueeze(0)
-        # ).squeeze(0)
-        
-        # simple fuse
-        total_similarity = path_confidence_expanded + graph_similarity
-
-        return total_similarity
+        return graph_similarity_scores
 
 
 class ZeroShotASKG(nn.Module):
@@ -833,40 +1191,23 @@ class ZeroShotASKG(nn.Module):
         # Stream fusion weights
         self.stream_weights = nn.Parameter(torch.ones(1))
         
-    def forward(self, skeleton_data: torch.Tensor, 
-                num_reps: int = 4) -> torch.Tensor:
+    def forward(self, temporal_rep_batch: torch.Tensor) -> torch.Tensor:
         """
         Forward pass for zero-shot classification.
         
         Args:
-            skeleton_data: Input skeleton sequence [batch_size, embedding_size, frames]
+            skeleton_data: 
+                When training: Input semantic sequence [batch_size, embedding_size, num]
+                When testing: Input skeleton sequence [batch_size, embedding_size, frames]
             num_reps: Number of frames to sample for temporal representation
             
         Returns:
             Class prediction scores
         """
-        batch_size = skeleton_data.size(0)
-
-        # Sample frames for temporal representation
-        indices = torch.linspace(0, skeleton_data.shape[2] - 1, num_reps).long()  # 改为 rep_mode可选
-        rep_segs = skeleton_data[:, :, indices]  # [batch_size, embedding_size, num_frames]
-        
-        # Encode each frame using VAE encoder
-        sequence_encoder = self.vae_dict['sub_act']['sequence_encoder']
-        sequence_encoder.eval()
-        
+        batch_size = temporal_rep_batch.size(0)
         batch_predictions = []
-        
         for b in range(batch_size):
-            frame_representations = [] 
-            
-            # Encode each frame
-            for f in range(num_reps):
-                frame_data = rep_segs[b, :, f].unsqueeze(0)  # [1, channels]
-                mu, logvar = sequence_encoder(frame_data)
-                frame_representations.append(mu.squeeze(0))  # [embedding_dim]  
-            
-            temporal_rep = torch.stack(frame_representations, dim=0)  # [num_frames, embedding_dim]
+            temporal_rep = temporal_rep_batch[b]  # [num_frames, embedding_dim]
             
             # Graph matching for sub-action stream
             subaction_scores = self.subaction_matcher(temporal_rep, 'subaction')
@@ -901,7 +1242,7 @@ def create_sample_askg_mapping() -> Dict:
     }
 
 
-def load_askg_embeddings(askg: ASKG, sa_emb, text_encoder, device: torch.device) -> ASKG:
+def load_askg_embeddings(askg: ASKG, sa_emb, device: torch.device) -> ASKG:
     """
     Load pre-trained embeddings for ASKG nodes.
     This is a placeholder - in practice, you'd load from saved embeddings.
@@ -913,11 +1254,7 @@ def load_askg_embeddings(askg: ASKG, sa_emb, text_encoder, device: torch.device)
     class_emb = torch.randn(node_info['num_classes'], embedding_dim).to(device)
     object_emb = torch.randn(node_info['num_objects'], embedding_dim).to(device)
     
-    # load from sub-action semantic embeddings
-    sa_emb = sa_emb.to(torch.float32)
-    t_tmu, t_tlv = text_encoder(sa_emb)
-    t_z = reparameterize(t_tmu, t_tlv)
-    subaction_emb = t_z.to(device)  # torch.Size([154, 96])
+    subaction_emb = sa_emb.to(device)  # torch.Size([154, 96])
     
     askg.load_embeddings(class_emb, object_emb, subaction_emb)
     return askg
