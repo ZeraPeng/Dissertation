@@ -1174,11 +1174,10 @@ class ZeroShotASKG(nn.Module):
     Integrates with the existing VAE framework.
     """
     
-    def __init__(self, askg: ASKG, vae_dict: Dict, embedding_dim: int = 96,
+    def __init__(self, askg: ASKG, embedding_dim: int = 96,
                  top_k: int = 5, num_classes: int = 60):
         super().__init__()
         self.askg = askg
-        self.vae_dict = vae_dict
         self.embedding_dim = embedding_dim
         self.top_k = top_k
         self.num_classes = num_classes
@@ -1221,32 +1220,7 @@ class ZeroShotASKG(nn.Module):
         return torch.stack(batch_predictions, dim=0)  # [batch_size, num_classes]
 
 
-# Usage example and utility functions
-def create_sample_askg_mapping() -> Dict:
-    """Create a sample ASKG mapping for demonstration."""
-    return {
-        'cls2obj': {
-            'drink water': ['bottle', 'cup', 'glass'],
-            'eat meal': ['spoon', 'fork', 'plate', 'bowl'],
-            'brush teeth': ['toothbrush', 'toothpaste'],
-            'read': ['book', 'paper', 'magazine'],
-            'write': ['pen', 'pencil', 'paper']
-        },
-        'cls2sa': {
-            'drink water': ['reach for container', 'grasp container', 'lift to mouth', 'tilt and drink'],
-            'eat meal': ['pick up utensil', 'reach for food', 'bring to mouth', 'chew'],
-            'brush teeth': ['apply toothpaste', 'start brushing', 'brush upper teeth', 'brush lower teeth'],
-            'read': ['open book', 'focus on text', 'turn page'],
-            'write': ['hold pen', 'position on paper', 'make strokes', 'lift pen']
-        }
-    }
-
-
 def load_askg_embeddings(askg: ASKG, sa_emb, device: torch.device) -> ASKG:
-    """
-    Load pre-trained embeddings for ASKG nodes.
-    This is a placeholder - in practice, you'd load from saved embeddings.
-    """
     node_info = askg.get_node_info()
     embedding_dim = askg.embedding_dim
     
@@ -1258,38 +1232,6 @@ def load_askg_embeddings(askg: ASKG, sa_emb, device: torch.device) -> ASKG:
     
     askg.load_embeddings(class_emb, object_emb, subaction_emb)
     return askg
-
-
-def graph_match_vae(vae_dict: Dict, num_unseen_class, askg_mapping: Dict, sa_emb, semantic_latent_size, device) -> ZeroShotASKG:
-    """
-    Integrate ASKG with existing VAE framework.
-    
-    Args:
-        vae_dict: Dictionary containing VAE models
-        askg_mapping: ASKG mapping dictionary
-        device: Torch device
-        
-    Returns:
-        Initialized ZeroShotASKG model
-    """
-    # Initialize action semantic knowledge graph
-    askg = ASKG(askg_mapping, embedding_dim=semantic_latent_size)
-    
-    # load the encoded semantic embeddings
-    text_encoder = vae_dict['sub_act']['text_encoder']
-    text_encoder.eval()
-    askg = load_askg_embeddings(askg, sa_emb, text_encoder, device)
-    
-    # Initialize the zero-shot graph matching model
-    zs_askg = ZeroShotASKG(
-        askg=askg,
-        vae_dict=vae_dict,
-        embedding_dim=96,  # Should match VAE encoder output
-        top_k=5,
-        num_classes=num_unseen_class
-    ).to(device)
-    
-    return zs_askg
 
 '''
 # In the main function, after VAE training:

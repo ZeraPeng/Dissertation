@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from scipy.spatial.distance import euclidean
 from fastdtw import fastdtw
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from data_cnn60_origin import AverageMeter, NTUDataLoaders

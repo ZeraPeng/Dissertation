@@ -817,11 +817,11 @@ def get_temporal_repr(vae_dict, batch_data, num_reps=4, mode='sample'):
         sequence_encoder = vae_dict['sub_act']['sequence_encoder']
         sequence_encoder.eval()
         
-        for b in range(batch_size):
+        temporal_repr_batch = []
+        for b in range(rep_segs.shape[0]):
             frame_representations = [] 
-            temporal_repr_batch = []
             # Encode each frame
-            for f in range(num_reps):
+            for f in range(rep_segs.shape[2]):
                 frame_data = rep_segs[b, :, f].unsqueeze(0)  # [1, channels]
                 mu, logvar = sequence_encoder(frame_data)
                 frame_representations.append(mu.squeeze(0))  # [embedding_dim]  
@@ -851,6 +851,13 @@ def main():
     np.random.seed(seed)
     device = torch.device("cuda")
 
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        filename='%(asctime)s-training_log.txt',
+        filemode='w'  # 'w' to overwrite, 'a' to append
+    )
+
     if not os.path.exists(f'{wdir}/{le}/{tm}'):
         os.makedirs(f'{wdir}/{le}/{tm}')
 
@@ -862,7 +869,7 @@ def main():
     val_loader = ntu_loaders.get_test_loader(batch_size, 0)
     
     names = ['sub_act']
-
+    logging.info(f"{names}")
     if phase == 'val':
         unseen_inds = np.sort(
             np.load(f'resources/label_splits/{dataset}/{st}v{str(ss)}_0.npy'))
@@ -875,6 +882,7 @@ def main():
             f'resources/label_splits/{dataset}/{st}s{str(num_classes - ss)}.npy')
     
     aug = True
+    logging.info(f"aug: {aug}")
     c_text_emb = []
     c_unseen_text_emb = []
     if aug:
@@ -918,6 +926,7 @@ def main():
     # ========== Training ==========
     best = 0
     for epoch in range(num_epochs):
+        logging.info(f"Training epoch: {epoch+1}")
         # ===== Train Cross-Alignment Module =====
         if load_vae == True:
             vae_checkpoint = f'{wdir}{le}/{tm}/se_16999_vae_models.pth.tar'
@@ -952,59 +961,61 @@ def main():
         askg_unseen = ASKG(askg_mapping, embedding_dim=semantic_latent_size, mode='unseen', u_inds=unseen_inds, dataset=args.dataset)
     
         # load the encoded semantic embeddings
-        text_encoder = vae_dict['sub_act']['text_encoder']
-        text_encoder.eval()
-        sa_vocab_emb = sa_vocab_emb.to(torch.float32)
-        t_tmu, t_tlv = text_encoder(sa_vocab_emb)
-        sa_emb = reparameterize(t_tmu, t_tlv)
-        askg_unseen = load_askg_embeddings(askg_unseen, sa_emb, device)
+        with torch.no_grad():
+            text_encoder = vae_dict['sub_act']['text_encoder']
+            text_encoder.eval()
+            sa_vocab_emb = sa_vocab_emb.to(torch.float32)
+            tn_tmu, tn_tlv = text_encoder(sa_vocab_emb)
+            sa_emb = reparameterize(tn_tmu, tn_tlv)
+            askg_unseen = load_askg_embeddings(askg_unseen, sa_emb, device)
+            unseen_text_emb = sa_text_emb[unseen_inds]
         
         # Initialize the zero-shot graph matching model
         zs_askg_model = ZeroShotASKG(
             askg=askg_unseen,
-            vae_dict=vae_dict,
             embedding_dim=semantic_latent_size,  # Should match VAE encoder output
             top_k=5,
             num_classes=ss
         ).to(device)
 
+        optimizer = optim.Adam(zs_askg_model.parameters(), lr=0.001)
+
         # Train
-        # ipdb.set_trace()
-        for c_e in range(300):
-            zs_askg_model.train()
-            optimizer = optim.Adam(zs_askg_model.parameters(), lr=0.001)
-            criterion = nn.CrossEntropyLoss().to(device) 
-            # build training set (semantic embeddings)
+        logging.info("Training zs_askg_model.")
+        with torch.no_grad():
             y = torch.tensor(range(ss)).to(device) 
             y = y.repeat([500])
-
-            unseen_text_emb = sa_text_emb[unseen_inds]
             for i, name in enumerate(vae_dict):
                 text_encoder = vae_dict[name]['text_encoder']
                 text_encoder.eval()
-                n_t = unseen_text_emb.to(device).float()        # 5, 4, 512
-                n_t = n_t.reshape(-1, n_t.shape[-1])        # torch.Size([20, 512])
-                t_tmu, t_tlv = text_encoder(n_t)
-                t_z = reparameterize(t_tmu, t_tlv)
-                t_z = t_z.reshape(unseen_text_emb.shape[0], unseen_text_emb.shape[1], t_z.shape[-1])  # 5, 4, 96
-                semantic_repr_batch = t_z.repeat([500, 1, 1])       # 2500, 4, 96
+                nn_t = unseen_text_emb.to(device).float()
+                nn_t = nn_t.reshape(-1, nn_t.shape[-1])
+                tn_tmu, tn_tlv = text_encoder(nn_t)
+                tn_z = reparameterize(tn_tmu, tn_tlv)
+                tn_z = tn_z.reshape(unseen_text_emb.shape[0], unseen_text_emb.shape[1], tn_z.shape[-1])
+
+                semantic_repr_batch = tn_z.repeat([500, 1, 1])
+
+        criterion = nn.CrossEntropyLoss().to(device) 
+        # ipdb.set_trace()
+        semantic_repr_batch = semantic_repr_batch.detach()
+
+        for c_e in range(80):
+            zs_askg_model.train()
+            optimizer.zero_grad()  
             
-            # loss
-            semantic_repr_batch = semantic_repr_batch.detach()
             train_out = zs_askg_model(semantic_repr_batch)
             align_loss = criterion(train_out, y)
-            total_loss = align_loss
-            
-            # BP
-            optimizer.zero_grad()
+            reg_loss = torch.norm(zs_askg_model.parameters())
+            total_loss = align_loss + 0.01 * reg_loss
             total_loss.backward()
             optimizer.step()
 
             # Acc
-            preds = torch.argmax(train_out, dim=1)
-            count = torch.sum(preds == y)
-            acc = float(torch.sum(y == preds)) / (ss * 500)
-            print(f"Epoch {c_e}: acc={acc}")
+            with torch.no_grad():  
+                preds = torch.argmax(train_out, dim=1)
+                acc = float(torch.sum(preds == y)) / (ss * 500)
+                logging.info(f"Align: {align_loss}. Reg: {reg_loss}. Total: {total_loss}. Epoch {c_e}: acc={acc}")
 
         # Use for zero-shot classification
         zs_askg_model.eval()
@@ -1019,7 +1030,7 @@ def main():
                 batch_data = batch_data.to(device)
                 
                 # Get predictions using graph matching
-                temporal_repr_batch = get_temporal_repr(vae_dict, batch_data, num_reps=num_reps)
+                temporal_repr_batch = get_temporal_repr(vae_dict, batch_data, num_reps=num_reps).to(device)
                 gm_out = zs_askg_model(temporal_repr_batch)      # torch.Size([32, 5])
                 
                 preds = torch.argmax(gm_out, dim=1).to('cpu')
@@ -1029,8 +1040,10 @@ def main():
                 num += len(target)
 
         zsl_acc = float(count)/num
+        logging.info(f"zsl_acc: {zsl_acc}")
         if (zsl_acc > best):
             best = zsl_acc
+            logging.info(f'zsl_accuracy increased to {best :.2%} on cycle {epoch}')
             print('---------------------')
             print(
                 f'zsl_accuracy increased to {best :.2%} on cycle ', epoch)
